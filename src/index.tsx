@@ -5,10 +5,8 @@ import './index.css';
 import App from './components/App/App';
 import * as serviceWorker from './serviceWorker';
 import store from './store/store';
-
-import { ThemeProvider } from '@material-ui/core';
-import defaultLayout from './layout';
-
+import { ThemeProvider } from '@material-ui/core/styles';
+import defaultLayout  from './layout';
 
 ReactDOM.render(
   <ThemeProvider theme={defaultLayout}>
@@ -19,7 +17,6 @@ ReactDOM.render(
   </ThemeProvider>
   ,
   document.getElementById('root')
-
 );
 
 // If you want your app to work offline and load faster, you can change
