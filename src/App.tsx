@@ -2,11 +2,11 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { RootState } from './store/store';
-import { fetchLatest } from './store/movies/thunks';
+import { fetchLatest } from './store/latest/thunks';
 import { connect, ConnectedProps } from 'react-redux';
 
 const mapState = (state: RootState) => ({
-  movies: state.movies,
+  latest: state.latest,
 });
 
 const mapDispatch = {
@@ -31,9 +31,9 @@ class App extends React.Component<PropsFromRedux> {
             Edit <code>src/App.tsx</code> and save to reload.
           </p>
           <p>{process.env.REACT_APP_API_KEY}</p>
-          <p>{this.props.movies.isFetching ? 'Request Loading' : 'Request Finished'}</p>
-          <p>{this.props.movies.latest?.title}</p>
-          <p>{this.props.movies.failed ? 'Request Failed' : ''}</p>
+          <p>{this.props.latest.isFetching ? 'Request Loading' : 'Request Finished'}</p>
+          <p>{this.props.latest.latest?.title}</p>
+          <p>{this.props.latest.failed ? 'Request Failed' : ''}</p>
           <a
             className="App-link"
             href="https://reactjs.org"

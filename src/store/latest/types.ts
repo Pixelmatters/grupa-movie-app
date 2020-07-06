@@ -1,8 +1,10 @@
+import { IMovie } from '../../api/models';
+
 export const REQUEST_LATEST_START = 'REQUEST_LATEST_START';
 export const REQUEST_LATEST_SUCCESS = 'REQUEST_LATEST_SUCCESS';
 export const REQUEST_LATEST_ERROR = 'REQUEST_LATEST_ERROR';
 
-export type MovieActionTypes =
+export type LatestActionTypes =
   | IRequestLatestStartAction
   | IRequestLatestSuccessAction
   | IRequestLatestErrorAction;
@@ -20,13 +22,7 @@ interface IRequestLatestErrorAction {
   type: typeof REQUEST_LATEST_ERROR;
 }
 
-export interface IMovie {
-  id: number;
-  title: string;
-  poster_path?: string;
-}
-
-export interface IMoviesState {
+export interface ILatestState {
   isFetching: boolean;
   failed: boolean;
   latest?: IMovie;

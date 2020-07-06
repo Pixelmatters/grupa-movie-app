@@ -1,11 +1,11 @@
 import { AppThunk } from '../store';
-import { IMovie } from './types';
 import {
   requestLatestStart,
   requestLatestSuccess,
   requestLatestError,
 } from './actions';
 import { getLatestMovie } from '../../api/api';
+import { IMovie } from '../../api/models';
 
 export const fetchLatest = (): AppThunk => async (dispatch) => {
   dispatch(requestLatestStart());

@@ -9,7 +9,9 @@ const defaultConfig: AxiosRequestConfig = {
   },
 };
 
-const get = (url: string) => Axios.get(url, defaultConfig);
+const get = (route: string) => Axios.get(`${BASE_URL}/${route}`, defaultConfig);
 
-export const getLatestMovie = () => get(`${BASE_URL}/movie/latest`);
-export const getMovie = (id: number) => get(`${BASE_URL}/movie/${id}`);
+export const getLatestMovie = () => get('movie/latest');
+export const getMovie = (id: number) => get(`movie/${id}`);
+export const getCast = (id: number) => get(`movie/${id}/credits`);
+export const getPopular = () => get('movie/popular');

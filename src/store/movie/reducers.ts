@@ -1,38 +1,38 @@
 import {
-  IMoviesState,
+  IMovieState,
   MovieActionTypes,
-  REQUEST_LATEST_START,
-  REQUEST_LATEST_SUCCESS,
-  REQUEST_LATEST_ERROR,
+  REQUEST_MOVIE_START,
+  REQUEST_MOVIE_SUCCESS,
+  REQUEST_MOVIE_ERROR,
 } from './types';
-const initialState: IMoviesState = {
-  latest: undefined,
+const initialState: IMovieState = {
+  movie: undefined,
   failed: false,
   isFetching: false,
 };
 
-export const moviesReducer = (
+export const movieReducer = (
   state = initialState,
   action: MovieActionTypes
-): IMoviesState => {
+): IMovieState => {
   switch (action.type) {
-  case REQUEST_LATEST_START:
+  case REQUEST_MOVIE_START:
     return {
       isFetching: true,
       failed: false,
-      latest: undefined,
+      movie: undefined,
     };
-  case REQUEST_LATEST_SUCCESS:
+  case REQUEST_MOVIE_SUCCESS:
     return {
       isFetching: false,
       failed: false,
-      latest: action.latest,
+      movie: action.movie,
     };
-  case REQUEST_LATEST_ERROR:
+  case REQUEST_MOVIE_ERROR:
     return {
       isFetching: false,
       failed: true,
-      latest: undefined,
+      movie: undefined,
     };
   default:
     return state;
