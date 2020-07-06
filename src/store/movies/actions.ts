@@ -15,7 +15,6 @@ export const requestLatestSuccess = (latest: IMovie): MovieActionTypes => ({
   latest: latest,
 });
 
-export const requestLatestError = (error: Error): MovieActionTypes => ({
-  type: REQUEST_LATEST_ERROR,
-  error: error,
+export const requestLatestError = (): MovieActionTypes => ({
+  type: REQUEST_LATEST_ERROR
 });

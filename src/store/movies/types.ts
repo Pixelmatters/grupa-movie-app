@@ -18,7 +18,6 @@ interface IRequestLatestSuccessAction {
 
 interface IRequestLatestErrorAction {
   type: typeof REQUEST_LATEST_ERROR;
-  error: Error;
 }
 
 export interface IMovie {
@@ -29,6 +28,6 @@ export interface IMovie {
 
 export interface IMoviesState {
   isFetching: boolean;
+  failed: boolean;
   latest?: IMovie;
-  error?: Error;
 }

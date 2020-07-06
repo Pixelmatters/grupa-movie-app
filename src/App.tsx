@@ -31,9 +31,9 @@ class App extends React.Component<PropsFromRedux> {
             Edit <code>src/App.tsx</code> and save to reload.
           </p>
           <p>{process.env.REACT_APP_API_KEY}</p>
-          <p>{this.props.movies.isFetching ? 'Loading' : 'Done'}</p>
+          <p>{this.props.movies.isFetching ? 'Request Loading' : 'Request Finished'}</p>
           <p>{this.props.movies.latest?.title}</p>
-          <p>{this.props.movies.error}</p>
+          <p>{this.props.movies.failed ? 'Request Failed' : ''}</p>
           <a
             className="App-link"
             href="https://reactjs.org"
