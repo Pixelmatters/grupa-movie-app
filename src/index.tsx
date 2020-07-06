@@ -2,16 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import './index.css';
-import App from './App';
+import App from './components/App/App';
 import * as serviceWorker from './serviceWorker';
 import store from './store/store';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { defaultLayout } from './layout';
+
 
 ReactDOM.render(
+
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+    <ThemeProvider theme={defaultLayout}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ThemeProvider>
+
+  </React.StrictMode>
+  ,
   document.getElementById('root')
 );
 
