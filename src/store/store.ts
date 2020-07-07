@@ -1,9 +1,11 @@
 import { createStore, combineReducers, applyMiddleware, Action } from 'redux';
-import { moviesReducer } from './movies/reducers';
 import thunk, { ThunkAction } from 'redux-thunk';
+import { movieReducer } from './movie/reducers';
+import { castReducer } from './cast/reducers';
 
 const rootReducer = combineReducers({
-  movies: moviesReducer,
+  movie: movieReducer,
+  cast: castReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
