@@ -7,13 +7,11 @@ import {
   requestPopularStart,
   requestPopularSuccess,
   requestPopularError,
-} from './actions';
-import { getMovie, getPopular, getLatestMovie } from '../../api/api';
-import {
   requestLatestStart,
   requestLatestSuccess,
   requestLatestError,
-} from '../latest/actions';
+} from './actions';
+import { getMovie, getPopular, getLatestMovie } from '../../api/api';
 
 export const fetchMovie = (id: number): AppThunk => async (dispatch) => {
   dispatch(requestMovieStart());
