@@ -30,3 +30,11 @@ export interface ICreateSession {
 export interface IDeleteSession {
   success?: boolean;
 }
+
+// Account
+
+export interface IAddToWatchlist {
+  media_type: string;
+  media_id: number;
+  watchlist: boolean;
+}
