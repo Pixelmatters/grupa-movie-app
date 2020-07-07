@@ -1,4 +1,5 @@
-import Axios, { AxiosRequestConfig } from 'axios';
+import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { IAddToWatchlist } from './models';
 
 const BASE_URL: string = 'https://api.themoviedb.org/3';
 const API_KEY: string | undefined = process.env.REACT_APP_API_KEY;
@@ -7,26 +8,66 @@ const defaultConfig: AxiosRequestConfig = {
   params: {
     api_key: API_KEY,
   },
+  headers: {
+    'Content-Type': 'application/json',
+  },
 };
 
-const joinUrlWithRoute = (route: string) => `${BASE_URL}/${route}`;
+enum Method {
+  GET = 'GET',
+  POST = 'POST',
+  DELETE = 'DELETE',
+}
 
-const get = (route: string) =>
-  Axios.get(joinUrlWithRoute(route), defaultConfig);
-const post = (route: string, data: any) =>
-  Axios.post(joinUrlWithRoute(route), data, defaultConfig);
-const delete_ = (route: string, data: any) =>
-  Axios.delete(joinUrlWithRoute(route), { data: data, ...defaultConfig });
+const joinBaseUrlWithRoute = (route: string) => `${BASE_URL}/${route}`;
+
+const exec = (
+  route: string,
+  method: Method,
+  params?: any,
+  data?: any
+): Promise<AxiosResponse<any | undefined>> => {
+  const url = joinBaseUrlWithRoute(route);
+  const config = { params: params, data: data, ...defaultConfig };
+  if (method === Method.GET) {
+    return Axios.get(url, config);
+  } else if (method === Method.POST) {
+    return Axios.post(url, null, config);
+  } else {
+    return Axios.delete(url, config);
+  }
+};
 
 // Movies
-export const getLatestMovie = () => get('movie/latest');
-export const getMovie = (id: number) => get(`movie/${id}`);
-export const getCast = (id: number) => get(`movie/${id}/credits`);
-export const getPopular = () => get('movie/popular');
+export const getLatestMovie = () => exec('movie/latest', Method.GET);
+export const getMovie = (id: number) => exec(`movie/${id}`, Method.GET);
+export const getCast = (id: number) => exec(`movie/${id}/credits`, Method.GET);
+export const getPopular = () => exec('movie/popular', Method.GET);
 
 // Authentication
-export const createRequestToken = () => get('authentication/token/new');
+export const createRequestToken = () =>
+  exec('authentication/token/new', Method.GET);
 export const createSession = (requestToken: string) =>
-  post('authentication/session/new', { request_token: requestToken });
+  exec('authentication/session/new', Method.POST, null, {
+    request_token: requestToken,
+  });
 export const deleteSession = (sessionId: string) =>
-  delete_('authentication/session', { session_id: sessionId });
+  exec(
+    'authentication/session',
+    Method.DELETE,
+    { session_id: sessionId },
+    null
+  );
+
+// Account
+export const addToWatchlist = (
+  accountId: string,
+  sessionId: string,
+  data: IAddToWatchlist
+) =>
+  exec(
+    `account/${accountId}/watchlist`,
+    Method.POST,
+    { session_id: sessionId },
+    data
+  );

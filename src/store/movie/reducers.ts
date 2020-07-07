@@ -20,7 +20,7 @@ const initialState: IMovieState = {
   isFetchingPopular: false,
   latest: undefined,
   isFetchingLatest: false,
-  failedFetchingLatest: false
+  failedFetchingLatest: false,
 };
 
 export const movieReducer = (
