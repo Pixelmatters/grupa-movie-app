@@ -48,3 +48,7 @@ export interface IAddToWatchlist {
   media_id: number;
   watchlist: boolean;
 }
+
+export interface IMatchParameters {
+  movieId: string;
+}
