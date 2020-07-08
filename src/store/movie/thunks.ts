@@ -23,9 +23,9 @@ export const fetchMovie = (id: number): AppThunk => async (dispatch) => {
     .catch(() => dispatch(requestMovieError()));
 };
 
-export const fetchPopular = (): AppThunk => async (dispatch) => {
+export const fetchPopular = (pageNumber: number): AppThunk => async (dispatch) => {
   dispatch(requestPopularStart());
-  getPopular()
+  getPopular(pageNumber)
     .then((response) => {
       const popular = response.data.results as IMovie[];
       dispatch(requestPopularSuccess(popular));
