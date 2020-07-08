@@ -1,0 +1,23 @@
+.cast-wrapper {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #ffffff;
+}
+.castMember-img {
+  max-width: 200px;
+  margin: 0 30px;
+}
+.member-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
+}
+
+.member-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-left: 30px;
+}

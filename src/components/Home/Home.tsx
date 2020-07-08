@@ -5,22 +5,24 @@ import headerBg from '../../assets/images/header-bg.jpg';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './Home.css';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(styles => ({
   root: {
     flexGrow: 1,
-    fontFamily: styles.typography.fontFamily,
+    fontFamily: styles.typography.fontFamily
   },
   backgroundTop: {
     backgroundImage: `url(${headerBg})`
   },
   mainContainer: {
     marginTop: '2rem'
-  },
+  }
 }));
 
-function App() {
+function Home() {
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <Grid item xs={12} className={classes.backgroundTop}>
@@ -29,9 +31,7 @@ function App() {
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
             <Grid item xs={12} sm={12}>
-              <div className="slider">
-                carrousel
-              </div>
+              <div className="slider">carrousel</div>
             </Grid>
             <Grid item xs={12} sm={12}>
               Content
@@ -45,4 +45,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect()(Home);
