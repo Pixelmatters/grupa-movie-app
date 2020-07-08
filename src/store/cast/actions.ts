@@ -16,5 +16,5 @@ export const requestCastSuccess = (cast: ICast[]): CastActionTypes => ({
 });
 
 export const requestCastError = (): CastActionTypes => ({
-  type: REQUEST_CAST_ERROR
+  type: REQUEST_CAST_ERROR,
 });

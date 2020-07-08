@@ -1,6 +1,5 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import './App.css';
 import { connect } from 'react-redux';
 const Home = lazy(() => import('../Home/Home'));
 const Movie = lazy(() => import('../Movie/Movie'));

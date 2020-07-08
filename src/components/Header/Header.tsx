@@ -12,7 +12,7 @@ import { RootState } from '../../store/store';
 const AUTH_REDIRECT_URL: string | undefined =
   process.env.REACT_APP_AUTH_REDIRECT_URL;
 
-const useStyles = makeStyles((styles) => ({
+const useStyles = makeStyles(styles => ({
   headerContainer: {
     top: 0,
   },
