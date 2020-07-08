@@ -4,6 +4,7 @@ import { RootState } from '../../store/store';
 import { Grid, Box } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Masonry from 'react-masonry-css';
+import { IMovie } from '../../api/models';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -69,7 +70,7 @@ const breakpointColumnsObj = {
 
 const MovieList: FunctionComponent = () => {
 
-  const list: any = useSelector((state: RootState) => state.movie.popular);
+  const list: [IMovie] = useSelector((state: RootState) => state.movie.popular) as [IMovie];
   const classes  = useStyles();
   
   return (
