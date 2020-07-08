@@ -42,7 +42,7 @@ const exec = (
 export const getLatestMovie = () => exec('movie/latest', Method.GET);
 export const getMovie = (id: number) => exec(`movie/${id}`, Method.GET);
 export const getCast = (id: number) => exec(`movie/${id}/credits`, Method.GET);
-export const getPopular = () => exec('movie/popular', Method.GET);
+export const getPopular = (pageNumber: number) => exec(`movie/popular?page=${pageNumber}`, Method.GET);
 
 // Authentication
 export const createRequestToken = () =>
