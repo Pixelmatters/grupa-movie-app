@@ -1,10 +1,9 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import {  useSelector,  } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { Grid, Box, CircularProgress } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import Masonry from 'react-masonry-css';
+import { Grid, Box, CircularProgress, makeStyles, Theme } from '@material-ui/core';
 import { IMovie } from '../../api/models';
+import Masonry from 'react-masonry-css';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {

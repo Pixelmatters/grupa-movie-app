@@ -1,13 +1,12 @@
 import React, { lazy, Suspense, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, Box, makeStyles } from '@material-ui/core';
 import headerBg from '../../assets/images/header-bg.jpg';
 import Header from '../Header/Header';
-import './Home.css';
 import { useDispatch } from 'react-redux';
 import { fetchPopular } from '../../store/movie/thunks';
-import { Box } from '@material-ui/core';
 import { Waypoint } from 'react-waypoint';
+import './Home.css';
+
 
 const MovieList = lazy(()=> import('../MovieList/MovieList'));
 
@@ -41,31 +40,26 @@ function Home() {
     dispatch(fetchPopular(number));
   };
 
-
   return (
     <div className={classes.root}>
       <Grid xs={12} item >
         <Grid className={classes.header} onClick={()=> dispatch(fetchPopular(2))}>
           <Header />
         </Grid>
-
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
             <Grid item xs={12} sm={12}>
               <div className="slider">carrousel</div>
             </Grid>
             <Grid item xs={12} sm={12}>
-
               <Suspense fallback={<Box>Loading</Box>}>
                 <MovieList />
               </Suspense>
-
             </Grid>
           </main>
         </Grid>
         <Waypoint onEnter={fetchMovies} />
       </Grid>
-
     </div>
   );
 }
