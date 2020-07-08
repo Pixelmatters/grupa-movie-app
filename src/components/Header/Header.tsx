@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { LocalMoviesOutlined, Menu as MenuIcon } from '@material-ui/icons';
+import { requestAuthToken } from '../../store/auth/thunks';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const useStyles = makeStyles(styles => ({
   headerContainer: {
@@ -87,6 +90,15 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   
+
+  const authState = useSelector((state: RootState) => state.auth);
+
+  const dispatch = useDispatch();
+
+  const startAuthTokenRequest = () => {
+    dispatch(requestAuthToken());
+  };
+
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -94,6 +106,10 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  if (authState.requestToken) {
+    window.location.assign('http://www.google.pt');
+  }
 
   return (
     <Grid item xs={12} className={classes.headerContainer}>
