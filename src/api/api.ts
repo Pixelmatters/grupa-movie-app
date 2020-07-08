@@ -52,12 +52,9 @@ export const createSession = (requestToken: string) =>
     request_token: requestToken,
   });
 export const deleteSession = (sessionId: string) =>
-  exec(
-    'authentication/session',
-    Method.DELETE,
-    { session_id: sessionId },
-    null
-  );
+  exec('authentication/session', Method.DELETE, null, {
+    session_id: sessionId,
+  });
 
 // Account
 export const addToWatchlist = (

@@ -8,13 +8,20 @@ export const REQUEST_SESSION_ID_START = 'REQUEST_SESSION_ID_START';
 export const REQUEST_SESSION_ID_SUCCESS = 'REQUEST_SESSION_ID_SUCCESS';
 export const REQUEST_SESSION_ID_ERROR = 'REQUEST_SESSION_ID_ERROR';
 
+export const REQUEST_DELETE_SESSION_START = 'REQUEST_DELETE_SESSION_START';
+export const REQUEST_DELETE_SESSION_SUCCESS = 'REQUEST_DELETE_SESSION_SUCCESS';
+export const REQUEST_DELETE_SESSION_ERROR = 'REQUEST_DELETE_SESSION_ERROR';
+
 export type AuthActionTypes =
   | IRequestAuthTokenStartAction
   | IRequestAuthTokenSuccessAction
   | IRequestAuthTokenErrorAction
   | IRequestSessionIdStartAction
   | IRequestSessionIdSuccessAction
-  | IRequestSessionIdErrorAction;
+  | IRequestSessionIdErrorAction
+  | IRequestDeleteSessionStartAction
+  | IRequestDeleteSessionSuccessAction
+  | IRequestDeleteSessionErrorAction;
 
 interface IRequestAuthTokenStartAction {
   type: typeof REQUEST_AUTH_TOKEN_START;
@@ -35,18 +42,32 @@ interface IRequestSessionIdStartAction {
 
 interface IRequestSessionIdSuccessAction {
   type: typeof REQUEST_SESSION_ID_SUCCESS;
-  sessionId: ICreateSession;
+  createSession: ICreateSession;
 }
 
 interface IRequestSessionIdErrorAction {
   type: typeof REQUEST_SESSION_ID_ERROR;
 }
 
+interface IRequestDeleteSessionStartAction {
+  type: typeof REQUEST_DELETE_SESSION_START;
+}
+
+interface IRequestDeleteSessionSuccessAction {
+  type: typeof REQUEST_DELETE_SESSION_SUCCESS;
+}
+
+interface IRequestDeleteSessionErrorAction {
+  type: typeof REQUEST_DELETE_SESSION_ERROR;
+}
+
 export interface IRequestAuthState {
-  isFetchingAuthToken: boolean;
-  isFetchingSessionId: boolean;
-  failedAuthToken: boolean;
-  failedSessionId: boolean;
+  isFetchingRequestToken: boolean;
+  failedRequestToken: boolean;
   requestToken?: IRequestToken;
-  sessionId?: ICreateSession;
+  isFetchingCreateSession: boolean;
+  failedCreateSession: boolean;
+  sessionId?: string;
+  isFetchingDeleteSession: boolean;
+  failedDeleteSession: boolean;
 }

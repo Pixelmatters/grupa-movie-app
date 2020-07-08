@@ -6,6 +6,9 @@ import {
   REQUEST_SESSION_ID_START,
   REQUEST_SESSION_ID_ERROR,
   REQUEST_SESSION_ID_SUCCESS,
+  REQUEST_DELETE_SESSION_START,
+  REQUEST_DELETE_SESSION_SUCCESS,
+  REQUEST_DELETE_SESSION_ERROR,
 } from './types';
 
 import { IRequestToken, ICreateSession } from '../../api/models';
@@ -30,12 +33,24 @@ export const requestSessionIdStart = (): AuthActionTypes => ({
 });
 
 export const requestSessionIdSuccess = (
-  sessionId: ICreateSession
+  createSession: ICreateSession
 ): AuthActionTypes => ({
   type: REQUEST_SESSION_ID_SUCCESS,
-  sessionId: sessionId,
+  createSession: createSession,
 });
 
 export const requestSessionIdError = (): AuthActionTypes => ({
   type: REQUEST_SESSION_ID_ERROR,
+});
+
+export const requestDeleteSessionStart = (): AuthActionTypes => ({
+  type: REQUEST_DELETE_SESSION_START,
+});
+
+export const requestDeleteSessionSuccess = (): AuthActionTypes => ({
+  type: REQUEST_DELETE_SESSION_SUCCESS,
+});
+
+export const requestDeleteSessionError = (): AuthActionTypes => ({
+  type: REQUEST_DELETE_SESSION_ERROR,
 });

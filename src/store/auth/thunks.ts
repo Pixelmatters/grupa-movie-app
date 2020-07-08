@@ -6,8 +6,15 @@ import {
   requestSessionIdStart,
   requestSessionIdSuccess,
   requestSessionIdError,
+  requestDeleteSessionStart,
+  requestDeleteSessionSuccess,
+  requestDeleteSessionError,
 } from './actions';
-import { createRequestToken, createSession } from '../../api/api';
+import {
+  createRequestToken,
+  createSession,
+  deleteSession,
+} from '../../api/api';
 import { IRequestToken, ICreateSession } from '../../api/models';
 
 export const requestAuthToken = (): AppThunk => async (dispatch) => {
@@ -26,8 +33,21 @@ export const requestSessionId = (authToken: string): AppThunk => async (
   dispatch(requestSessionIdStart());
   createSession(authToken)
     .then((response) => {
-      const sessionId = response.data.session_id as ICreateSession;
-      dispatch(requestSessionIdSuccess(sessionId));
+      const createSession = response.data as ICreateSession;
+      localStorage.setItem('session_id', createSession.session_id ?? '');
+      dispatch(requestSessionIdSuccess(createSession));
     })
     .catch(() => dispatch(requestSessionIdError()));
+};
+
+export const requestDeleteSession = (sessionId: string): AppThunk => async (
+  dispatch
+) => {
+  dispatch(requestDeleteSessionStart());
+  deleteSession(sessionId)
+    .then(() => {
+      localStorage.removeItem('session_id');
+      dispatch(requestDeleteSessionSuccess());
+    })
+    .catch(() => dispatch(requestDeleteSessionError()));
 };

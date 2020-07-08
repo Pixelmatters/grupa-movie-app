@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { LocalMoviesOutlined, Menu as MenuIcon } from '@material-ui/icons';
-import { requestAuthToken } from '../../store/auth/thunks';
+import {
+  requestAuthToken,
+  requestDeleteSession,
+} from '../../store/auth/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 
@@ -79,7 +82,14 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const menuItems = [
+  const defaultMenuItems = [
+    {
+      title: 'Login',
+      action: () => startAuthTokenRequest(),
+    },
+  ];
+
+  const loggedMenuItems = [
     {
       title: 'Movies',
       action: () => {},
@@ -89,8 +99,8 @@ const Header = () => {
       action: () => {},
     },
     {
-      title: 'Login',
-      action: () => startAuthTokenRequest(),
+      title: 'Logout',
+      action: () => startSessionDelete(),
     },
   ];
 
@@ -100,6 +110,11 @@ const Header = () => {
 
   const startAuthTokenRequest = () => {
     dispatch(requestAuthToken());
+  };
+
+  const startSessionDelete = () => {
+    const sessionId = authState.sessionId ?? '';
+    dispatch(requestDeleteSession(sessionId));
   };
 
   const handleClick = (event: any) => {
@@ -116,6 +131,8 @@ const Header = () => {
     const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${redirect}`;
     window.location.assign(url);
   }
+
+  const menuItems = authState.sessionId ? loggedMenuItems : defaultMenuItems;
 
   return (
     <Grid item xs={12} className={classes.headerContainer}>

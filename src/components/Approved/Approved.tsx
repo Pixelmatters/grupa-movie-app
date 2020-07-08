@@ -4,6 +4,7 @@ import { Location } from 'history';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestSessionId } from '../../store/auth/thunks';
 import { RootState } from '../../store/store';
+import { useHistory } from 'react-router-dom';
 type ApprovedProps = {
   location: Location;
 };
@@ -24,10 +25,16 @@ const Approved: FunctionComponent<ApprovedProps> = ({
   }, [dispatch, location.search]);
 
   const authState = useSelector((state: RootState) => state.auth);
+  const history = useHistory();
+
+  if (authState.sessionId) {
+    localStorage.setItem('session_id', authState.sessionId);
+    history.push('/');
+  }
 
   return (
     <div>
-      <p>The session id is: {authState.sessionId} </p>
+      <p>Authenticating</p>
     </div>
   );
 };
