@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - feature/automated-releases-with-github-actions
 
 jobs:
   release:
