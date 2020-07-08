@@ -9,6 +9,9 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 
+const AUTH_REDIRECT_URL: string | undefined =
+  process.env.REACT_APP_AUTH_REDIRECT_URL;
+
 const useStyles = makeStyles((styles) => ({
   headerContainer: {
     top: 0,
@@ -126,9 +129,8 @@ const Header = () => {
   };
 
   if (authState.requestToken) {
-    const redirect = 'http://localhost:3000/approved';
     const token = authState.requestToken?.request_token ?? '';
-    const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${redirect}`;
+    const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${AUTH_REDIRECT_URL}`;
     window.location.assign(url);
   }
 
