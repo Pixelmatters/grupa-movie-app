@@ -7,13 +7,12 @@ import {
 import { getCast } from '../../api/api';
 import { ICast } from '../../api/models';
 
-export const fetchCast = (id: number): AppThunk => async (dispatch) => {
+export const fetchCast = (id: number): AppThunk => async dispatch => {
   dispatch(requestCastStart());
   getCast(id)
-    .then((response) => {
+    .then(response => {
       const movie = response.data.cast as ICast[];
       dispatch(requestCastSuccess(movie));
     })
-    .catch(() => dispatch(requestCastError())
-    );
+    .catch(() => dispatch(requestCastError()));
 };

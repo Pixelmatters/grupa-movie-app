@@ -6,16 +6,16 @@ import App from './components/App/App';
 import * as serviceWorker from './serviceWorker';
 import store from './store/store';
 import { ThemeProvider } from '@material-ui/core/styles';
-import defaultLayout  from './layout';
+import defaultLayout from './layout';
 
 ReactDOM.render(
   <ThemeProvider theme={defaultLayout}>
     <React.StrictMode>
       <Provider store={store}>
         <App />
-      </Provider>    </React.StrictMode>
-  </ThemeProvider>
-  ,
+      </Provider>{' '}
+    </React.StrictMode>
+  </ThemeProvider>,
   document.getElementById('root')
 );
 
