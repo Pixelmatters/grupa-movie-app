@@ -41,11 +41,8 @@ function Home() {
 
   return (
     <div className={classes.root}>
-      <Grid xs={12} item>
-        <Grid
-          className={classes.header}
-          onClick={() => dispatch(fetchPopular(2))}
-        >
+      <Grid xs={12} item >
+        <Grid className={classes.header}>
           <Header />
         </Grid>
         <Grid item xs={12} sm={12} className={classes.mainContainer}>

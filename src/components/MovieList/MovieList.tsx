@@ -107,28 +107,35 @@ const MovieList: FunctionComponent = () => {
     }
   }, [moreRecentList]);
 
+  const renderImage = (path?: string, altText?: string) => {
+    const localPath = path 
+      ? `https://image.tmdb.org/t/p/w500${path}` 
+      : 'https://via.placeholder.com/400x600/FFFFFF?text=No%20Image';
+      
+    return (            
+      <img 
+        className={classes.movieImage}
+        height="600" 
+        width="400"
+        src={localPath} 
+        alt={altText} />);
+  };
+
   return (
     <Grid container className={classes.container}>
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className={classes.masonryGrid}
-        columnClassName={classes.masonryGridColumn}
-      >
-        {movieList &&
-          movieList.map((item: any) => (
-            <Box key={item.id} className={classes.itemWrapper}>
-              <img
-                className={classes.movieImage}
-                height="600"
-                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                alt={item.title}
-              />
-              <Box className={classes.info}>
-                <Box component="h5" className={classes.itemTitle}>
-                  {item.title}
-                </Box>
-                <Box component="span">{item.overview}</Box>
+        columnClassName={classes.masonryGridColumn}>
+        {movieList && movieList.map((item: any) => (
+          <Box key={item.id} className={classes.itemWrapper}>
+            {renderImage(item.poster_path, item.title)}
+            <Box className={classes.info}>
+              <Box component="h5" className={classes.itemTitle}>{item.title}</Box>
+              <Box component="span">
+                {item.overview}
               </Box>
+            </Box>
             </Box>
           ))}
       </Masonry>
