@@ -130,9 +130,7 @@ const Header = () => {
 
   if (authState.requestToken) {
     const token = authState.requestToken?.request_token ?? '';
-    const protocol = window.location.protocol;
-    const host = window.location.host;
-    const baseUrl = `${protocol}//${host}`;
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
     const redirectUrl = `${baseUrl}/${AUTH_REDIRECT_ROUTE}`;
     const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${redirectUrl}`;
     window.location.assign(url);
