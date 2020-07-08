@@ -21,7 +21,7 @@ const Approved: FunctionComponent<ApprovedProps> = ({
     if (approved && (requestToken as string)) {
       dispatch(requestSessionId(requestToken as string));
     }
-  }, []);
+  }, [dispatch, location.search]);
 
   const authState = useSelector((state: RootState) => state.auth);
 
