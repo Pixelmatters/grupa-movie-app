@@ -28,7 +28,6 @@ const Approved: FunctionComponent<ApprovedProps> = ({
   const history = useHistory();
 
   if (authState.sessionId) {
-    localStorage.setItem('session_id', authState.sessionId);
     history.push('/');
   }
 
