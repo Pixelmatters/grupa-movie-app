@@ -7,11 +7,21 @@ export interface IMovie {
   poster_path?: string;
   overview?: string; // about
   vote_average?: number; //rating
+  genres: Array<IGenre>;
+  tagline: string; // Small catch phrase
+  release_date: Date;
+  runtime: number;
 }
 
+export interface IGenre {
+  id: number;
+  name: string;
+}
 export interface ICast {
+  cast_id: number;
   name: string;
   character: string;
+  profile_path: string;
 }
 
 // Authentication
@@ -37,4 +47,8 @@ export interface IAddToWatchlist {
   media_type: string;
   media_id: number;
   watchlist: boolean;
+}
+
+export interface IMatchParameters {
+  movieId: string;
 }

@@ -2,14 +2,23 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { LocalMoviesOutlined, Menu as MenuIcon } from '@material-ui/icons';
+import {
+  requestAuthToken,
+  requestDeleteSession,
+} from '../../store/auth/thunks';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store/store';
 
-const useStyles = makeStyles(styles => ({
+const AUTH_REDIRECT_URL: string | undefined =
+  process.env.REACT_APP_AUTH_REDIRECT_URL;
+
+const useStyles = makeStyles((styles) => ({
   headerContainer: {
     top: 0,
-  }, 
+  },
   iconMovie: {
     width: '4rem',
-    height: '4rem'
+    height: '4rem',
   },
   menu: {
     display: 'flex',
@@ -29,14 +38,14 @@ const useStyles = makeStyles(styles => ({
     alignItems: 'center',
     width: '30rem',
     [styles.breakpoints.down('sm')]: {
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
   menuOptionsMobile: {
     display: 'none',
     [styles.breakpoints.down('sm')]: {
-      display: 'block'
-    }
+      display: 'block',
+    },
   },
   menuItem: {
     color: styles.palette.primary.contrastText,
@@ -52,41 +61,65 @@ const useStyles = makeStyles(styles => ({
       borderRight: '2px solid gray',
       borderLeft: '2px solid gray',
       cursor: 'pointer',
-    }
+    },
   },
   wideName: {
     display: 'block',
     [styles.breakpoints.down('xs')]: {
-      display: 'none'
+      display: 'none',
     },
   },
   smallName: {
     display: 'none',
     [styles.breakpoints.down('xs')]: {
-      display: 'block'
+      display: 'block',
     },
   },
   menuItemMobile: {
-    color: styles.palette.primary.light
-  }
+    color: styles.palette.primary.light,
+  },
 }));
-
-const menuItems = [{
-  title: 'Movies',
-  action: () => {}
-},{
-  title: 'My WatchList',
-  action: () => {} 
-},{
-  title: 'Login',
-  action: () => {}
-} ];
 
 const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  
+
+  const defaultMenuItems = [
+    {
+      title: 'Login',
+      action: () => startAuthTokenRequest(),
+    },
+  ];
+
+  const loggedMenuItems = [
+    {
+      title: 'Movies',
+      action: () => {},
+    },
+    {
+      title: 'My WatchList',
+      action: () => {},
+    },
+    {
+      title: 'Logout',
+      action: () => startSessionDelete(),
+    },
+  ];
+
+  const authState = useSelector((state: RootState) => state.auth);
+
+  const dispatch = useDispatch();
+
+  const startAuthTokenRequest = () => {
+    dispatch(requestAuthToken());
+  };
+
+  const startSessionDelete = () => {
+    const sessionId = authState.sessionId ?? '';
+    dispatch(requestDeleteSession(sessionId));
+  };
+
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -95,31 +128,49 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  if (authState.requestToken) {
+    const token = authState.requestToken?.request_token ?? '';
+    const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${AUTH_REDIRECT_URL}`;
+    window.location.assign(url);
+  }
+
+  const menuItems = authState.sessionId ? loggedMenuItems : defaultMenuItems;
+
   return (
     <Grid item xs={12} className={classes.headerContainer}>
       <header className={classes.menu}>
         <Box className={classes.menuIconTitle}>
-          <LocalMoviesOutlined className={classes.iconMovie}/>
-          <Box component="h1" className={classes.wideName}>The Movies Database</Box>
-          <Box component="h1" className={classes.smallName}>TMD</Box>
+          <LocalMoviesOutlined className={classes.iconMovie} />
+          <Box component="h1" className={classes.wideName}>
+            The Movies Database
+          </Box>
+          <Box component="h1" className={classes.smallName}>
+            TMD
+          </Box>
         </Box>
         <Box className={classes.menuOptions}>
-          {
-            menuItems.map(({title, action}, index) => 
-              <Box key={index} component="span" onClick={action} className={classes.menuItem}>{title}</Box>
-            )
-          }
+          {menuItems.map(({ title, action }, index) => (
+            <Box
+              key={index}
+              component="span"
+              onClick={action}
+              className={classes.menuItem}
+            >
+              {title}
+            </Box>
+          ))}
         </Box>
         <Box className={classes.menuOptionsMobile}>
-          <IconButton         
+          <IconButton
             aria-label="Menu"
             aria-owns={open ? 'long-menu' : undefined}
             aria-haspopup="true"
-            onClick={handleClick} style={{color: 'white'}} 
+            onClick={handleClick}
+            style={{ color: 'white' }}
           >
             <MenuIcon />
           </IconButton>
-          <Menu         
+          <Menu
             id="long-menu"
             anchorEl={anchorEl}
             open={open}
@@ -129,16 +180,20 @@ const Header = () => {
                 maxHeight: 48 * 4.5,
                 width: 200,
               },
-            }}> 
-            {
-              menuItems.map(({title, action}, index) => 
-                <MenuItem key={index} >
-                  <Box component="span" onClick={action} className={classes.menuItemMobile}>{title}</Box>
-                </MenuItem>
-              )
-            }
+            }}
+          >
+            {menuItems.map(({ title, action }, index) => (
+              <MenuItem key={index}>
+                <Box
+                  component="span"
+                  onClick={action}
+                  className={classes.menuItemMobile}
+                >
+                  {title}
+                </Box>
+              </MenuItem>
+            ))}
           </Menu>
-
         </Box>
       </header>
     </Grid>

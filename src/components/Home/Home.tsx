@@ -41,6 +41,7 @@ function Home() {
     dispatch(fetchPopular(number));
   };
 
+
   return (
     <div className={classes.root}>
       <Grid xs={12} item >
@@ -51,9 +52,7 @@ function Home() {
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
             <Grid item xs={12} sm={12}>
-              <div className="slider">
-                carrousel
-              </div>
+              <div className="slider">carrousel</div>
             </Grid>
             <Grid item xs={12} sm={12}>
 
@@ -70,5 +69,6 @@ function Home() {
     </div>
   );
 }
+
 
 export default Home;
