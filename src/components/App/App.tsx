@@ -4,6 +4,7 @@ import './App.css';
 import { connect } from 'react-redux';
 const Home = lazy(() => import('../Home/Home'));
 const Movie = lazy(() => import('../Movie/Movie'));
+const Approved = lazy(() => import('../Approved/Approved'));
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/movie/:movieId" component={Movie} />
+          <Route path="/approved/" component={Approved} />
         </Switch>
       </Suspense>
     </Router>
