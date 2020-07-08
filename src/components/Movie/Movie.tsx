@@ -8,6 +8,8 @@ import CastList from '../CastList/CastList';
 import { useDispatch } from 'react-redux';
 import { fetchMovie } from '../../store/movie/thunks';
 import { fetchCast } from '../../store/cast/thunks';
+import { match, useRouteMatch } from 'react-router-dom';
+import { IMatchParameters } from '../../api/models';
 const useStyles = makeStyles(styles => ({
   mainWrapper: {
     width: '100%',
@@ -29,13 +31,16 @@ const useStyles = makeStyles(styles => ({
   }
 }));
 
-const Movie: FunctionComponent = ({ match }: any) => {
+const Movie: FunctionComponent = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const matchData: match<IMatchParameters> = useRouteMatch() as match<
+    IMatchParameters
+  >;
+  const movieId: number = Number(matchData.params.movieId);
   useEffect(() => {
-    dispatch(fetchMovie(match.params.movieId));
-    dispatch(fetchCast(match.params.movieId));
+    dispatch(fetchMovie(movieId));
+    dispatch(fetchCast(movieId));
   }, [dispatch]);
 
   return (
