@@ -56,7 +56,7 @@ const useStyles = makeStyles(styles => ({
     fontSize: '28px',
     marginBottom: '2rem',
     borderRadius: '8px',
-    marginTop: '1rem'
+    marginTop: '1rem',
   },
   userRatingWrapper: {
     display: 'flex',
@@ -64,6 +64,7 @@ const useStyles = makeStyles(styles => ({
   },
   userRating: {
     fontSize: '20px',
+    marginLeft: '0.2rem',
   },
 }));
 
@@ -123,7 +124,7 @@ const MovieDisplay: FunctionComponent = () => {
               onChange={(event, newValue) => {
                 setRateValue(newValue);
               }}
-            ></Rating>
+            />
           </p>
         </div>
       </CardContent>
