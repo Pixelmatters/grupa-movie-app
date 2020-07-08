@@ -12,15 +12,13 @@ const useStyles = makeStyles(styles => ({
     height: '10rem',
     color: styles.palette.primary.contrastText,
     textAlign: 'center',
-  }
+  },
 }));
 const Footer = () => {
   const classes = useStyles();
   return (
     <Grid item xs={12} sm={12} className={classes.footerContainer}>
-      <div className="footer">
-        Footer
-      </div>
+      <div className="footer">Footer</div>
     </Grid>
   );
 };

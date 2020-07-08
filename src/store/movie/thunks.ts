@@ -9,7 +9,7 @@ import {
   requestPopularError,
   requestLatestStart,
   requestLatestSuccess,
-  requestLatestError
+  requestLatestError,
 } from './actions';
 import { getMovie, getPopular, getLatestMovie } from '../../api/api';
 
@@ -23,10 +23,12 @@ export const fetchMovie = (id: number): AppThunk => async dispatch => {
     .catch(() => dispatch(requestMovieError()));
 };
 
-export const fetchPopular = (pageNumber: number): AppThunk => async (dispatch) => {
+export const fetchPopular = (
+  pageNumber: number
+): AppThunk => async dispatch => {
   dispatch(requestPopularStart());
   getPopular(pageNumber)
-    .then((response) => {
+    .then(response => {
       const popular = response.data.results as IMovie[];
       dispatch(requestPopularSuccess(popular));
     })

@@ -1,7 +1,13 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { Grid, Box, CircularProgress, makeStyles, Theme } from '@material-ui/core';
+import {
+  Grid,
+  Box,
+  CircularProgress,
+  makeStyles,
+  Theme,
+} from '@material-ui/core';
 import { IMovie } from '../../api/models';
 import Masonry from 'react-masonry-css';
 
@@ -22,11 +28,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   masonryGrid: {
     display: 'flex',
-    marginLeft: '-2.5rem', /* gutter size offset */
+    marginLeft: '-2.5rem' /* gutter size offset */,
     width: 'auto',
   },
   masonryGridColumn: {
-    paddingLeft: '2.5rem', /* gutter size */
+    paddingLeft: '2.5rem' /* gutter size */,
     backgroundClip: 'padding-box',
   },
   info: {
@@ -51,8 +57,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       },
       '& > img': {
         filter: 'grayscale(80%)',
-      }
-    }
+      },
+    },
   },
 
   itemTitle: {
@@ -64,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '100%': {
       opacity: 1,
-    }
+    },
   },
   movieImage: {
     animation: '$fadeIn ease 5s',
@@ -73,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   loader: {
     display: 'flex',
     justifyContent: 'center',
-  }
+  },
 }));
 
 const breakpointColumnsObj = {
@@ -81,21 +87,23 @@ const breakpointColumnsObj = {
   2095: 4,
   1727: 3,
   1305: 2,
-  858: 1
+  858: 1,
 };
 
 const MovieList: FunctionComponent = () => {
-  const classes  = useStyles();
+  const classes = useStyles();
   const initialState: Array<IMovie> = [];
 
   const [movieList, setMovieList] = useState<Array<IMovie>>(initialState);
 
-  const moreRecentList: [IMovie] = useSelector((state: RootState) => state.movie.popular) as [IMovie];
+  const moreRecentList: [IMovie] = useSelector(
+    (state: RootState) => state.movie.popular
+  ) as [IMovie];
 
   useEffect(() => {
-    if(moreRecentList?.length > 0) {
+    if (moreRecentList?.length > 0) {
       setMovieList(prev => prev.concat(moreRecentList));
-      document.documentElement.scrollTop+= 1000;
+      document.documentElement.scrollTop += 1000;
     }
   }, [moreRecentList]);
 
@@ -104,25 +112,28 @@ const MovieList: FunctionComponent = () => {
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className={classes.masonryGrid}
-        columnClassName={classes.masonryGridColumn}>
-        {movieList && movieList.map((item: any) => (
-          <Box key={item.id} className={classes.itemWrapper}>
-            <img 
-              className={classes.movieImage}
-              height="600" 
-              src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
-              alt={item.title} />
-            <Box className={classes.info}>
-              <Box component="h5" className={classes.itemTitle}>{item.title}</Box>
-              <Box component="span">
-                {item.overview}
+        columnClassName={classes.masonryGridColumn}
+      >
+        {movieList &&
+          movieList.map((item: any) => (
+            <Box key={item.id} className={classes.itemWrapper}>
+              <img
+                className={classes.movieImage}
+                height="600"
+                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                alt={item.title}
+              />
+              <Box className={classes.info}>
+                <Box component="h5" className={classes.itemTitle}>
+                  {item.title}
+                </Box>
+                <Box component="span">{item.overview}</Box>
               </Box>
             </Box>
-          </Box>
-        ))}
+          ))}
       </Masonry>
       <Grid item xs={12} className={classes.loader}>
-        <CircularProgress  />
+        <CircularProgress />
       </Grid>
     </Grid>
   );

@@ -9,7 +9,7 @@ const useStyles = makeStyles(styles => ({
   card: {
     width: '100%',
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
   },
   cardWrapper: {
     display: 'flex',
@@ -17,8 +17,8 @@ const useStyles = makeStyles(styles => ({
     background: '#2a3d7a',
     justifyContent: 'center',
     [styles.breakpoints.down('sm')]: {
-      flexDirection: 'column'
-    }
+      flexDirection: 'column',
+    },
   },
   textWrapper: {
     justifyContent: 'center',
@@ -27,28 +27,28 @@ const useStyles = makeStyles(styles => ({
     alignItems: 'flex-start',
     marginLeft: '2rem',
     [styles.breakpoints.down('sm')]: {
-      marginLeft: '0'
-    }
+      marginLeft: '0',
+    },
   },
   imgWrapper: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   movieImg: {
-    maxWidth: '20rem'
+    maxWidth: '20rem',
   },
   genreLabel: {
     marginRight: '1rem',
-    marginTop: '1rem'
+    marginTop: '1rem',
   },
   movieTitle: {
-    fontSize: '40px'
+    fontSize: '40px',
   },
   movieTagLine: {
-    paddingBottom: '2rem'
+    paddingBottom: '2rem',
   },
   sectionTitle: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   ratingWrapper: {
     border: '1px solid #ffffff',

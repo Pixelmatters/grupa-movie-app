@@ -16,25 +16,25 @@ export const castReducer = (
   action: CastActionTypes
 ): ICastState => {
   switch (action.type) {
-  case REQUEST_CAST_START:
-    return {
-      isFetching: true,
-      failed: false,
-      cast: undefined,
-    };
-  case REQUEST_CAST_SUCCESS:
-    return {
-      isFetching: false,
-      failed: false,
-      cast: action.cast,
-    };
-  case REQUEST_CAST_ERROR:
-    return {
-      isFetching: false,
-      failed: true,
-      cast: undefined,
-    };
-  default:
-    return state;
+    case REQUEST_CAST_START:
+      return {
+        isFetching: true,
+        failed: false,
+        cast: undefined,
+      };
+    case REQUEST_CAST_SUCCESS:
+      return {
+        isFetching: false,
+        failed: false,
+        cast: action.cast,
+      };
+    case REQUEST_CAST_ERROR:
+      return {
+        isFetching: false,
+        failed: true,
+        cast: undefined,
+      };
+    default:
+      return state;
   }
 };
