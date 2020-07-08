@@ -41,7 +41,7 @@ const Movie: FunctionComponent = () => {
   useEffect(() => {
     dispatch(fetchMovie(movieId));
     dispatch(fetchCast(movieId));
-  }, [dispatch]);
+  }, [dispatch, movieId]);
 
   return (
     <div className={classes.root}>
