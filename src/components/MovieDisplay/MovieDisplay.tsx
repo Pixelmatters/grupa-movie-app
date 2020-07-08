@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { CardContent, Card, Chip, Button, makeStyles } from '@material-ui/core';
+import { Rating } from '@material-ui/lab';
 import { IMovie, IGenre } from '../../api/models';
 
 const useStyles = makeStyles(styles => ({
@@ -56,11 +57,19 @@ const useStyles = makeStyles(styles => ({
     marginBottom: '2rem',
     borderRadius: '8px',
     marginTop: '1rem'
-  }
+  },
+  userRatingWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  userRating: {
+    fontSize: '20px',
+  },
 }));
 
 const MovieDisplay: FunctionComponent = () => {
   const classes = useStyles();
+  const [rateValue, setRateValue] = useState<number | null>(0);
   const movieData: IMovie = useSelector(
     (state: RootState) => state.movie.movie
   ) as IMovie;
@@ -68,6 +77,7 @@ const MovieDisplay: FunctionComponent = () => {
     return <p>Loading..,</p>;
   }
   const movieGenres: Array<IGenre> = movieData.genres;
+
   return (
     <Card className={classes.card}>
       <CardContent className={classes.cardWrapper}>
@@ -104,6 +114,16 @@ const MovieDisplay: FunctionComponent = () => {
           </p>
           <p>
             <b> Duration:</b> {movieData.runtime} minutes
+          </p>
+          <p className={classes.userRatingWrapper}>
+            <b> Rate:</b>
+            <Rating
+              className={classes.userRating}
+              value={rateValue}
+              onChange={(event, newValue) => {
+                setRateValue(newValue);
+              }}
+            ></Rating>
           </p>
         </div>
       </CardContent>
