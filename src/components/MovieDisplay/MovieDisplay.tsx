@@ -63,7 +63,7 @@ const useStyles = makeStyles(styles => ({
     alignItems: 'center',
   },
   userRating: {
-    fontSize: '20px',
+    fontSize: '1rem',
     marginLeft: '0.2rem',
   },
 }));
