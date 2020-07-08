@@ -76,21 +76,21 @@ export const accountReducer = (
       ...state,
       isFetchingRatedMovies: true,
       failedFetchingRatedMovies: false,
-      watchList: undefined
+      ratedMovies: undefined
     };
   case REQUEST_RATED_MOVIES_SUCCESSS:
     return {
       ...state,
       isFetchingRatedMovies: false,
       failedFetchingRatedMovies: false,
-      watchList: action.ratedMovies
+      ratedMovies: action.ratedMovies
     };
   case REQUEST_RATED_MOVIES_ERROR:
     return {
       ...state,
       isFetchingRatedMovies: false,
       failedFetchingRatedMovies: true,
-      watchList: undefined
+      ratedMovies: undefined
     };
   default:
     return state;

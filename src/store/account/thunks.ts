@@ -21,7 +21,6 @@ export const fetchAccountDetails = (
   getAccountDetails(sessionId)
     .then(response => {
       const account = response.data as IAccount;
-      console.log('account', account);
       dispatch(requestAccountDetailsSuccess(account));
     })
     .catch(() => dispatch(requestAccountDetailsError()));
