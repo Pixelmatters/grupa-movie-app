@@ -1,8 +1,9 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
-
+import { connect } from 'react-redux';
 const Home = lazy(() => import('../Home/Home'));
+const Movie = lazy(() => import('../Movie/Movie'));
 const Approved = lazy(() => import('../Approved/Approved'));
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/movie/:movieId" component={Movie} />
           <Route path="/approved/" component={Approved} />
         </Switch>
       </Suspense>
@@ -18,4 +20,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect()(App);
