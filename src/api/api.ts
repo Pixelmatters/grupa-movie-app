@@ -42,7 +42,8 @@ const exec = (
 export const getLatestMovie = () => exec('movie/latest', Method.GET);
 export const getMovie = (id: number) => exec(`movie/${id}`, Method.GET);
 export const getCast = (id: number) => exec(`movie/${id}/credits`, Method.GET);
-export const getPopular = (pageNumber: number) => exec(`movie/popular?page=${pageNumber}`, Method.GET);
+export const getPopular = (pageNumber: number) =>
+  exec(`movie/popular?page=${pageNumber}`, Method.GET);
 
 // Authentication
 export const createRequestToken = () =>
@@ -63,11 +64,11 @@ export const getAccountDetails = (sessionId: string) =>
     session_id: sessionId
   });
 
-export const getRatedMovies = (accontId: number) =>
-  exec(`account/${accontId}/rated/movies`, Method.GET);
+export const getRatedMovies = (accountId: number) =>
+  exec(`account/${accountId}/rated/movies`, Method.GET);
 
-export const getWatchList = (accontId: number) =>
-  exec(`account/${accontId}/watchlist/movies`, Method.GET);
+export const getWatchList = (accountId: number) =>
+  exec(`account/${accountId}/watchlist/movies`, Method.GET);
 
 export const addToWatchlist = (
   accountId: string,
