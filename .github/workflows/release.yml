@@ -1,0 +1,26 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    env:
+      REACT_APP_API_KEY: ${{ secrets.API_KEY }}
+      REACT_APP_AUTH_REDIRECT_URL: ${{ secrets.AUTH_REDIRECT_URL }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: yarn install
+      - name: Build Production App
+        run: yarn build
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
