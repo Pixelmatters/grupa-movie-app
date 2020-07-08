@@ -1,0 +1,23 @@
+name: Lint and Build
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  lint-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: yarn install
+      - name: Run Lint
+        run: yarn lint
+      - name: Build Production App
+        run: yarn build
