@@ -48,21 +48,42 @@ const useStyles = makeStyles((theme: Theme) => ({
     position: 'relative',
     cursor: 'pointer',
     marginBottom: '1rem',
-    '&:hover': {
-      '& > div': {
-        height: '17.5rem',
+  },
+  checkHelper: {
+    display: 'none',
+    '&:checked': {
+      '& ~ div': {
+        height: '99%',
         transition: 'height 1s ease',
         padding: '0.5rem',
         transform: 'translateZ(0)',
       },
-      '& > img': {
+      '& ~ img': {
         filter: 'grayscale(80%)',
-      },
+      },     
     },
+    '&:not(:checked)':{
+      '& ~ div': {
+        height: 0,
+        transition: 'height 1s ease',
+        transform: 'translateZ(0)',
+      },
+      '& ~ img': {
+        filter: 'none',
+      },   
+    }
   },
 
   itemTitle: {
     fontSize: '1rem',
+  },
+  movieImage: {
+    animation: '$fadeIn ease 5s',
+    transform: 'translateZ(0)',
+  },
+  loader: {
+    display: 'flex',
+    justifyContent: 'center',
   },
   '@keyframes fadeIn': {
     '0%': {
@@ -71,14 +92,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     '100%': {
       opacity: 1,
     },
-  },
-  movieImage: {
-    animation: '$fadeIn ease 5s',
-  },
-
-  loader: {
-    display: 'flex',
-    justifyContent: 'center',
   },
 }));
 
@@ -128,15 +141,18 @@ const MovieList: FunctionComponent = () => {
         className={classes.masonryGrid}
         columnClassName={classes.masonryGridColumn}>
         {movieList && movieList.map((item: any) => (
-          <Box key={item.id} className={classes.itemWrapper}>
-            {renderImage(item.poster_path, item.title)}
-            <Box className={classes.info}>
-              <Box component="h5" className={classes.itemTitle}>{item.title}</Box>
-              <Box component="span">
-                {item.overview}
+          <label key={item.id}>
+            <Box  className={classes.itemWrapper}>
+              <input type="radio" name="radio" value="small" className={classes.checkHelper} />
+              {renderImage(item.poster_path, item.title)}
+              <Box className={classes.info}>
+                <Box component="h5" className={classes.itemTitle}>{item.title}</Box>
+                  <Box component="p">
+                    {item.overview}
+                  </Box>
               </Box>
             </Box>
-            </Box>
+          </label>
           ))}
       </Masonry>
       <Grid item xs={12} className={classes.loader}>
