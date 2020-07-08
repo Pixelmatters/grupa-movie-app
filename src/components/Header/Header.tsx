@@ -6,13 +6,13 @@ import { requestAuthToken } from '../../store/auth/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 
-const useStyles = makeStyles(styles => ({
+const useStyles = makeStyles((styles) => ({
   headerContainer: {
     top: 0,
-  }, 
+  },
   iconMovie: {
     width: '4rem',
-    height: '4rem'
+    height: '4rem',
   },
   menu: {
     display: 'flex',
@@ -32,14 +32,14 @@ const useStyles = makeStyles(styles => ({
     alignItems: 'center',
     width: '30rem',
     [styles.breakpoints.down('sm')]: {
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
   menuOptionsMobile: {
     display: 'none',
     [styles.breakpoints.down('sm')]: {
-      display: 'block'
-    }
+      display: 'block',
+    },
   },
   menuItem: {
     color: styles.palette.primary.contrastText,
@@ -55,41 +55,44 @@ const useStyles = makeStyles(styles => ({
       borderRight: '2px solid gray',
       borderLeft: '2px solid gray',
       cursor: 'pointer',
-    }
+    },
   },
   wideName: {
     display: 'block',
     [styles.breakpoints.down('xs')]: {
-      display: 'none'
+      display: 'none',
     },
   },
   smallName: {
     display: 'none',
     [styles.breakpoints.down('xs')]: {
-      display: 'block'
+      display: 'block',
     },
   },
   menuItemMobile: {
-    color: styles.palette.primary.light
-  }
+    color: styles.palette.primary.light,
+  },
 }));
-
-const menuItems = [{
-  title: 'Movies',
-  action: () => {}
-},{
-  title: 'My WatchList',
-  action: () => {} 
-},{
-  title: 'Login',
-  action: () => {}
-} ];
 
 const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  
+
+  const menuItems = [
+    {
+      title: 'Movies',
+      action: () => {},
+    },
+    {
+      title: 'My WatchList',
+      action: () => {},
+    },
+    {
+      title: 'Login',
+      action: () => startAuthTokenRequest(),
+    },
+  ];
 
   const authState = useSelector((state: RootState) => state.auth);
 
@@ -108,34 +111,47 @@ const Header = () => {
   };
 
   if (authState.requestToken) {
-    window.location.assign('http://www.google.pt');
+    const redirect = 'http://localhost:3000/approved';
+    const token = authState.requestToken?.request_token ?? '';
+    const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${redirect}`;
+    window.location.assign(url);
   }
 
   return (
     <Grid item xs={12} className={classes.headerContainer}>
       <header className={classes.menu}>
         <Box className={classes.menuIconTitle}>
-          <LocalMoviesOutlined className={classes.iconMovie}/>
-          <Box component="h1" className={classes.wideName}>The Movies Database</Box>
-          <Box component="h1" className={classes.smallName}>TMD</Box>
+          <LocalMoviesOutlined className={classes.iconMovie} />
+          <Box component="h1" className={classes.wideName}>
+            The Movies Database
+          </Box>
+          <Box component="h1" className={classes.smallName}>
+            TMD
+          </Box>
         </Box>
         <Box className={classes.menuOptions}>
-          {
-            menuItems.map(({title, action}, index) => 
-              <Box key={index} component="span" onClick={action} className={classes.menuItem}>{title}</Box>
-            )
-          }
+          {menuItems.map(({ title, action }, index) => (
+            <Box
+              key={index}
+              component="span"
+              onClick={action}
+              className={classes.menuItem}
+            >
+              {title}
+            </Box>
+          ))}
         </Box>
         <Box className={classes.menuOptionsMobile}>
-          <IconButton         
+          <IconButton
             aria-label="Menu"
             aria-owns={open ? 'long-menu' : undefined}
             aria-haspopup="true"
-            onClick={handleClick} style={{color: 'white'}} 
+            onClick={handleClick}
+            style={{ color: 'white' }}
           >
             <MenuIcon />
           </IconButton>
-          <Menu         
+          <Menu
             id="long-menu"
             anchorEl={anchorEl}
             open={open}
@@ -145,16 +161,20 @@ const Header = () => {
                 maxHeight: 48 * 4.5,
                 width: 200,
               },
-            }}> 
-            {
-              menuItems.map(({title, action}, index) => 
-                <MenuItem key={index} >
-                  <Box component="span" onClick={action} className={classes.menuItemMobile}>{title}</Box>
-                </MenuItem>
-              )
-            }
+            }}
+          >
+            {menuItems.map(({ title, action }, index) => (
+              <MenuItem key={index}>
+                <Box
+                  component="span"
+                  onClick={action}
+                  className={classes.menuItemMobile}
+                >
+                  {title}
+                </Box>
+              </MenuItem>
+            ))}
           </Menu>
-
         </Box>
       </header>
     </Grid>

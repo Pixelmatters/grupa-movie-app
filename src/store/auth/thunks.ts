@@ -14,8 +14,8 @@ export const requestAuthToken = (): AppThunk => async (dispatch) => {
   dispatch(requestAuthTokenStart());
   createRequestToken()
     .then((response) => {
-      const token = response.data.request_token as IRequestToken;
-      dispatch(requestAuthTokenSuccess(token));
+      const requestToken = response.data as IRequestToken;
+      dispatch(requestAuthTokenSuccess(requestToken));
     })
     .catch(() => dispatch(requestAuthTokenError()));
 };
