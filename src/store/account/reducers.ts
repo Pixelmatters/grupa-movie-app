@@ -24,7 +24,7 @@ const initialState: IAccountState = {
   ratedMovies: undefined,
   isFetchingWatchlist: false,
   failedFetchingWatchlist: false,
-  watchList: undefined,
+  watchlist: undefined,
   isAddingWatchlist: false,
   failedAddingWatchList: false,
   addedWatchListMessage: undefined,
@@ -82,21 +82,20 @@ export const accountReducer = (
         ...state,
         isFetchingWatchlist: true,
         failedFetchingWatchlist: false,
-        watchList: undefined,
       };
     case REQUEST_MOVIE_WATCHLIST_SUCCESS:
       return {
         ...state,
         isFetchingWatchlist: false,
         failedFetchingWatchlist: false,
-        watchList: action.watchlist,
+        watchlist: action.watchlist,
       };
     case REQUEST_MOVIE_WATCHLIST_ERROR:
       return {
         ...state,
         isFetchingWatchlist: false,
         failedFetchingWatchlist: true,
-        watchList: undefined,
+        watchlist: undefined,
       };
     case REQUEST_RATED_MOVIES_START:
       return {
