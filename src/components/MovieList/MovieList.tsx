@@ -88,8 +88,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 400,
     height: 600,
     [theme.breakpoints.down('sm')]: {
-      width: 350,
-      height: 500,
+      width: 300,
+      height: 450,
     },
   },
   loader: {
@@ -195,7 +195,7 @@ const MovieList: FunctionComponent = () => {
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
       ? getImageURL(path)
-      : getNotFoundImage('400x600/FFFFFF');
+      : getNotFoundImage('400x600/FFFFFF', altText || '');
 
     return <img className={classes.movieImage} src={localPath} alt={altText} />;
   };
