@@ -67,7 +67,7 @@ const useStyles = makeStyles(styles => ({
     '&:checked': {
       '& ~ div': {
         height: '100%',
-        padding: '0.5rem',
+        padding: '2rem',
         transform: 'translateZ(0)',
         opacity: 1,
         display: 'flex',
@@ -100,10 +100,10 @@ const useStyles = makeStyles(styles => ({
   },
 
   itemTitle: {
-    fontSize: '1rem',
+    fontSize: '2rem',
   },
   movieSinopse: {
-    height: '15rem',
+    marginTop: '1rem',
     [styles.breakpoints.down('sm')]: {
       height: '10rem',
     },
@@ -111,7 +111,6 @@ const useStyles = makeStyles(styles => ({
   cardOptions: {
     display: 'flex',
     marginTop: '8rem',
-    padding: '2rem',
     justifyContent: 'space-between',
     '& > div': {
       display: 'flex',
