@@ -79,23 +79,23 @@ const PopularSlider: FunctionComponent<PopularSliderProps> = (
 
     return <img className={classes.movieImage} src={localPath} alt={altText} onClick={() => callback()} />;
   };
-
   return (
     <div className={classes.root}>
-      <GridList
-        cellHeight={'auto'}
-        cols={getGridListCols(props.width)}
-        className={classes.container}
-      >
-        {popular &&
-          popular.map((item: IMovie) => (
+      {popular && (
+        <GridList
+          cellHeight={'auto'}
+          cols={getGridListCols(props.width)}
+          className={classes.container}
+        >
+          {popular.map((item: IMovie) => (
             <GridListTile
               key={item.id}
             >
               {renderImage(() => openMovieDetails(item.id), item.poster_path, item.title)}
             </GridListTile>
           ))}
-      </GridList>
+        </GridList>
+      )}
     </div>
   );
 };
