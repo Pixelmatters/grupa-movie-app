@@ -1,10 +1,11 @@
-import React, { FunctionComponent } from 'react';
-import { useSelector } from 'react-redux';
+import React, { FunctionComponent, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { makeStyles, Theme, GridListTile, GridList } from '@material-ui/core';
 import { IMovie } from '../../api/models';
 import { useHistory } from 'react-router-dom';
 import { getImageURL, getNotFoundImage } from '../../api/api';
+import { fetchPopular } from '../../store/movie/thunks';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -31,8 +32,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const PopularSlider: FunctionComponent = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const allMovies = useSelector((state: RootState) => state.movie.allMovies);
+  const popular = useSelector((state: RootState) => state.movie.popular);
+
+  useEffect(() => {
+    dispatch(fetchPopular());
+  }, [dispatch]);
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
@@ -49,8 +55,8 @@ const PopularSlider: FunctionComponent = () => {
   return (
     <div className={classes.root}>
       <GridList cellHeight={'auto'} cols={5} className={classes.container}>
-        {allMovies &&
-          allMovies.map((item: IMovie) => (
+        {popular &&
+          popular.map((item: IMovie) => (
             <GridListTile
               key={item.id}
               onClick={() => openMovieDetails(item.id)}
