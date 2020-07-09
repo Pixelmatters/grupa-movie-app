@@ -194,7 +194,7 @@ const MovieList: FunctionComponent = () => {
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
       ? getImageURL(path)
-      : getNotFoundImage('400x600/FFFFFF', altText || '');
+      : getNotFoundImage('400x600/F4F4F4', altText || '');
 
     return <img className={classes.movieImage} src={localPath} alt={altText} />;
   };

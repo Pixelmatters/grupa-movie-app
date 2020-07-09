@@ -8,7 +8,9 @@ import { Waypoint } from 'react-waypoint';
 import './Home.css';
 import { fetchWatchList } from '../../store/account/thunks';
 import { RootState } from '../../store/store';
+import { Typography } from '@material-ui/core';
 
+const PopularSlider = lazy(() => import('../PopularSlider/PopularSlider'));
 const MovieList = lazy(() => import('../MovieList/MovieList'));
 
 const useStyles = makeStyles(styles => ({
@@ -28,11 +30,14 @@ const useStyles = makeStyles(styles => ({
     alignItems: 'center',
   },
   mainContainer: {
-    marginTop: '11rem',
+    marginTop: '8rem',
   },
   centerLoading: {
     textAlign: 'center',
   },
+  popularSlider: {
+    marginBottom: '4rem',
+  }
 }));
 
 function Home() {
@@ -62,8 +67,14 @@ function Home() {
         </Grid>
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
+            <Grid item className={classes.popularSlider}>
+              <PopularSlider />
+            </Grid>
             <Grid item xs={12} sm={12}>
-              <Suspense fallback={<Box className={classes.centerLoading}>Loading</Box>}>
+              <Suspense
+                fallback={<Box className={classes.centerLoading}>Loading</Box>}
+              >
+                <Typography>More recent movies</Typography>
                 <MovieList />
               </Suspense>
             </Grid>
