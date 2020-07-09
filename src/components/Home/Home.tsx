@@ -28,6 +28,9 @@ const useStyles = makeStyles(styles => ({
   mainContainer: {
     marginTop: '11rem',
   },
+  centerLoading: {
+    textAlign: 'center',
+  },
 }));
 
 function Home() {
@@ -50,7 +53,7 @@ function Home() {
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
             <Grid item xs={12} sm={12}>
-              <Suspense fallback={<Box>Loading</Box>}>
+              <Suspense fallback={<Box className={classes.centerLoading}>Loading</Box>}>
                 <MovieList />
               </Suspense>
             </Grid>
