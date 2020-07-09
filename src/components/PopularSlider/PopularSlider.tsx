@@ -19,10 +19,11 @@ const useStyles = makeStyles(() => ({
   container: {
     flexWrap: 'nowrap',
     transform: 'translateZ(0)',
+    padding: '2rem',
   },
   movieImage: {
     animation: '$fadeIn ease 3s',
-    width: 250,
+    width: 300,
   },
   '@keyframes fadeIn': {
     '0%': {
