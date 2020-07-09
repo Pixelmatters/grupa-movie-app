@@ -68,16 +68,16 @@ const PopularSlider: FunctionComponent<PopularSliderProps> = (
     dispatch(fetchPopular());
   }, [dispatch]);
 
-  const renderImage = (path?: string, altText?: string) => {
+  const openMovieDetails = (id: number) => {
+    history.push(`/movie/${id}`);
+  };
+
+  const renderImage = (callback: Function, path?: string, altText?: string ) => {
     const localPath = path
       ? getImageURL(path)
       : getNotFoundImage('400x600/FFFFFF', altText || '');
 
-    return <img className={classes.movieImage} src={localPath} alt={altText} />;
-  };
-
-  const openMovieDetails = (id: number) => {
-    history.push(`/movie/${id}`);
+    return <img className={classes.movieImage} src={localPath} alt={altText} onClick={() => callback()} />;
   };
 
   return (
@@ -91,9 +91,8 @@ const PopularSlider: FunctionComponent<PopularSliderProps> = (
           popular.map((item: IMovie) => (
             <GridListTile
               key={item.id}
-              onClick={() => openMovieDetails(item.id)}
             >
-              {renderImage(item.poster_path, item.title)}
+              {renderImage(() => openMovieDetails(item.id), item.poster_path, item.title)}
             </GridListTile>
           ))}
       </GridList>
