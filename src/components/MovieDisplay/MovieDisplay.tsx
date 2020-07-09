@@ -137,6 +137,7 @@ const MovieDisplay: FunctionComponent = () => {
       const isOnWatchList = store.account.watchlist.some(
         (watchMovie: IMovie) => watchMovie.id === movieId
       );
+
       if (isOnWatchList) {
         setMovieIsOnWatchList(true);
         setWatchlistButtonText('Remove from watchlist');

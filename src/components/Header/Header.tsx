@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Box, IconButton, Menu, MenuItem } from '@material-ui/core';
+import {
+  Grid,
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Modal,
+} from '@material-ui/core';
 import { LocalMoviesOutlined, Menu as MenuIcon } from '@material-ui/icons';
 import {
   requestAuthToken,
@@ -8,6 +15,8 @@ import {
 } from '../../store/auth/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
+import Watchlist from '../Watchlist/Watchlist';
+
 import { verifyAuth } from '../../helpers/login';
 import { useHistory } from 'react-router-dom';
 
@@ -87,7 +96,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-
   const authState = useSelector((state: RootState) => state.auth);
   const moviesLink = {
     title: 'Movies',
@@ -106,13 +114,22 @@ const Header = () => {
     moviesLink,
     {
       title: 'My WatchList',
-      action: () => {},
+      action: () => handleOpen(),
     },
     {
       title: 'Logout',
       action: () => dispatch(requestDeleteSession(authState.sessionId || '')),
     },
   ];
+
+  const [isModalOpen, setModalOpen] = React.useState(false);
+  const handleOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -190,6 +207,16 @@ const Header = () => {
             ))}
           </Menu>
         </Box>
+        <Modal
+          open={isModalOpen}
+          onClose={handleModalClose}
+          aria-labelledby="Watchlist"
+          aria-describedby="Shows watchlist"
+        >
+          <Box>
+            <Watchlist />
+          </Box>
+        </Modal>
       </header>
     </Grid>
   );
