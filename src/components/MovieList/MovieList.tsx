@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import {
   Grid,
@@ -11,9 +11,10 @@ import {
 } from '@material-ui/core';
 import { IMovie } from '../../api/models';
 import Masonry from 'react-masonry-css';
-import { PlaylistAdd, UnfoldMore } from '@material-ui/icons';
+import { Remove, Add, ArrowRight } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { getImageURL, getNotFoundImage } from '../../api/api';
+import { addWatchList, fetchWatchList } from '../../store/account/thunks';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -141,23 +142,46 @@ const breakpointColumnsObj = {
   858: 1,
 };
 
+interface IMovieListStore {
+  popular?: Array<IMovie>;
+  watchlist: {
+    data?: Array<IMovie>;
+    isToggling: boolean;
+    isFetching: boolean;
+  };
+  sessionId?: string;
+}
+
 const MovieList: FunctionComponent = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
   const initialState: Array<IMovie> = [];
 
   const [movieList, setMovieList] = useState<Array<IMovie>>(initialState);
 
-  const moreRecentList: [IMovie] = useSelector(
-    (state: RootState) => state.movie.popular
-  ) as [IMovie];
+  const store = useSelector<RootState, IMovieListStore>(state => ({
+    popular: state.movie.popular,
+    watchlist: {
+      data: state.account.watchlist,
+      isToggling: state.account.isAddingWatchlist,
+      isFetching: state.account.isFetchingWatchlist,
+    },
+    sessionId: state.auth.sessionId,
+  }));
 
   useEffect(() => {
-    if (moreRecentList?.length > 0) {
-      setMovieList(prev => prev.concat(moreRecentList));
+    if (store.popular && store.popular.length > 0) {
+      setMovieList(prev => prev.concat(store.popular ?? []));
       document.documentElement.scrollTop += 1000;
     }
-  }, [moreRecentList]);
+  }, [store.popular]);
+
+  useEffect(() => {
+    if (!store.watchlist.isToggling && store.sessionId) {
+      dispatch(fetchWatchList(store.sessionId));
+    }
+  }, [store.watchlist.isToggling]);
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
@@ -169,6 +193,39 @@ const MovieList: FunctionComponent = () => {
 
   const openMovieDetails = (id: number) => {
     history.push(`/movie/${id}`);
+  };
+
+  const toggleWatchlist = (item: IMovie, to: boolean) => {
+    if (store.sessionId) {
+      dispatch(
+        addWatchList(store.sessionId, {
+          media_id: item.id,
+          media_type: 'movie',
+          watchlist: to,
+        })
+      );
+    }
+  };
+
+  const getWatchlistButton = (item: IMovie) => {
+    if (store.sessionId) {
+      const isLoading =
+        store.watchlist.isToggling || store.watchlist.isFetching;
+      const isInWatchlist = store.watchlist.data?.some(
+        movie => movie.id === item.id
+      );
+      return (
+        <Button
+          disabled={isLoading}
+          className={classes.buttonOptions}
+          onClick={() => toggleWatchlist(item, !isInWatchlist)}
+        >
+          {isInWatchlist ? <Remove /> : <Add />} Watch list
+        </Button>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -202,11 +259,9 @@ const MovieList: FunctionComponent = () => {
                       className={classes.buttonOptions}
                       onClick={() => openMovieDetails(item.id)}
                     >
-                      <UnfoldMore /> See more
+                      <ArrowRight /> See more
                     </Button>
-                    <Button className={classes.buttonOptions}>
-                      <PlaylistAdd /> Watch list
-                    </Button>
+                    {getWatchlistButton(item)}
                   </Box>
                 </Box>
               </Box>
