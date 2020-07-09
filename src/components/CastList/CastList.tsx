@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
     marginTop: '40px',
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#ffffff',
   },
   castMemberImg: {
@@ -27,6 +27,10 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     marginTop: '10px',
     marginLeft: '30px',
+    maxWidth: '200px',
+  },
+  classMemberName: {
+    fontWeight: 'bold',
   },
 }));
 
@@ -49,7 +53,7 @@ const CastList: FunctionComponent = () => {
               src={getImageURL(castMember.profile_path)}
             />
             <div className={classes.memberTextWrapper}>
-              <span>{castMember.name}</span>
+              <span className={classes.classMemberName}>{castMember.name}</span>
               <span>{castMember.character}</span>
             </div>
           </div>

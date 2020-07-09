@@ -35,24 +35,24 @@ interface IMovieDisplayStore {
 const useStyles = makeStyles(styles => ({
   card: {
     width: '100%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
   },
   cardWrapper: {
     display: 'flex',
     color: '#ffffff',
     background: '#2a3d7a',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    padding: '50px 0 80px 50px',
     [styles.breakpoints.down('sm')]: {
       flexDirection: 'column',
     },
   },
   textWrapper: {
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
     marginLeft: '2rem',
+    maxWidth: '800px',
     [styles.breakpoints.down('sm')]: {
       marginLeft: '0',
     },
@@ -62,14 +62,17 @@ const useStyles = makeStyles(styles => ({
     justifyContent: 'center',
   },
   movieImg: {
-    maxWidth: '20rem',
+    maxWidth: '400px',
+    maxHeight: '800px',
   },
   genreLabel: {
-    marginRight: '1rem',
-    marginTop: '1rem',
+    marginRight: '10px',
+    marginTop: '25px',
   },
   movieTitle: {
     fontSize: '40px',
+    margin: 0,
+    marginTop: '15px',
   },
   movieTagLine: {
     paddingBottom: '2rem',
@@ -81,9 +84,8 @@ const useStyles = makeStyles(styles => ({
     border: '1px solid #ffffff',
     padding: '1rem',
     fontSize: '28px',
-    marginBottom: '2rem',
     borderRadius: '8px',
-    marginTop: '1rem',
+    marginLeft: '5px',
   },
   userRatingWrapper: {
     display: 'flex',
@@ -98,6 +100,9 @@ const useStyles = makeStyles(styles => ({
     fontSize: '1rem',
     marginLeft: '0.2rem',
     cursor: 'pointer',
+  },
+  watchlistRatingWrapper: {
+    display: 'flex',
   },
 }));
 
@@ -251,16 +256,41 @@ const MovieDisplay: FunctionComponent = () => {
           </div>
           <h2 className={classes.movieTitle}>{store.movie?.original_title} </h2>
           <span className={classes.movieTagLine}>{store.movie?.tagline}</span>
-          {store.sessionId && (
-            <Button
-              onClick={addToWatchList}
-              variant="outlined"
-              color="secondary"
-              size="small"
-            >
-              {watchlistButtonText}
-            </Button>
-          )}
+          <div className={classes.watchlistRatingWrapper}>
+            {store.sessionId && (
+              <Button
+                onClick={addToWatchList}
+                variant="outlined"
+                color="secondary"
+                size="small"
+              >
+                {watchlistButtonText}
+              </Button>
+            )}
+            {store.sessionId && (
+              <p className={classes.userRatingWrapper}>
+                <b> Rate:</b>
+                <Rating
+                  name="rating"
+                  className={classes.userRating}
+                  value={movieUserRating}
+                  precision={0.5}
+                  emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                  onChange={(event, newValue) => {
+                    rateMovie(newValue);
+                  }}
+                />
+                {movieUserRating !== 0 && (
+                  <Tooltip title="Remove Rating">
+                    <RemoveCircleIcon
+                      className={classes.userRatingRemoveButtonCircle}
+                      onClick={() => deleteUserMovieRating()}
+                    />
+                  </Tooltip>
+                )}
+              </p>
+            )}
+          </div>
           <p>{store.movie?.overview}</p>
           <p>
             <b>Release Date:</b> {store.movie?.release_date}
@@ -268,29 +298,6 @@ const MovieDisplay: FunctionComponent = () => {
           <p>
             <b> Duration:</b> {store.movie?.runtime} minutes
           </p>
-          {store.sessionId && (
-            <p className={classes.userRatingWrapper}>
-              <b> Rate:</b>
-              <Rating
-                name="rating"
-                className={classes.userRating}
-                value={movieUserRating}
-                precision={0.5}
-                emptyIcon={<StarBorderIcon fontSize="inherit" />}
-                onChange={(event, newValue) => {
-                  rateMovie(newValue);
-                }}
-              />
-              {movieUserRating !== 0 && (
-                <Tooltip title="Remove Rating">
-                  <RemoveCircleIcon
-                    className={classes.userRatingRemoveButtonCircle}
-                    onClick={() => deleteUserMovieRating()}
-                  />
-                </Tooltip>
-              )}
-            </p>
-          )}
         </div>
       </CardContent>
     </Card>
