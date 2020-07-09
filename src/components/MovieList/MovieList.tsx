@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import {
   Grid,
@@ -11,9 +11,10 @@ import {
 } from '@material-ui/core';
 import { IMovie } from '../../api/models';
 import Masonry from 'react-masonry-css';
-import { PlaylistAdd, UnfoldMore } from '@material-ui/icons';
+import { Remove, Add, ArrowRight } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { getImageURL, getNotFoundImage } from '../../api/api';
+import { addWatchList, fetchWatchList } from '../../store/account/thunks';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -71,11 +72,10 @@ const useStyles = makeStyles((theme: Theme) => ({
       '& ~ $info > div > $movieRate': {
         opacity: 1,
       },
-
     },
   },
   movieSinopse: {
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('sm')]: {
       height: '10rem',
     },
   },
@@ -143,27 +143,54 @@ const breakpointColumnsObj = {
   858: 1,
 };
 
+interface IMovieListStore {
+  allMovies?: Array<IMovie>;
+  watchlist: {
+    data?: Array<IMovie>;
+    isToggling: boolean;
+    isFetching: boolean;
+  };
+  sessionId?: string;
+}
+
 const MovieList: FunctionComponent = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
   const initialState: Array<IMovie> = [];
 
   const [movieList, setMovieList] = useState<Array<IMovie>>(initialState);
 
-  const moreRecentList: [IMovie] = useSelector(
-    (state: RootState) => state.movie.allMovies
-  ) as [IMovie];
+  const store = useSelector<RootState, IMovieListStore>(state => ({
+    allMovies: state.movie.allMovies,
+    watchlist: {
+      data: state.account.watchlist,
+      isToggling: state.account.isAddingWatchlist,
+      isFetching: state.account.isFetchingWatchlist,
+    },
+    sessionId: state.auth.sessionId,
+  }));
+
+  const updateWatchlist = () => {
+    if (!store.watchlist.isToggling && store.sessionId) {
+      dispatch(fetchWatchList(store.sessionId));
+    }
+  };
 
   useEffect(() => {
-    if (moreRecentList?.length > 0) {
-      moreRecentList.sort((x: IMovie, y: IMovie) => 
-        new Date(y.release_date).getTime() - 
-        new Date(x.release_date).getTime());
+    if (store.allMovies && store.allMovies.length > 0) {
+      store.allMovies.sort(
+        (x: IMovie, y: IMovie) =>
+          new Date(y.release_date).getTime() -
+          new Date(x.release_date).getTime()
+      );
 
-      setMovieList(prev => prev.concat(moreRecentList));
+      setMovieList(prev => prev.concat(store.allMovies as Array<IMovie>));
       document.documentElement.scrollTop += 1000;
     }
-  }, [moreRecentList]);
+  }, [store.allMovies]);
+
+  useEffect(updateWatchlist, [store.watchlist.isToggling]);
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
@@ -175,6 +202,39 @@ const MovieList: FunctionComponent = () => {
 
   const openMovieDetails = (id: number) => {
     history.push(`/movie/${id}`);
+  };
+
+  const toggleWatchlist = (item: IMovie, to: boolean) => {
+    if (store.sessionId) {
+      dispatch(
+        addWatchList(store.sessionId, {
+          media_id: item.id,
+          media_type: 'movie',
+          watchlist: to,
+        })
+      );
+    }
+  };
+
+  const getWatchlistButton = (item: IMovie) => {
+    if (store.sessionId) {
+      const isLoading =
+        store.watchlist.isToggling || store.watchlist.isFetching;
+      const isInWatchlist = store.watchlist.data?.some(
+        movie => movie.id === item.id
+      );
+      return (
+        <Button
+          disabled={isLoading}
+          className={classes.buttonOptions}
+          onClick={() => toggleWatchlist(item, !isInWatchlist)}
+        >
+          {isInWatchlist ? <Remove /> : <Add />} Watch list
+        </Button>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -196,13 +256,14 @@ const MovieList: FunctionComponent = () => {
                 />
                 {renderImage(item.poster_path, item.title)}
                 <Box className={classes.info}>
-                  <Box >
+                  <Box>
                     <Box className={classes.movieRate}>{item.vote_average}</Box>
                     <Box component="h5" className={classes.itemTitle}>
                       {item.title}
                     </Box>
                     <Box component="p" className={classes.movieSinopse}>
-                      {item.overview || 'No additional info was found for this movie.'}
+                      {item.overview ||
+                        'No additional info was found for this movie.'}
                     </Box>
                   </Box>
                   <Box>
@@ -211,11 +272,9 @@ const MovieList: FunctionComponent = () => {
                         className={classes.buttonOptions}
                         onClick={() => openMovieDetails(item.id)}
                       >
-                        <UnfoldMore /> See more
+                        <ArrowRight /> See more
                       </Button>
-                      <Button className={classes.buttonOptions}>
-                        <PlaylistAdd /> Watch list
-                      </Button>
+                      {getWatchlistButton(item)}
                     </Box>
                   </Box>
                 </Box>
