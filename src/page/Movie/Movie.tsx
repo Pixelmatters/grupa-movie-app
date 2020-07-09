@@ -27,7 +27,7 @@ const useStyles = makeStyles(styles => ({
     height: '8rem',
     position: 'fixed',
     top: 0,
-    zIndex: 1,
+    zIndex: 2,
     display: 'flex',
     alignItems: 'center',
   },

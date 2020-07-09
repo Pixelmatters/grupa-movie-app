@@ -43,7 +43,7 @@ const CastList: FunctionComponent = () => {
     (state: RootState) => state.cast.cast
   ) as [ICast];
   if (castData === undefined) {
-    return <p>Loading..,</p>;
+    return <p>Loading...</p>;
   }
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path

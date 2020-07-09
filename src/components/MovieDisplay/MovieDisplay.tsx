@@ -211,7 +211,7 @@ const MovieDisplay: FunctionComponent = () => {
     store.account.isFetchingWatchlist ||
     store.account.isFetchingRatedMovies
   ) {
-    return <p>Loading..,</p>;
+    return <p>Loading...</p>;
   }
 
   let movieGenres: Array<IGenre> = [];
