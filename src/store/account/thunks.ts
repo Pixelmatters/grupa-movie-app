@@ -6,13 +6,21 @@ import {
   requestMovieWatchlistError,
   requestMovieWatchlistStart,
   requestMovieWatchlistSuccess,
-  requestRateMoviesError,
-  requestRateMoviesStart,
-  requestRateMoviesSuccess
+  addWatchListStart,
+  addWatchListSuccess,
+  addWatchListError,
+  requestRatedMoviesError,
+  requestRatedMoviesStart,
+  requestRatedMoviesSuccess,
 } from './actions';
-import { getAccountDetails, getRatedMovies } from '../../api/api';
-import { IAccount } from './types';
-import { IMovie } from '../../api/models';
+import {
+  getAccountDetails,
+  getRatedMovies,
+  addToWatchlist,
+  getWatchList,
+} from '../../api/api';
+import { IAccount, IWatchListMessage } from './types';
+import { IMovie, IAddToWatchlist } from '../../api/models';
 
 export const fetchAccountDetails = (
   sessionId: string
@@ -27,25 +35,40 @@ export const fetchAccountDetails = (
 };
 
 export const fetchWatchList = (
-  accountId: number
+  sessionId: string
 ): AppThunk => async dispatch => {
   dispatch(requestMovieWatchlistStart());
-  getRatedMovies(accountId)
+  getWatchList(sessionId)
     .then(response => {
-      const watchList = response.data as Array<IMovie>;
-      dispatch(requestMovieWatchlistSuccess(watchList));
+      const watchlist = response.data.results as Array<IMovie>;
+      dispatch(requestMovieWatchlistSuccess(watchlist));
     })
     .catch(() => dispatch(requestMovieWatchlistError()));
 };
 
-export const fetchRateMovies = (
-  accountId: number
+export const fetchRatedMovies = (
+  sessionId: string
 ): AppThunk => async dispatch => {
-  dispatch(requestRateMoviesStart());
-  getRatedMovies(accountId)
+  dispatch(requestRatedMoviesStart());
+  getRatedMovies(sessionId)
     .then(response => {
       const ratedMovies = response.data as Array<IMovie>;
-      dispatch(requestRateMoviesSuccess(ratedMovies));
+      dispatch(requestRatedMoviesSuccess(ratedMovies));
     })
-    .catch(() => dispatch(requestRateMoviesError()));
+    .catch(() => dispatch(requestRatedMoviesError()));
+};
+
+export const addWatchList = (
+  sessionId: string,
+  data: IAddToWatchlist
+): AppThunk => async dispatch => {
+  dispatch(addWatchListStart());
+  addToWatchlist(sessionId, data)
+    .then(response => {
+      const successMessage = response.data as IWatchListMessage;
+      dispatch(addWatchListSuccess(successMessage));
+    })
+    .catch(() => {
+      dispatch(addWatchListError());
+    });
 };

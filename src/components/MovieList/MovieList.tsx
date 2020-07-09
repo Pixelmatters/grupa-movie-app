@@ -13,6 +13,7 @@ import { IMovie } from '../../api/models';
 import Masonry from 'react-masonry-css';
 import { PlaylistAdd, UnfoldMore } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
+import { getImageURL, getNotFoundImage } from '../../api/api';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -160,13 +161,13 @@ const MovieList: FunctionComponent = () => {
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
-      ? `https://image.tmdb.org/t/p/w500${path}`
-      : 'https://via.placeholder.com/400x600/FFFFFF?text=No%20Image';
+      ? getImageURL(path)
+      : getNotFoundImage('400x600/FFFFFF');
 
     return <img className={classes.movieImage} src={localPath} alt={altText} />;
   };
 
-  const openMovieDetails = (id: string) => {
+  const openMovieDetails = (id: number) => {
     history.push(`/movie/${id}`);
   };
 
@@ -178,7 +179,7 @@ const MovieList: FunctionComponent = () => {
         columnClassName={classes.masonryGridColumn}
       >
         {movieList &&
-          movieList.map((item: any) => (
+          movieList.map((item: IMovie) => (
             <label key={item.id}>
               <Box className={classes.itemWrapper}>
                 <input

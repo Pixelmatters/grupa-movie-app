@@ -11,8 +11,12 @@ export const REQUEST_MOVIE_WATCHLIST_SUCCESS =
 export const REQUEST_MOVIE_WATCHLIST_ERROR = 'REQUEST_MOVIE_WATCHLIST_ERROR';
 
 export const REQUEST_RATED_MOVIES_START = 'REQUEST_RATED_MOVIES_START';
-export const REQUEST_RATED_MOVIES_SUCCESSS = 'REQUEST_RATED_MOVIES_SUCCESSS';
+export const REQUEST_RATED_MOVIES_SUCCESS = 'REQUEST_RATED_MOVIES_SUCCESS';
 export const REQUEST_RATED_MOVIES_ERROR = 'REQUEST_RATED_MOVIES_ERROR';
+
+export const ADD_WATCH_LIST_START = 'ADD_WATCH_LIST_START';
+export const ADD_WATCH_LIST_SUCCESS = 'ADD_WATCH_LIST_SUCCESS';
+export const ADD_WATCH_LIST_ERROR = 'ADD_WATCH_LIST_ERROR';
 
 export type AccountActionTypes =
   | IRequestAccountDetailsStartAction
@@ -23,7 +27,10 @@ export type AccountActionTypes =
   | IRequestMovieWatchListErrorAction
   | IRequestRatedMoviesStartAction
   | IRequestRatedMoviesSuccessAction
-  | IRequestRatedMoviesErrorAction;
+  | IRequestRatedMoviesErrorAction
+  | IAddWatchListStartAction
+  | IAddWatchListSuccessAction
+  | IAddWatchListErrorAction;
 
 interface IRequestAccountDetailsStartAction {
   type: typeof REQUEST_ACCOUNT_DETAILS_START;
@@ -52,10 +59,23 @@ interface IRequestRatedMoviesStartAction {
 }
 interface IRequestRatedMoviesSuccessAction {
   ratedMovies: IMovie[] | undefined;
-  type: typeof REQUEST_RATED_MOVIES_SUCCESSS;
+  type: typeof REQUEST_RATED_MOVIES_SUCCESS;
 }
 interface IRequestRatedMoviesErrorAction {
   type: typeof REQUEST_RATED_MOVIES_ERROR;
+}
+
+interface IAddWatchListStartAction {
+  type: typeof ADD_WATCH_LIST_START;
+}
+
+interface IAddWatchListSuccessAction {
+  watchList: IMovie[] | undefined;
+  type: typeof ADD_WATCH_LIST_SUCCESS;
+}
+
+interface IAddWatchListErrorAction {
+  type: typeof ADD_WATCH_LIST_ERROR;
 }
 
 export interface IAccountState {
@@ -66,8 +86,16 @@ export interface IAccountState {
   failedFetchingRatedMovies: boolean;
   ratedMovies?: Array<IMovie>;
   isFetchingWatchlist: boolean;
-  failedFetcingWatchlist: boolean;
+  failedFetchingWatchlist: boolean;
   watchList?: Array<IMovie>;
+  isAddingWatchlist: boolean;
+  failedAddingWatchList: boolean;
+  addedWatchListMessage?: IWatchListMessage;
+}
+
+export interface IWatchListMessage {
+  status_code: number;
+  staus_message: string;
 }
 
 export interface IAccount {
