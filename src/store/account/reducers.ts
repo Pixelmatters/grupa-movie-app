@@ -9,7 +9,10 @@ import {
   REQUEST_MOVIE_WATCHLIST_SUCCESS,
   REQUEST_RATED_MOVIES_START,
   REQUEST_RATED_MOVIES_SUCCESSS,
-  REQUEST_RATED_MOVIES_ERROR
+  REQUEST_RATED_MOVIES_ERROR,
+  ADD_WATCH_LIST_SUCCESS,
+  ADD_WATCH_LIST_START,
+  ADD_WATCH_LIST_ERROR
 } from './types';
 
 const initialState: IAccountState = {
@@ -21,7 +24,10 @@ const initialState: IAccountState = {
   ratedMovies: undefined,
   isFetchingWatchlist: false,
   failedFetcingWatchlist: false,
-  watchList: undefined
+  watchList: undefined,
+  isAddingWatchlist: false,
+  failedAddingWatchList: false,
+  addedWatchListMessage: undefined
 };
 
 export const accountReducer = (
@@ -54,8 +60,7 @@ export const accountReducer = (
     return {
       ...state,
       isFetchingWatchlist: true,
-      failedFetcingWatchlist: false,
-      watchList: undefined
+      failedFetcingWatchlist: false
     };
   case REQUEST_MOVIE_WATCHLIST_SUCCESS:
     return {
@@ -91,6 +96,27 @@ export const accountReducer = (
       isFetchingRatedMovies: false,
       failedFetchingRatedMovies: true,
       ratedMovies: undefined
+    };
+  case ADD_WATCH_LIST_START:
+    return {
+      ...state,
+      isAddingWatchlist: true,
+      failedAddingWatchList: false,
+      addedWatchListMessage: undefined
+    };
+  case ADD_WATCH_LIST_SUCCESS:
+    return {
+      ...state,
+      isAddingWatchlist: false,
+      failedAddingWatchList: false,
+      addedWatchListMessage: state.addedWatchListMessage
+    };
+  case ADD_WATCH_LIST_ERROR:
+    return {
+      ...state,
+      isAddingWatchlist: false,
+      failedAddingWatchList: true,
+      addedWatchListMessage: undefined
     };
   default:
     return state;
