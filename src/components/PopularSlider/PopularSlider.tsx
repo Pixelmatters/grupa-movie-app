@@ -32,12 +32,12 @@ const PopularSlider: FunctionComponent = () => {
   const classes = useStyles();
   const history = useHistory();
 
-  const popular = useSelector((state: RootState) => state.movie.popular);
+  const allMovies = useSelector((state: RootState) => state.movie.allMovies);
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
       ? getImageURL(path)
-      : getNotFoundImage('400x600/FFFFFF');
+      : getNotFoundImage('400x600/FFFFFF', altText || '');
 
     return <img className={classes.movieImage} src={localPath} alt={altText} />;
   };
@@ -49,8 +49,8 @@ const PopularSlider: FunctionComponent = () => {
   return (
     <div className={classes.root}>
       <GridList cellHeight={'auto'} cols={5} className={classes.container}>
-        {popular &&
-          popular.map((item: IMovie) => (
+        {allMovies &&
+          allMovies.map((item: IMovie) => (
             <GridListTile
               key={item.id}
               onClick={() => openMovieDetails(item.id)}

@@ -2,8 +2,8 @@ import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { Grid, Box, makeStyles } from '@material-ui/core';
 import headerBg from '../../assets/images/header-bg.jpg';
 import Header from '../Header/Header';
+import { fetchAllMovies } from '../../store/movie/thunks';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPopular } from '../../store/movie/thunks';
 import { Waypoint } from 'react-waypoint';
 import './Home.css';
 import { fetchWatchList } from '../../store/account/thunks';
@@ -21,13 +21,18 @@ const useStyles = makeStyles(styles => ({
   header: {
     backgroundImage: `url(${headerBg})`,
     width: '100%',
-    height: '10rem',
+    height: '8rem',
     position: 'fixed',
     top: 0,
     zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
   },
   mainContainer: {
     marginTop: '11rem',
+  },
+  centerLoading: {
+    textAlign: 'center',
   },
 }));
 
@@ -47,7 +52,7 @@ function Home() {
   const fetchMovies = () => {
     const number = pageNumber + 1;
     setPageNumber(number);
-    dispatch(fetchPopular(number));
+    dispatch(fetchAllMovies(number));
   };
 
   return (
@@ -58,11 +63,13 @@ function Home() {
         </Grid>
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
-            <Grid item xs={12} sm={12}>
+            <Grid item>
               <PopularSlider />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Suspense fallback={<Box>Loading</Box>}>
+              <Suspense
+                fallback={<Box className={classes.centerLoading}>Loading</Box>}
+              >
                 <MovieList />
               </Suspense>
             </Grid>
