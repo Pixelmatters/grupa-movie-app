@@ -1,22 +1,35 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { CardContent, Card, Chip, Button, makeStyles } from '@material-ui/core';
+import {
+  CardContent,
+  Card,
+  Chip,
+  Button,
+  makeStyles,
+  Tooltip,
+} from '@material-ui/core';
 import { IMovie, IGenre, IMatchParameters } from '../../api/models';
 import {
   fetchAccountDetails,
   addWatchList,
   fetchRatedMovies,
   fetchWatchList,
+  requestDeleteMovieRating,
 } from '../../store/account/thunks';
 import { IAccountState } from '../../store/account/types';
 import { match, useRouteMatch } from 'react-router-dom';
 import { Rating } from '@material-ui/lab';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import { IRequestAuthState } from '../../store/auth/types';
+import { requestRateMovie } from '../../store/account/thunks';
 import { getImageURL } from '../../api/api';
-interface IMovieDsiplayStore {
+interface IMovieDisplayStore {
   account: IAccountState;
   sessionId?: string;
   movie?: IMovie;
+  auth: IRequestAuthState;
 }
 
 const useStyles = makeStyles(styles => ({
@@ -80,6 +93,12 @@ const useStyles = makeStyles(styles => ({
     fontSize: '1rem',
     marginLeft: '0.2rem',
   },
+  userRatingRemoveButtonCircle: {
+    color: '#F9BE51',
+    fontSize: '1rem',
+    marginLeft: '0.2rem',
+    cursor: 'pointer',
+  },
 }));
 
 const MovieDisplay: FunctionComponent = () => {
@@ -90,11 +109,12 @@ const MovieDisplay: FunctionComponent = () => {
   >;
   const movieId: number = Number(matchData.params.movieId);
 
-  const store = useSelector<RootState, IMovieDsiplayStore>(
+  const store = useSelector<RootState, IMovieDisplayStore>(
     (state: RootState) => ({
       account: state.account,
       sessionId: state.auth.sessionId,
       movie: state.movie.movie,
+      auth: state.auth,
     })
   );
 
@@ -102,7 +122,7 @@ const MovieDisplay: FunctionComponent = () => {
   const [watchlistButtonText, setWatchlistButtonText] = useState(
     'Add to watchlist'
   );
-  const [rateValue, setRateValue] = useState<number | null>(0);
+  const [movieUserRating, setMovieUserRating] = useState(0);
 
   useEffect(() => {
     if (store.sessionId) {
@@ -125,6 +145,22 @@ const MovieDisplay: FunctionComponent = () => {
   }
 
   useEffect(checkWatchList, [store.account.watchlist]);
+
+  const checkIfUserRatedMovie = () => {
+    if (store.sessionId && store.account.ratedMovies) {
+      const ratedMovie = store.account.ratedMovies.find(
+        movie => movie.id === movieId
+      );
+      if (ratedMovie && ratedMovie.rating) {
+        const realValue = ratedMovie.rating / 2; // This is to divide the value so it scales from 0-10 to 0-5
+        setMovieUserRating(realValue);
+        return;
+      }
+    }
+    setMovieUserRating(0);
+  };
+
+  useEffect(checkIfUserRatedMovie, [store.account.ratedMovies]);
 
   if (
     store.account.isFetchingAccount ||
@@ -166,6 +202,22 @@ const MovieDisplay: FunctionComponent = () => {
     }
   }
 
+  const rateMovie = (value: number | null) => {
+    if (!value) return;
+    const realValue = value * 2; // This is to duplicate the value so it scales from 0-5 to 0-10
+    const movieId = store.movie?.id ?? 0;
+    const sessionId = store.auth.sessionId ?? '';
+    setMovieUserRating(value);
+    dispatch(requestRateMovie(movieId, realValue, sessionId));
+  };
+
+  const deleteUserMovieRating = () => {
+    const movieId = store.movie?.id ?? 0;
+    const sessionId = store.auth.sessionId ?? '';
+    setMovieUserRating(0);
+    dispatch(requestDeleteMovieRating(movieId, sessionId));
+  };
+
   return (
     <Card className={classes.card}>
       <CardContent className={classes.cardWrapper}>
@@ -199,14 +251,16 @@ const MovieDisplay: FunctionComponent = () => {
           </div>
           <h2 className={classes.movieTitle}>{store.movie?.original_title} </h2>
           <span className={classes.movieTagLine}>{store.movie?.tagline}</span>
-          <Button
-            onClick={addToWatchList}
-            variant="outlined"
-            color="secondary"
-            size="small"
-          >
-            {watchlistButtonText}
-          </Button>
+          {store.sessionId && (
+            <Button
+              onClick={addToWatchList}
+              variant="outlined"
+              color="secondary"
+              size="small"
+            >
+              {watchlistButtonText}
+            </Button>
+          )}
           <p>{store.movie?.overview}</p>
           <p>
             <b>Release Date:</b> {store.movie?.release_date}
@@ -214,16 +268,29 @@ const MovieDisplay: FunctionComponent = () => {
           <p>
             <b> Duration:</b> {store.movie?.runtime} minutes
           </p>
-          <p className={classes.userRatingWrapper}>
-            <b> Rate:</b>
-            <Rating
-              className={classes.userRating}
-              value={rateValue}
-              onChange={(event, newValue) => {
-                setRateValue(newValue);
-              }}
-            />
-          </p>
+          {store.sessionId && (
+            <p className={classes.userRatingWrapper}>
+              <b> Rate:</b>
+              <Rating
+                name="rating"
+                className={classes.userRating}
+                value={movieUserRating}
+                precision={0.5}
+                emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                onChange={(event, newValue) => {
+                  rateMovie(newValue);
+                }}
+              />
+              {movieUserRating !== 0 && (
+                <Tooltip title="Remove Rating">
+                  <RemoveCircleIcon
+                    className={classes.userRatingRemoveButtonCircle}
+                    onClick={() => deleteUserMovieRating()}
+                  />
+                </Tooltip>
+              )}
+            </p>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -13,6 +13,12 @@ import {
   ADD_WATCH_LIST_ERROR,
   REQUEST_RATED_MOVIES_SUCCESS,
   REQUEST_RATED_MOVIES_ERROR,
+  REQUEST_RATE_MOVIE_START,
+  REQUEST_RATE_MOVIE_SUCCESS,
+  REQUEST_RATE_MOVIE_ERROR,
+  REQUEST_DELETE_MOVIE_RATING_ERROR,
+  REQUEST_DELETE_MOVIE_RATING_SUCCESS,
+  REQUEST_DELETE_MOVIE_RATING_START,
 } from './types';
 
 const initialState: IAccountState = {
@@ -28,6 +34,10 @@ const initialState: IAccountState = {
   isAddingWatchlist: false,
   failedAddingWatchList: false,
   addedWatchListMessage: undefined,
+  isRequestingRateMovie: false,
+  failedRequestingRateMovie: false,
+  isRequestingDeleteMovieRating: false,
+  failedRequestingDeleteMovieRating: false,
 };
 
 export const accountReducer = (
@@ -117,6 +127,42 @@ export const accountReducer = (
         isFetchingRatedMovies: false,
         failedFetchingRatedMovies: true,
         ratedMovies: undefined,
+      };
+    case REQUEST_RATE_MOVIE_START:
+      return {
+        ...state,
+        isRequestingRateMovie: true,
+        failedRequestingRateMovie: false,
+      };
+    case REQUEST_RATE_MOVIE_SUCCESS:
+      return {
+        ...state,
+        isRequestingRateMovie: false,
+        failedRequestingRateMovie: false,
+      };
+    case REQUEST_RATE_MOVIE_ERROR:
+      return {
+        ...state,
+        isRequestingRateMovie: false,
+        failedRequestingRateMovie: true,
+      };
+    case REQUEST_DELETE_MOVIE_RATING_START:
+      return {
+        ...state,
+        isRequestingDeleteMovieRating: true,
+        failedRequestingDeleteMovieRating: false,
+      };
+    case REQUEST_DELETE_MOVIE_RATING_SUCCESS:
+      return {
+        ...state,
+        isRequestingDeleteMovieRating: false,
+        failedRequestingDeleteMovieRating: false,
+      };
+    case REQUEST_DELETE_MOVIE_RATING_ERROR:
+      return {
+        ...state,
+        isRequestingDeleteMovieRating: false,
+        failedRequestingDeleteMovieRating: true,
       };
     default:
       return state;

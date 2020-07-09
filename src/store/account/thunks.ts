@@ -12,12 +12,20 @@ import {
   requestRatedMoviesError,
   requestRatedMoviesStart,
   requestRatedMoviesSuccess,
+  requestRateMovieError,
+  requestRateMovieStart,
+  requestRateMovieSuccess,
+  requestDeleteMovieRatingStart,
+  requestDeleteMovieRatingSuccess,
+  requestDeleteMovieRatingError,
 } from './actions';
 import {
   getAccountDetails,
   getRatedMovies,
   addToWatchlist,
   getWatchList,
+  rateMovie,
+  deleteMovieRating,
 } from '../../api/api';
 import { IAccount, IWatchListMessage } from './types';
 import { IMovie, IAddToWatchlist } from '../../api/models';
@@ -52,7 +60,7 @@ export const fetchRatedMovies = (
   dispatch(requestRatedMoviesStart());
   getRatedMovies(sessionId)
     .then(response => {
-      const ratedMovies = response.data as Array<IMovie>;
+      const ratedMovies = response.data.results as Array<IMovie>;
       dispatch(requestRatedMoviesSuccess(ratedMovies));
     })
     .catch(() => dispatch(requestRatedMoviesError()));
@@ -71,4 +79,25 @@ export const addWatchList = (
     .catch(() => {
       dispatch(addWatchListError());
     });
+};
+
+export const requestRateMovie = (
+  movieId: number,
+  value: number,
+  sessionId: string
+): AppThunk => async dispatch => {
+  dispatch(requestRateMovieStart());
+  rateMovie(movieId, value, sessionId)
+    .then(() => dispatch(requestRateMovieSuccess()))
+    .catch(() => dispatch(requestRateMovieError()));
+};
+
+export const requestDeleteMovieRating = (
+  movieId: number,
+  sessionId: string
+): AppThunk => async dispatch => {
+  dispatch(requestDeleteMovieRatingStart);
+  deleteMovieRating(movieId, sessionId)
+    .then(() => dispatch(requestDeleteMovieRatingSuccess()))
+    .catch(() => dispatch(requestDeleteMovieRatingError()));
 };
