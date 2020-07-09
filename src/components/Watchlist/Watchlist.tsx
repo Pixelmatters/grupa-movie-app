@@ -148,7 +148,12 @@ const useStyles = makeStyles(styles => ({
   emptyState: {
     height: '20rem',
     textAlign: 'center',
-    fontFamily: 'robot',
+    fontFamily: 'Roboto, Arial',
+  },
+  emptyStateMessage: {
+    maxWidth: '400px',
+    fontSize: '14px',
+    margin: '0 auto',
   },
   movieRateText: {
     marginLeft: '8px',
@@ -205,7 +210,10 @@ const Watchlist: FunctionComponent = () => {
       <div className={classes.paper}>
         <div className={classes.emptyState}>
           <h1>Watchlist</h1>
-          <p>Checklist is empty</p>
+          <p className={classes.emptyStateMessage}>
+            Your watchlist is empty. Add your favorite movies to the watchlist
+            so that you can reach them more easily.
+          </p>
         </div>
       </div>
     );

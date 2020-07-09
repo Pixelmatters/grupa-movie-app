@@ -75,6 +75,7 @@ export const addWatchList = (
     .then(response => {
       const successMessage = response.data as IWatchListMessage;
       dispatch(addWatchListSuccess(successMessage));
+      dispatch(fetchWatchList(sessionId));
     })
     .catch(() => {
       dispatch(addWatchListError());

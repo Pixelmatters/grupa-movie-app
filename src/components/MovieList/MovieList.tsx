@@ -15,7 +15,7 @@ import Masonry from 'react-masonry-css';
 import { Remove, Add, ArrowRight, StarBorder } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { getImageURL, getNotFoundImage } from '../../api/api';
-import { addWatchList, fetchWatchList } from '../../store/account/thunks';
+import { addWatchList } from '../../store/account/thunks';
 import { Rating } from '@material-ui/lab';
 
 const StyledRating = withStyles({
@@ -155,7 +155,6 @@ interface IMovieListStore {
   allMovies?: Array<IMovie>;
   watchlist: {
     data?: Array<IMovie>;
-    isToggling: boolean;
     isFetching: boolean;
   };
   sessionId?: string;
@@ -173,17 +172,10 @@ const MovieList: FunctionComponent = () => {
     allMovies: state.movie.allMovies,
     watchlist: {
       data: state.account.watchlist,
-      isToggling: state.account.isAddingWatchlist,
       isFetching: state.account.isFetchingWatchlist,
     },
     sessionId: state.auth.sessionId,
   }));
-
-  const updateWatchlist = () => {
-    if (!store.watchlist.isToggling && store.sessionId) {
-      dispatch(fetchWatchList(store.sessionId));
-    }
-  };
 
   useEffect(() => {
     if (store.allMovies && store.allMovies.length > 0) {
@@ -197,8 +189,6 @@ const MovieList: FunctionComponent = () => {
       document.documentElement.scrollTop += 1000;
     }
   }, [store.allMovies]);
-
-  useEffect(updateWatchlist, [store.watchlist.isToggling]);
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
@@ -226,8 +216,7 @@ const MovieList: FunctionComponent = () => {
 
   const getWatchlistButton = (item: IMovie) => {
     if (store.sessionId) {
-      const isLoading =
-        store.watchlist.isToggling || store.watchlist.isFetching;
+      const isLoading = store.watchlist.isFetching;
       const isInWatchlist = store.watchlist.data?.some(
         movie => movie.id === item.id
       );
