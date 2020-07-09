@@ -1,11 +1,13 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { Grid, Box, makeStyles } from '@material-ui/core';
 import headerBg from '../../assets/images/header-bg.jpg';
 import Header from '../Header/Header';
-import { useDispatch } from 'react-redux';
-import { fetchPopular } from '../../store/movie/thunks';
+import { fetchAllMovies } from '../../store/movie/thunks';
+import { useDispatch, useSelector } from 'react-redux';
 import { Waypoint } from 'react-waypoint';
 import './Home.css';
+import { fetchWatchList } from '../../store/account/thunks';
+import { RootState } from '../../store/store';
 
 const MovieList = lazy(() => import('../MovieList/MovieList'));
 
@@ -18,13 +20,18 @@ const useStyles = makeStyles(styles => ({
   header: {
     backgroundImage: `url(${headerBg})`,
     width: '100%',
-    height: '10rem',
+    height: '8rem',
     position: 'fixed',
     top: 0,
     zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
   },
   mainContainer: {
     marginTop: '11rem',
+  },
+  centerLoading: {
+    textAlign: 'center',
   },
 }));
 
@@ -33,25 +40,30 @@ function Home() {
   const dispatch = useDispatch();
   const [pageNumber, setPageNumber] = useState(0);
 
+  const sessionId = useSelector((state: RootState) => state.auth.sessionId);
+
+  useEffect(() => {
+    if (sessionId) {
+      dispatch(fetchWatchList(sessionId));
+    }
+  });
+
   const fetchMovies = () => {
     const number = pageNumber + 1;
     setPageNumber(number);
-    dispatch(fetchPopular(number));
+    dispatch(fetchAllMovies(number));
   };
 
   return (
     <div className={classes.root}>
-      <Grid xs={12} item >
+      <Grid xs={12} item>
         <Grid className={classes.header}>
           <Header />
         </Grid>
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
             <Grid item xs={12} sm={12}>
-              <div className="slider">carrousel</div>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Suspense fallback={<Box>Loading</Box>}>
+              <Suspense fallback={<Box className={classes.centerLoading}>Loading</Box>}>
                 <MovieList />
               </Suspense>
             </Grid>
