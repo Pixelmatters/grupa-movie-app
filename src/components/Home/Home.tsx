@@ -9,6 +9,7 @@ import './Home.css';
 import { fetchWatchList } from '../../store/account/thunks';
 import { RootState } from '../../store/store';
 
+const PopularSlider = lazy(() => import('../PopularSlider/PopularSlider'));
 const MovieList = lazy(() => import('../MovieList/MovieList'));
 
 const useStyles = makeStyles(styles => ({
@@ -58,7 +59,7 @@ function Home() {
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
             <Grid item xs={12} sm={12}>
-              <div className="slider">carrousel</div>
+              <PopularSlider />
             </Grid>
             <Grid item xs={12} sm={12}>
               <Suspense fallback={<Box>Loading</Box>}>
