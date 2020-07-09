@@ -8,13 +8,24 @@ import {
   makeStyles,
   Theme,
   Button,
+  withStyles,
 } from '@material-ui/core';
 import { IMovie } from '../../api/models';
 import Masonry from 'react-masonry-css';
-import { Remove, Add, ArrowRight } from '@material-ui/icons';
+import { Remove, Add, ArrowRight, StarBorder } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { getImageURL, getNotFoundImage } from '../../api/api';
 import { addWatchList, fetchWatchList } from '../../store/account/thunks';
+import { Rating } from '@material-ui/lab';
+
+const StyledRating = withStyles({
+  icon: {
+    color: '#fff',
+  },
+  iconFilled: {
+    color: '#F9BE51',
+  },
+})(Rating);
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -48,7 +59,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '100%',
     height: 0,
     bottom: 0,
-    backgroundColor: 'rgba(72, 72, 72, 0.84)',
+    background:
+      'linear-gradient(180deg, rgba(0,15,41,0.9150035014005602) 0%, rgba(3,23,87,0.9654236694677871) 100%);',
     color: theme.palette.primary.contrastText,
     boxSizing: 'border-box',
   },
@@ -66,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       '& ~ $info': {
         height: '100%',
         transition: 'height 1s ease',
-        padding: '0.5rem',
+        padding: '2rem',
         transform: 'translateZ(0)',
       },
       '& ~ $info > div > $movieRate': {
@@ -75,12 +87,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   movieSinopse: {
+    marginTop: '1rem',
     [theme.breakpoints.down('sm')]: {
       height: '10rem',
     },
   },
   itemTitle: {
-    fontSize: '1rem',
+    fontSize: '2rem',
   },
   movieImage: {
     animation: '$fadeIn ease 3s',
@@ -98,7 +111,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardOptions: {
     display: 'flex',
-    padding: '2rem',
     justifyContent: 'space-between',
     '& > div': {
       display: 'flex',
@@ -116,14 +128,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   movieRate: {
     opacity: 0,
-    width: '2rem',
-    height: '2rem',
-    backgroundColor: '#d88e06',
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: '50%',
-    float: 'right',
+  },
+  movieRateText: {
+    marginLeft: '8px',
   },
   '@keyframes fadeIn': {
     '0%': {
@@ -244,42 +253,54 @@ const MovieList: FunctionComponent = () => {
         columnClassName={classes.masonryGridColumn}
       >
         {movieList &&
-          movieList.map((item: IMovie) => (
-            <label key={item.id}>
-              <Box className={classes.itemWrapper}>
-                <input
-                  type="radio"
-                  name="radio"
-                  value="small"
-                  className={classes.checkHelper}
-                />
-                {renderImage(item.poster_path, item.title)}
-                <Box className={classes.info}>
-                  <Box>
-                    <Box className={classes.movieRate}>{item.vote_average}</Box>
-                    <Box component="h5" className={classes.itemTitle}>
-                      {item.title}
+          movieList.map((item: IMovie) => {
+            const voteAverage = item.vote_average ? item.vote_average / 2 : 0;
+            return (
+              <label key={item.id}>
+                <Box className={classes.itemWrapper}>
+                  <input
+                    type="radio"
+                    name="radio"
+                    value="small"
+                    className={classes.checkHelper}
+                  />
+                  {renderImage(item.poster_path, item.title)}
+                  <Box className={classes.info}>
+                    <Box>
+                      <Box className={classes.itemTitle}>{item.title}</Box>
+                      <Box className={classes.movieRate}>
+                        <StyledRating
+                          size={'small'}
+                          value={voteAverage}
+                          precision={0.5}
+                          emptyIcon={<StarBorder fontSize="inherit" />}
+                          readOnly
+                        />
+                        <Box className={classes.movieRateText}>
+                          ({voteAverage}/5 in {item.vote_count} reviews)
+                        </Box>
+                      </Box>
+                      <Box className={classes.movieSinopse}>
+                        {item.overview ||
+                          'No additional info was found for this movie.'}
+                      </Box>
                     </Box>
-                    <Box component="p" className={classes.movieSinopse}>
-                      {item.overview ||
-                        'No additional info was found for this movie.'}
-                    </Box>
-                  </Box>
-                  <Box>
-                    <Box className={classes.cardOptions}>
-                      <Button
-                        className={classes.buttonOptions}
-                        onClick={() => openMovieDetails(item.id)}
-                      >
-                        <ArrowRight /> See more
-                      </Button>
-                      {getWatchlistButton(item)}
+                    <Box>
+                      <Box className={classes.cardOptions}>
+                        <Button
+                          className={classes.buttonOptions}
+                          onClick={() => openMovieDetails(item.id)}
+                        >
+                          <ArrowRight /> See more
+                        </Button>
+                        {getWatchlistButton(item)}
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-            </label>
-          ))}
+              </label>
+            );
+          })}
       </Masonry>
       <Grid item xs={12} className={classes.loader}>
         <CircularProgress />

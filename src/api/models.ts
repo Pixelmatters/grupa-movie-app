@@ -7,6 +7,7 @@ export interface IMovie {
   poster_path?: string;
   overview?: string; // about
   vote_average?: number; //rating
+  vote_count?: number;
   genres: Array<IGenre>;
   tagline: string; // Small catch phrase
   release_date: Date;
