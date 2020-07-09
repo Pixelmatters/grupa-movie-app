@@ -12,6 +12,7 @@ import {
 import { IAccountState } from '../../store/account/types';
 import { match, useRouteMatch } from 'react-router-dom';
 import { Rating } from '@material-ui/lab';
+import { getImageURL } from '../../api/api';
 interface IMovieDsiplayStore {
   account: IAccountState;
   sessionId?: string;
@@ -172,8 +173,8 @@ const MovieDisplay: FunctionComponent = () => {
           <img
             className={classes.movieImg}
             src={
-              store.movie
-                ? `https://image.tmdb.org/t/p/w500${store.movie?.poster_path}`
+              store.movie && store.movie.poster_path
+                ? getImageURL(store.movie.poster_path)
                 : ''
             }
             alt=""

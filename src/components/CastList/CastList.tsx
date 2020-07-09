@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { ICast } from '../../api/models';
 import { makeStyles } from '@material-ui/core';
+import { getImageURL } from '../../api/api';
 
 const useStyles = makeStyles(() => ({
   castWrapper: {
@@ -45,7 +46,7 @@ const CastList: FunctionComponent = () => {
             <img
               className={classes.castMemberImg}
               alt={castMember.name}
-              src={`https://image.tmdb.org/t/p/w500${castMember.profile_path}`}
+              src={getImageURL(castMember.profile_path)}
             />
             <div className={classes.memberTextWrapper}>
               <span>{castMember.name}</span>
