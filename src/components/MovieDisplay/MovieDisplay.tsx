@@ -281,7 +281,7 @@ const MovieDisplay: FunctionComponent = () => {
                   rateMovie(newValue);
                 }}
               />
-              {movieUserRating != 0 && (
+              {movieUserRating !== 0 && (
                 <Tooltip title="Remove Rating">
                   <RemoveCircleIcon
                     className={classes.userRatingRemoveButtonCircle}
