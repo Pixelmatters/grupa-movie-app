@@ -1,15 +1,20 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-import { makeStyles, Theme, GridListTile, GridList } from '@material-ui/core';
+import { makeStyles, GridListTile, GridList } from '@material-ui/core';
 import { IMovie } from '../../api/models';
 import { useHistory } from 'react-router-dom';
 import { getImageURL, getNotFoundImage } from '../../api/api';
 import { fetchPopular } from '../../store/movie/thunks';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
-const useStyles = makeStyles((theme: Theme) => ({
+
+import headerBg from '../../assets/images/header-bg.jpg';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+
+const useStyles = makeStyles(() => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundImage: `url(${headerBg})`,
   },
   container: {
     flexWrap: 'nowrap',
@@ -17,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   movieImage: {
     animation: '$fadeIn ease 3s',
-    width: 200,
+    width: 250,
   },
   '@keyframes fadeIn': {
     '0%': {
@@ -29,7 +34,23 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const PopularSlider: FunctionComponent = () => {
+const getGridListCols = (width: Breakpoint) => {
+  if (isWidthUp('xl', width)) {
+    return 7;
+  }
+
+  if (isWidthUp('lg', width)) {
+    return 4;
+  }
+
+  if (isWidthUp('md', width)) {
+    return 2;
+  }
+
+  return 1;
+};
+
+const PopularSlider: FunctionComponent = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -54,7 +75,7 @@ const PopularSlider: FunctionComponent = () => {
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={'auto'} cols={5} className={classes.container}>
+      <GridList cellHeight={'auto'} cols={getGridListCols(props.width)} className={classes.container}>
         {popular &&
           popular.map((item: IMovie) => (
             <GridListTile
@@ -69,4 +90,4 @@ const PopularSlider: FunctionComponent = () => {
   );
 };
 
-export default PopularSlider;
+export default withWidth()(PopularSlider);
