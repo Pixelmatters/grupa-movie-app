@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { ICast } from '../../api/models';
 import { makeStyles } from '@material-ui/core';
-import { getImageURL } from '../../api/api';
+import { getImageURL, getNotFoundImage } from '../../api/api';
 
 const useStyles = makeStyles(() => ({
   castWrapper: {
@@ -12,6 +12,9 @@ const useStyles = makeStyles(() => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     backgroundColor: '#ffffff',
+    maxWidth: '2080px',
+    margin: '0 auto',
+    textAlign: 'center',
   },
   castMemberImg: {
     maxWidth: '200px',
@@ -27,6 +30,10 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     marginTop: '10px',
     marginLeft: '30px',
+    maxWidth: '200px',
+  },
+  classMemberName: {
+    fontWeight: 'bold',
   },
 }));
 
@@ -38,18 +45,23 @@ const CastList: FunctionComponent = () => {
   if (castData === undefined) {
     return <p>Loading..,</p>;
   }
+  const renderImage = (path?: string, altText?: string) => {
+    const localPath = path
+      ? getImageURL(path)
+      : getNotFoundImage('200x300/F4F4F4', altText || '');
+
+    return (
+      <img className={classes.castMemberImg} alt={altText} src={localPath} />
+    );
+  };
   return (
     <div className={classes.castWrapper}>
-      {castData.slice(0, 10).map((castMember: ICast) => {
+      {castData.map((castMember: ICast) => {
         return (
           <div className={classes.memberWrapper} key={castMember.cast_id}>
-            <img
-              className={classes.castMemberImg}
-              alt={castMember.name}
-              src={getImageURL(castMember.profile_path)}
-            />
+            {renderImage(castMember.profile_path, 'No image')}
             <div className={classes.memberTextWrapper}>
-              <span>{castMember.name}</span>
+              <span className={classes.classMemberName}>{castMember.name}</span>
               <span>{castMember.character}</span>
             </div>
           </div>
