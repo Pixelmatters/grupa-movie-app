@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { makeStyles, Box, Button } from '@material-ui/core';
+import { makeStyles, Box, Button, withStyles } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { IAccountState } from '../../store/account/types';
@@ -7,7 +7,8 @@ import { fetchWatchList, addWatchList } from '../../store/account/thunks';
 import { getImageURL, getNotFoundImage } from '../../api/api';
 import { IMovie } from '../../api/models';
 import { useHistory } from 'react-router';
-import { ArrowRight, Remove, Add } from '@material-ui/icons';
+import { ArrowRight, Remove, Add, StarBorder } from '@material-ui/icons';
+import { Rating } from '@material-ui/lab';
 
 interface IMovieDisplayStore {
   account: IAccountState;
@@ -18,6 +19,15 @@ interface IMovieDisplayStore {
     isFetching: boolean;
   };
 }
+
+const StyledRating = withStyles({
+  icon: {
+    color: '#fff',
+  },
+  iconFilled: {
+    color: '#F9BE51',
+  },
+})(Rating);
 
 const useStyles = makeStyles(styles => ({
   paper: {
@@ -56,13 +66,13 @@ const useStyles = makeStyles(styles => ({
     display: 'none',
     '&:checked': {
       '& ~ div': {
-        height: '99%',
+        height: '100%',
         padding: '0.5rem',
         transform: 'translateZ(0)',
         opacity: 1,
-        display: 'block',
+        display: 'flex',
       },
-      '& ~ div > $movieRate': {
+      '& ~ $info > div > $movieRate': {
         opacity: 1,
       },
       '& ~ img': {
@@ -72,24 +82,21 @@ const useStyles = makeStyles(styles => ({
   },
   info: {
     position: 'absolute',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     width: '100%',
     height: 0,
-    bottom: '4px',
-    backgroundColor: 'rgba(72, 72, 72, 0.84)',
+    bottom: 0,
+    display: 'none',
+    background:
+      'linear-gradient(180deg, rgba(0,15,41,0.9150035014005602) 0%, rgba(3,23,87,0.9654236694677871) 100%);',
     color: styles.palette.primary.contrastText,
     boxSizing: 'border-box',
-    display: 'none',
   },
   movieRate: {
     opacity: 0,
-    width: '2rem',
-    height: '2rem',
-    backgroundColor: '#d88e06',
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: '50%',
-    float: 'right',
   },
 
   itemTitle: {
@@ -142,6 +149,9 @@ const useStyles = makeStyles(styles => ({
     height: '20rem',
     textAlign: 'center',
     fontFamily: 'robot',
+  },
+  movieRateText: {
+    marginLeft: '8px',
   },
 }));
 const Watchlist: FunctionComponent = () => {
@@ -253,37 +263,54 @@ const Watchlist: FunctionComponent = () => {
       <div className={classes.moviesWrapper}>
         {store.account &&
           store.account.watchlist &&
-          store.account.watchlist.map((item: IMovie) => (
-            <label key={item.id}>
-              <Box className={classes.itemWrapper}>
-                <input
-                  type="radio"
-                  name="radio"
-                  value="small"
-                  className={classes.checkHelper}
-                />
-                {renderImage(item.poster_path, item.title)}
-                <Box className={classes.info}>
-                  <Box className={classes.movieRate}>{item.vote_average}</Box>
-                  <Box component="h5" className={classes.itemTitle}>
-                    {item.title}
-                  </Box>
-                  <Box component="p" className={classes.movieSinopse}>
-                    {item.overview}
-                  </Box>
-                  <Box className={classes.cardOptions}>
-                    <Button
-                      className={classes.buttonOptions}
-                      onClick={() => openMovieDetails(item.id)}
-                    >
-                      <ArrowRight /> See more
-                    </Button>
-                    {getWatchlistButton(item)}
+          store.account.watchlist.map((item: IMovie) => {
+            const voteAverage = item.vote_average ? item.vote_average / 2 : 0;
+            return (
+              <label key={item.id}>
+                <Box className={classes.itemWrapper}>
+                  <input
+                    type="radio"
+                    name="radio"
+                    value="small"
+                    className={classes.checkHelper}
+                  />
+                  {renderImage(item.poster_path, item.title)}
+                  <Box className={classes.info}>
+                    <Box>
+                      <Box className={classes.itemTitle}>{item.title}</Box>
+                      <Box className={classes.movieRate}>
+                        <StyledRating
+                          size={'small'}
+                          value={voteAverage}
+                          precision={0.5}
+                          emptyIcon={<StarBorder fontSize="inherit" />}
+                          readOnly
+                        />
+                        <Box className={classes.movieRateText}>
+                          ({voteAverage}/5 in {item.vote_count} reviews)
+                        </Box>
+                      </Box>
+                      <Box className={classes.movieSinopse}>
+                        {item.overview ||
+                          'No additional info was found for this movie.'}
+                      </Box>
+                    </Box>
+                    <Box>
+                      <Box className={classes.cardOptions}>
+                        <Button
+                          className={classes.buttonOptions}
+                          onClick={() => openMovieDetails(item.id)}
+                        >
+                          <ArrowRight /> See more
+                        </Button>
+                        {getWatchlistButton(item)}
+                      </Box>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-            </label>
-          ))}
+              </label>
+            );
+          })}
       </div>
     </div>
   );
