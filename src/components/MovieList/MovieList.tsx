@@ -138,8 +138,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const breakpointColumnsObj = {
   default: 5,
   2095: 4,
-  1727: 3,
-  1305: 2,
+  1727: 2,
   858: 1,
 };
 
