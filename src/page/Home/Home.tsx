@@ -20,6 +20,7 @@ const useStyles = makeStyles(styles => ({
     width: '100%',
   },
   header: {
+    position: 'fixed',
     backgroundImage: `url(${headerBg})`,
     width: '100%',
     height: '8rem',
