@@ -15,10 +15,15 @@ import {
 } from '../../store/auth/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
+
 import Watchlist from '../Watchlist/Watchlist';
 
 const AUTH_REDIRECT_ROUTE: string | undefined =
   process.env.REACT_APP_AUTH_REDIRECT_ROUTE;
+
+import { verifyAuth } from '../../helpers/login';
+import { useHistory } from 'react-router-dom';
+
 
 const useStyles = makeStyles(styles => ({
   headerContainer: {
@@ -39,10 +44,11 @@ const useStyles = makeStyles(styles => ({
     display: 'flex',
     fontFamily: 'Roboto, arial',
     color: styles.palette.primary.contrastText,
+    cursor: 'pointer',
   },
   menuOptions: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '30rem',
     [styles.breakpoints.down('sm')]: {
@@ -92,26 +98,33 @@ const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+
+  const authState = useSelector((state: RootState) => state.auth);
+  const moviesLink = {
+    title: 'Movies',
+    action: () => history.push('/'),
+  };
 
   const defaultMenuItems = [
+    moviesLink,
     {
       title: 'Login',
-      action: () => startAuthTokenRequest(),
+      action: () => dispatch(requestAuthToken()),
     },
   ];
 
   const loggedMenuItems = [
-    {
-      title: 'Movies',
-      action: () => {},
-    },
+    moviesLink,
     {
       title: 'My WatchList',
       action: () => handleOpen(),
     },
     {
       title: 'Logout',
-      action: () => startSessionDelete(),
+      action: () => dispatch(requestDeleteSession(authState.sessionId || '')),
     },
   ];
 
@@ -145,11 +158,7 @@ const Header = () => {
   };
 
   if (authState.requestToken) {
-    const token = authState.requestToken?.request_token ?? '';
-    const baseUrl = `${window.location.protocol}//${window.location.host}`;
-    const redirectUrl = `${baseUrl}/${AUTH_REDIRECT_ROUTE}`;
-    const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${redirectUrl}`;
-    window.location.assign(url);
+    verifyAuth(authState);
   }
 
   const menuItems = authState.sessionId ? loggedMenuItems : defaultMenuItems;
@@ -157,7 +166,10 @@ const Header = () => {
   return (
     <Grid item xs={12} className={classes.headerContainer}>
       <header className={classes.menu}>
-        <Box className={classes.menuIconTitle}>
+        <Box
+          className={classes.menuIconTitle}
+          onClick={() => history.push('/')}
+        >
           <LocalMoviesOutlined className={classes.iconMovie} />
           <Box component="h1" className={classes.wideName}>
             The Movies Database
