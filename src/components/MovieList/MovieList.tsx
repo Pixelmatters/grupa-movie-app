@@ -106,6 +106,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   buttonOptions: {
     color: '#F9BE51',
     fontSize: '1rem',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '0.8rem',
+    },
     fontWeight: 800,
   },
   movieRate: {
