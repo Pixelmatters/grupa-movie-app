@@ -13,7 +13,6 @@ export interface IMovie {
   release_date: Date;
   runtime: number;
   rating?: number; // user rating
-  vote_count: number;
 }
 
 export interface IGenre {
