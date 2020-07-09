@@ -170,6 +170,12 @@ const MovieList: FunctionComponent = () => {
     sessionId: state.auth.sessionId,
   }));
 
+  const updateWatchlist = () => {
+    if (!store.watchlist.isToggling && store.sessionId) {
+      dispatch(fetchWatchList(store.sessionId));
+    }
+  };
+
   useEffect(() => {
     if (store.popular && store.popular.length > 0) {
       setMovieList(prev => prev.concat(store.popular ?? []));
@@ -177,11 +183,7 @@ const MovieList: FunctionComponent = () => {
     }
   }, [store.popular]);
 
-  useEffect(() => {
-    if (!store.watchlist.isToggling && store.sessionId) {
-      dispatch(fetchWatchList(store.sessionId));
-    }
-  }, [dispatch, store.sessionId, store.watchlist.isToggling]);
+  useEffect(updateWatchlist, [store.watchlist.isToggling]);
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
