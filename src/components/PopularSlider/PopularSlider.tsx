@@ -7,8 +7,6 @@ import { useHistory } from 'react-router-dom';
 import { getImageURL, getNotFoundImage } from '../../api/api';
 import { fetchPopular } from '../../store/movie/thunks';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
-
-
 import headerBg from '../../assets/images/header-bg.jpg';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
@@ -51,7 +49,13 @@ const getGridListCols = (width: Breakpoint) => {
   return 1;
 };
 
-const PopularSlider: FunctionComponent = (props: any) => {
+type PopularSliderProps = {
+  width: Breakpoint;
+};
+
+const PopularSlider: FunctionComponent<PopularSliderProps> = (
+  props: PopularSliderProps
+) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -76,7 +80,11 @@ const PopularSlider: FunctionComponent = (props: any) => {
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={'auto'} cols={getGridListCols(props.width)} className={classes.container}>
+      <GridList
+        cellHeight={'auto'}
+        cols={getGridListCols(props.width)}
+        className={classes.container}
+      >
         {popular &&
           popular.map((item: IMovie) => (
             <GridListTile
