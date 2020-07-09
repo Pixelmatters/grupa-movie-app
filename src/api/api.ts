@@ -42,7 +42,6 @@ const getFormattedDate = (date: Date) => {
   return [year, month, day].join('-');
 };
 
-
 // Movies
 export const getLatestMovie = () => exec('movie/latest', Method.GET);
 export const getMovie = (id: number) => exec(`movie/${id}`, Method.GET);
@@ -56,10 +55,13 @@ export const rateMovie = (id: number, value: number, sessionId: string) =>
   );
 export const deleteMovieRating = (id: number, sessionId: string) =>
   exec(`movie/${id}/rating`, Method.DELETE, { session_id: sessionId });
-export const getAllMovies = (pageNumber: number) =>{
-  const url = `discover/movie?language=en-US&sort_by=release_date.desc&release_date.lte=${getFormattedDate(new Date())}&page=${pageNumber}`;
+export const getAllMovies = (pageNumber: number) => {
+  const url = `discover/movie?language=en-US&sort_by=release_date.desc&release_date.lte=${getFormattedDate(
+    new Date()
+  )}&page=${pageNumber}`;
   return exec(url, Method.GET);
 };
+export const getPopular = () => exec('movie/popular', Method.GET);
 
 // Authentication
 export const createRequestToken = () =>
@@ -95,6 +97,5 @@ export const getImageURL = (suffix: string) =>
 export const getNotFoundImage = (settings: string, text: string) =>
   `https://via.placeholder.com/${settings}?text=${text}`;
 
-export const getAuthUrl = (token: string, redirectTo: string) => 
+export const getAuthUrl = (token: string, redirectTo: string) =>
   `https://www.themoviedb.org/authenticate/${token}?redirect_to=${redirectTo}`;
-

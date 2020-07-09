@@ -8,9 +8,9 @@ export const REQUEST_ALL_MOVIES_START = 'REQUEST_ALL_MOVIES_START';
 export const REQUEST_ALL_MOVIES_SUCCESS = 'REQUEST_ALL_MOVIES_SUCCESS';
 export const REQUEST_ALL_MOVIES_ERROR = 'REQUEST_ALL_MOVIES_ERROR';
 
-export const REQUEST_LATEST_START = 'REQUEST_LATEST_START';
-export const REQUEST_LATEST_SUCCESS = 'REQUEST_LATEST_SUCCESS';
-export const REQUEST_LATEST_ERROR = 'REQUEST_LATEST_ERROR';
+export const REQUEST_POPULAR_START = 'REQUEST_POPULAR_START';
+export const REQUEST_POPULAR_SUCCESS = 'REQUEST_POPULAR_SUCCESS';
+export const REQUEST_POPULAR_ERROR = 'REQUEST_POPULAR_ERROR';
 
 export type MovieActionTypes =
   | IRequestMovieStartAction
@@ -19,9 +19,9 @@ export type MovieActionTypes =
   | IrequestAllMoviesStartAction
   | IrequestAllMoviesSuccessAction
   | IrequestAllMoviesErrorAction
-  | IRequestLatestStartAction
-  | IRequestLatestSuccessAction
-  | IRequestLatestErrorAction;
+  | IRequestPopularStartAction
+  | IRequestPopularSuccessAction
+  | IRequestPopularErrorAction;
 
 interface IRequestMovieStartAction {
   type: typeof REQUEST_MOVIE_START;
@@ -49,17 +49,17 @@ interface IrequestAllMoviesErrorAction {
   type: typeof REQUEST_ALL_MOVIES_ERROR;
 }
 
-interface IRequestLatestStartAction {
-  type: typeof REQUEST_LATEST_START;
+interface IRequestPopularStartAction {
+  type: typeof REQUEST_POPULAR_START;
 }
 
-interface IRequestLatestSuccessAction {
-  type: typeof REQUEST_LATEST_SUCCESS;
-  latest: IMovie;
+interface IRequestPopularSuccessAction {
+  type: typeof REQUEST_POPULAR_SUCCESS;
+  popular: Array<IMovie>;
 }
 
-interface IRequestLatestErrorAction {
-  type: typeof REQUEST_LATEST_ERROR;
+interface IRequestPopularErrorAction {
+  type: typeof REQUEST_POPULAR_ERROR;
 }
 
 export interface IMovieState {
@@ -69,7 +69,7 @@ export interface IMovieState {
   isFetchingAllMovies: boolean;
   failedFetchingAllMovies: boolean;
   allMovies?: IMovie[];
-  isFetchingLatest: boolean;
-  failedFetchingLatest: boolean;
-  latest?: IMovie;
+  isFetchingPopular: boolean;
+  failedFetchingPopular: boolean;
+  popular?: Array<IMovie>;
 }

@@ -7,9 +7,9 @@ import {
   REQUEST_ALL_MOVIES_START,
   REQUEST_ALL_MOVIES_SUCCESS,
   REQUEST_ALL_MOVIES_ERROR,
-  REQUEST_LATEST_START,
-  REQUEST_LATEST_SUCCESS,
-  REQUEST_LATEST_ERROR,
+  REQUEST_POPULAR_START,
+  REQUEST_POPULAR_SUCCESS,
+  REQUEST_POPULAR_ERROR,
 } from './types';
 const initialState: IMovieState = {
   movie: undefined,
@@ -18,9 +18,9 @@ const initialState: IMovieState = {
   allMovies: undefined,
   failedFetchingAllMovies: false,
   isFetchingAllMovies: false,
-  latest: undefined,
-  isFetchingLatest: false,
-  failedFetchingLatest: false,
+  popular: undefined,
+  isFetchingPopular: false,
+  failedFetchingPopular: false,
 };
 
 export const movieReducer = (
@@ -70,26 +70,26 @@ export const movieReducer = (
         failedFetchingAllMovies: true,
         allMovies: undefined,
       };
-    case REQUEST_LATEST_START:
+    case REQUEST_POPULAR_START:
       return {
         ...state,
-        isFetchingLatest: true,
-        failedFetchingLatest: false,
-        latest: undefined,
+        isFetchingPopular: true,
+        failedFetchingPopular: false,
+        popular: undefined,
       };
-    case REQUEST_LATEST_SUCCESS:
+    case REQUEST_POPULAR_SUCCESS:
       return {
         ...state,
-        isFetchingLatest: false,
-        failedFetchingLatest: false,
-        latest: action.latest,
+        isFetchingPopular: false,
+        failedFetchingPopular: false,
+        popular: action.popular,
       };
-    case REQUEST_LATEST_ERROR:
+    case REQUEST_POPULAR_ERROR:
       return {
         ...state,
-        isFetchingLatest: false,
-        failedFetchingLatest: true,
-        latest: undefined,
+        isFetchingPopular: false,
+        failedFetchingPopular: true,
+        popular: undefined,
       };
     default:
       return state;

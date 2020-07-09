@@ -9,6 +9,7 @@ import './Home.css';
 import { fetchWatchList } from '../../store/account/thunks';
 import { RootState } from '../../store/store';
 
+const PopularSlider = lazy(() => import('../PopularSlider/PopularSlider'));
 const MovieList = lazy(() => import('../MovieList/MovieList'));
 
 const useStyles = makeStyles(styles => ({
@@ -28,6 +29,9 @@ const useStyles = makeStyles(styles => ({
     alignItems: 'center',
   },
   mainContainer: {
+    marginTop: '11rem',
+  },
+  movieList: {
     marginTop: '11rem',
   },
   centerLoading: {
@@ -62,8 +66,13 @@ function Home() {
         </Grid>
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
-            <Grid item xs={12} sm={12}>
-              <Suspense fallback={<Box className={classes.centerLoading}>Loading</Box>}>
+            <Grid item>
+              <PopularSlider />
+            </Grid>
+            <Grid item xs={12} sm={12} className={classes.movieList}>
+              <Suspense
+                fallback={<Box className={classes.centerLoading}>Loading</Box>}
+              >
                 <MovieList />
               </Suspense>
             </Grid>
