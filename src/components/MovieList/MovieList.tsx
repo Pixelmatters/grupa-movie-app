@@ -181,7 +181,7 @@ const MovieList: FunctionComponent = () => {
     if (!store.watchlist.isToggling && store.sessionId) {
       dispatch(fetchWatchList(store.sessionId));
     }
-  }, [store.watchlist.isToggling]);
+  }, [dispatch, store.sessionId, store.watchlist.isToggling]);
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
