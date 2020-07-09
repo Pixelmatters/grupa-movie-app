@@ -1,16 +1,17 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { Grid, Box, makeStyles } from '@material-ui/core';
 import headerBg from '../../assets/images/header-bg.jpg';
-import Header from '../Header/Header';
+import Header from '../../components/Header/Header';
 import { fetchAllMovies } from '../../store/movie/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { Waypoint } from 'react-waypoint';
-import './Home.css';
 import { fetchWatchList } from '../../store/account/thunks';
 import { RootState } from '../../store/store';
 
-const PopularSlider = lazy(() => import('../PopularSlider/PopularSlider'));
-const MovieList = lazy(() => import('../MovieList/MovieList'));
+const PopularSlider = lazy(() =>
+  import('../../components/PopularSlider/PopularSlider')
+);
+const MovieList = lazy(() => import('../../components/MovieList/MovieList'));
 
 const useStyles = makeStyles(styles => ({
   root: {
@@ -30,12 +31,18 @@ const useStyles = makeStyles(styles => ({
   mainContainer: {
     marginTop: '8rem',
   },
+  title: {
+    textAlign: 'center',
+    fontFamily: 'Roboto, arial',
+    color: styles.palette.primary.dark,
+    paddingBottom: '2rem',
+  },
   centerLoading: {
     textAlign: 'center',
   },
   popularSlider: {
     marginBottom: '4rem',
-  }
+  },
 }));
 
 function Home() {
@@ -72,6 +79,9 @@ function Home() {
               <Suspense
                 fallback={<Box className={classes.centerLoading}>Loading</Box>}
               >
+                <Box component="h1" className={classes.title}>
+                  Recent Movies
+                </Box>
                 <MovieList />
               </Suspense>
             </Grid>

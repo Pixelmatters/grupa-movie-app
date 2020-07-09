@@ -1,23 +1,16 @@
-import Header from '../Header/Header';
+import Header from '../../components/Header/Header';
 import { Grid } from '@material-ui/core';
 import headerBg from '../../assets/images/header-bg.jpg';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, FunctionComponent } from 'react';
-import MovieDisplay from '../MovieDisplay/MovieDisplay';
-import CastList from '../CastList/CastList';
+import MovieDisplay from '../../components/MovieDisplay/MovieDisplay';
+import CastList from '../../components/CastList/CastList';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovie } from '../../store/movie/thunks';
 import { fetchCast } from '../../store/cast/thunks';
 import { match, useRouteMatch } from 'react-router-dom';
 import { IMatchParameters } from '../../api/models';
 import { RootState } from '../../store/store';
-import { IMovieState } from '../../store/movie/types';
-import { ICastState } from '../../store/cast/types';
-
-interface IMovieStore {
-  movie: IMovieState;
-  cast: ICastState;
-}
 
 const useStyles = makeStyles(styles => ({
   mainWrapper: {
