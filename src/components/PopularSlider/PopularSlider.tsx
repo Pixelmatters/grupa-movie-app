@@ -13,6 +13,7 @@ import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 const useStyles = makeStyles(() => ({
   root: {
     backgroundImage: `url(${headerBg})`,
+    backgroundPosition: '0px -128px',
   },
   container: {
     flexWrap: 'nowrap',
