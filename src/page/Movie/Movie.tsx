@@ -11,13 +11,6 @@ import { fetchCast } from '../../store/cast/thunks';
 import { match, useRouteMatch } from 'react-router-dom';
 import { IMatchParameters } from '../../api/models';
 import { RootState } from '../../store/store';
-import { IMovieState } from '../../store/movie/types';
-import { ICastState } from '../../store/cast/types';
-
-interface IMovieStore {
-  movie: IMovieState;
-  cast: ICastState;
-}
 
 const useStyles = makeStyles(styles => ({
   mainWrapper: {
