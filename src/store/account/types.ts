@@ -17,6 +17,9 @@ export const REQUEST_RATED_MOVIES_ERROR = 'REQUEST_RATED_MOVIES_ERROR';
 export const ADD_WATCH_LIST_START = 'ADD_WATCH_LIST_START';
 export const ADD_WATCH_LIST_SUCCESS = 'ADD_WATCH_LIST_SUCCESS';
 export const ADD_WATCH_LIST_ERROR = 'ADD_WATCH_LIST_ERROR';
+export const REQUEST_RATE_MOVIE_START = 'REQUEST_RATE_MOVIE_START';
+export const REQUEST_RATE_MOVIE_SUCCESS = 'REQUEST_RATE_MOVIE_SUCCESS';
+export const REQUEST_RATE_MOVIE_ERROR = 'REQUEST_RATE_MOVIE_ERROR';
 
 export type AccountActionTypes =
   | IRequestAccountDetailsStartAction
@@ -30,7 +33,10 @@ export type AccountActionTypes =
   | IRequestRatedMoviesErrorAction
   | IAddWatchListStartAction
   | IAddWatchListSuccessAction
-  | IAddWatchListErrorAction;
+  | IAddWatchListErrorAction
+  | IRequestRateMovieStartAction
+  | IRequestRateMovieSuccessAction
+  | IRequestRateMovieErrorAction;
 
 interface IRequestAccountDetailsStartAction {
   type: typeof REQUEST_ACCOUNT_DETAILS_START;
@@ -78,6 +84,18 @@ interface IAddWatchListErrorAction {
   type: typeof ADD_WATCH_LIST_ERROR;
 }
 
+interface IRequestRateMovieStartAction {
+  type: typeof REQUEST_RATE_MOVIE_START;
+}
+
+interface IRequestRateMovieSuccessAction {
+  type: typeof REQUEST_RATE_MOVIE_SUCCESS;
+}
+
+interface IRequestRateMovieErrorAction {
+  type: typeof REQUEST_RATE_MOVIE_ERROR;
+}
+
 export interface IAccountState {
   isFetchingAccount: boolean;
   failedFatchingAccount: boolean;
@@ -91,6 +109,8 @@ export interface IAccountState {
   isAddingWatchlist: boolean;
   failedAddingWatchList: boolean;
   addedWatchListMessage?: IWatchListMessage;
+  isRequestingRateMovie: boolean;
+  failedRequestingRateMovie: boolean;
 }
 
 export interface IWatchListMessage {

@@ -41,6 +41,13 @@ export const getMovie = (id: number) => exec(`movie/${id}`, Method.GET);
 export const getCast = (id: number) => exec(`movie/${id}/credits`, Method.GET);
 export const getPopular = (pageNumber: number) =>
   exec(`movie/popular?page=${pageNumber}`, Method.GET);
+export const rateMovie = (id: number, value: number, sessionId: string) =>
+  exec(
+    `movie/${id}/rating`,
+    Method.POST,
+    { session_id: sessionId },
+    { value: value }
+  );
 
 // Authentication
 export const createRequestToken = () =>
