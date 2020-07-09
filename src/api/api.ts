@@ -81,3 +81,6 @@ export const addToWatchlist = (
     { session_id: sessionId },
     data
   );
+
+  export const getImageURL = (suffix: string) => `https://image.tmdb.org/t/p/w500${suffix}`;
+  export const getNotFoundImage = (settings: string) => `https://via.placeholder.com/${settings}?text=No%20Image`;

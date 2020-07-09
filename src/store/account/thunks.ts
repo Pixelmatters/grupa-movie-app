@@ -6,9 +6,9 @@ import {
   requestMovieWatchlistError,
   requestMovieWatchlistStart,
   requestMovieWatchlistSuccess,
-  requestRateMoviesError,
-  requestRateMoviesStart,
-  requestRateMoviesSuccess
+  requestRatedMoviesError,
+  requestRatedMoviesStart,
+  requestRatedMoviesSuccess,
 } from './actions';
 import { getAccountDetails, getRatedMovies } from '../../api/api';
 import { IAccount } from './types';
@@ -41,11 +41,11 @@ export const fetchWatchList = (
 export const fetchRateMovies = (
   accountId: number
 ): AppThunk => async dispatch => {
-  dispatch(requestRateMoviesStart());
+  dispatch(requestRatedMoviesStart());
   getRatedMovies(accountId)
     .then(response => {
       const ratedMovies = response.data as Array<IMovie>;
-      dispatch(requestRateMoviesSuccess(ratedMovies));
+      dispatch(requestRatedMoviesSuccess(ratedMovies));
     })
-    .catch(() => dispatch(requestRateMoviesError()));
+    .catch(() => dispatch(requestRatedMoviesError()));
 };
