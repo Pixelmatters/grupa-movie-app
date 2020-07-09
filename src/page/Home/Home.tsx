@@ -1,16 +1,17 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { Grid, Box, makeStyles } from '@material-ui/core';
 import headerBg from '../../assets/images/header-bg.jpg';
-import Header from '../Header/Header';
+import Header from '../../components/Header/Header';
 import { fetchAllMovies } from '../../store/movie/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { Waypoint } from 'react-waypoint';
-import './Home.css';
 import { fetchWatchList } from '../../store/account/thunks';
 import { RootState } from '../../store/store';
 
-const PopularSlider = lazy(() => import('../PopularSlider/PopularSlider'));
-const MovieList = lazy(() => import('../MovieList/MovieList'));
+const PopularSlider = lazy(() =>
+  import('../../components/PopularSlider/PopularSlider')
+);
+const MovieList = lazy(() => import('../../components/MovieList/MovieList'));
 
 const useStyles = makeStyles(styles => ({
   root: {

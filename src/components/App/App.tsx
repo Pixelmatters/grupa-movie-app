@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-const Home = lazy(() => import('../Home/Home'));
-const Movie = lazy(() => import('../Movie/Movie'));
+const Home = lazy(() => import('../../page/Home/Home'));
+const Movie = lazy(() => import('../../page/Movie/Movie'));
 const Approved = lazy(() => import('../Approved/Approved'));
 
 function App() {

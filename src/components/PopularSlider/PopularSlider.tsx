@@ -13,6 +13,7 @@ import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 const useStyles = makeStyles(() => ({
   root: {
     backgroundImage: `url(${headerBg})`,
+    backgroundPosition: '0px -128px',
   },
   container: {
     flexWrap: 'nowrap',
@@ -67,35 +68,34 @@ const PopularSlider: FunctionComponent<PopularSliderProps> = (
     dispatch(fetchPopular());
   }, [dispatch]);
 
-  const renderImage = (path?: string, altText?: string) => {
-    const localPath = path
-      ? getImageURL(path)
-      : getNotFoundImage('400x600/FFFFFF', altText || '');
-
-    return <img className={classes.movieImage} src={localPath} alt={altText} />;
-  };
-
   const openMovieDetails = (id: number) => {
     history.push(`/movie/${id}`);
   };
 
+  const renderImage = (callback: Function, path?: string, altText?: string ) => {
+    const localPath = path
+      ? getImageURL(path)
+      : getNotFoundImage('400x600/FFFFFF', altText || '');
+
+    return <img className={classes.movieImage} src={localPath} alt={altText} onClick={() => callback()} />;
+  };
   return (
     <div className={classes.root}>
-      <GridList
-        cellHeight={'auto'}
-        cols={getGridListCols(props.width)}
-        className={classes.container}
-      >
-        {popular &&
-          popular.map((item: IMovie) => (
+      {popular && (
+        <GridList
+          cellHeight={'auto'}
+          cols={getGridListCols(props.width)}
+          className={classes.container}
+        >
+          {popular.map((item: IMovie) => (
             <GridListTile
               key={item.id}
-              onClick={() => openMovieDetails(item.id)}
             >
-              {renderImage(item.poster_path, item.title)}
+              {renderImage(() => openMovieDetails(item.id), item.poster_path, item.title)}
             </GridListTile>
           ))}
-      </GridList>
+        </GridList>
+      )}
     </div>
   );
 };
