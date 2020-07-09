@@ -13,7 +13,7 @@ import { IAccountState } from '../../store/account/types';
 import { match, useRouteMatch } from 'react-router-dom';
 import { Rating } from '@material-ui/lab';
 import { getImageURL } from '../../api/api';
-interface IMovieDsiplayStore {
+interface IMovieDisplayStore {
   account: IAccountState;
   sessionId?: string;
   movie?: IMovie;
@@ -90,7 +90,7 @@ const MovieDisplay: FunctionComponent = () => {
   >;
   const movieId: number = Number(matchData.params.movieId);
 
-  const store = useSelector<RootState, IMovieDsiplayStore>(
+  const store = useSelector<RootState, IMovieDisplayStore>(
     (state: RootState) => ({
       account: state.account,
       sessionId: state.auth.sessionId,
@@ -117,6 +117,7 @@ const MovieDisplay: FunctionComponent = () => {
       const isOnWatchList = store.account.watchlist.some(
         (watchMovie: IMovie) => watchMovie.id === movieId
       );
+
       if (isOnWatchList) {
         setMovieIsOnWatchList(true);
         setWatchlistButtonText('Remove from watchlist');
