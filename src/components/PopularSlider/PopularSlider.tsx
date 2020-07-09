@@ -22,6 +22,7 @@ const useStyles = makeStyles(() => ({
   movieImage: {
     animation: '$fadeIn ease 3s',
     width: 300,
+    cursor: 'pointer',
   },
   '@keyframes fadeIn': {
     '0%': {
@@ -35,7 +36,7 @@ const useStyles = makeStyles(() => ({
 
 const getGridListCols = (width: Breakpoint) => {
   if (isWidthUp('xl', width)) {
-    return 7;
+    return 5;
   }
 
   if (isWidthUp('lg', width)) {
