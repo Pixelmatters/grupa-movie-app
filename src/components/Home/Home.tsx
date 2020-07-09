@@ -18,10 +18,12 @@ const useStyles = makeStyles(styles => ({
   header: {
     backgroundImage: `url(${headerBg})`,
     width: '100%',
-    height: '10rem',
+    height: '8rem',
     position: 'fixed',
     top: 0,
     zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
   },
   mainContainer: {
     marginTop: '11rem',
@@ -47,9 +49,6 @@ function Home() {
         </Grid>
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
-            <Grid item xs={12} sm={12}>
-              <div className="slider">carrousel</div>
-            </Grid>
             <Grid item xs={12} sm={12}>
               <Suspense fallback={<Box>Loading</Box>}>
                 <MovieList />

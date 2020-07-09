@@ -41,9 +41,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   info: {
     position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     width: '100%',
     height: 0,
-    bottom: '4px',
+    bottom: 0,
     backgroundColor: 'rgba(72, 72, 72, 0.84)',
     color: theme.palette.primary.contrastText,
     boxSizing: 'border-box',
@@ -57,12 +60,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'none',
     '&:checked': {
       '& ~ div': {
-        height: '99%',
+        height: '100%',
         transition: 'height 1s ease',
         padding: '0.5rem',
         transform: 'translateZ(0)',
       },
-      '& ~ div > $movieRate': {
+      '& ~ div ~ $movieRate': {
         opacity: 1,
       },
       '& ~ img': {
@@ -71,8 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   movieSinopse: {
-    height: '15rem',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('sm')]:{
       height: '10rem',
     },
   },
@@ -95,7 +97,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardOptions: {
     display: 'flex',
-    marginTop: '8rem',
     padding: '2rem',
     justifyContent: 'space-between',
     '& > div': {
@@ -190,23 +191,27 @@ const MovieList: FunctionComponent = () => {
                 />
                 {renderImage(item.poster_path, item.title)}
                 <Box className={classes.info}>
-                  <Box className={classes.movieRate}>{item.vote_average}</Box>
-                  <Box component="h5" className={classes.itemTitle}>
-                    {item.title}
+                  <Box >
+                    <Box className={classes.movieRate}>{item.vote_average}</Box>
+                    <Box component="h5" className={classes.itemTitle}>
+                      {item.title}
+                    </Box>
+                    <Box component="p" className={classes.movieSinopse}>
+                      {item.overview}
+                    </Box>
                   </Box>
-                  <Box component="p" className={classes.movieSinopse}>
-                    {item.overview}
-                  </Box>
-                  <Box className={classes.cardOptions}>
-                    <Button
-                      className={classes.buttonOptions}
-                      onClick={() => openMovieDetails(item.id)}
-                    >
-                      <UnfoldMore /> See more
-                    </Button>
-                    <Button className={classes.buttonOptions}>
-                      <PlaylistAdd /> Watch list
-                    </Button>
+                  <Box>
+                    <Box className={classes.cardOptions}>
+                      <Button
+                        className={classes.buttonOptions}
+                        onClick={() => openMovieDetails(item.id)}
+                      >
+                        <UnfoldMore /> See more
+                      </Button>
+                      <Button className={classes.buttonOptions}>
+                        <PlaylistAdd /> Watch list
+                      </Button>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
