@@ -61,23 +61,14 @@ export const getAccountDetails = (sessionId: string) =>
     session_id: sessionId,
   });
 
-export const getRatedMovies = (accountId: number) =>
-  exec(`account/${accountId}/rated/movies`, Method.GET);
+export const getRatedMovies = (sessionId: string) =>
+  exec('account/id/rated/movies', Method.GET, { session_id: sessionId });
 
-export const getWatchList = (accountId: number) =>
-  exec(`account/${accountId}/watchlist/movies`, Method.GET);
+export const getWatchList = (sessionId: string) =>
+  exec('account/id/watchlist/movies', Method.GET, { session_id: sessionId });
 
-export const addToWatchlist = (
-  accountId: string,
-  sessionId: string,
-  data: IAddToWatchlist
-) =>
-  exec(
-    `account/${accountId}/watchlist`,
-    Method.POST,
-    { session_id: sessionId },
-    data
-  );
+export const addToWatchlist = (sessionId: string, data: IAddToWatchlist) =>
+  exec('account/id/watchlist', Method.POST, { session_id: sessionId }, data);
 
 export const getImageURL = (suffix: string) =>
   `https://image.tmdb.org/t/p/w500${suffix}`;

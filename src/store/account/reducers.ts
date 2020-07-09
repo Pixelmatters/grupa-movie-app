@@ -8,6 +8,9 @@ import {
   REQUEST_MOVIE_WATCHLIST_ERROR,
   REQUEST_MOVIE_WATCHLIST_SUCCESS,
   REQUEST_RATED_MOVIES_START,
+  ADD_WATCH_LIST_SUCCESS,
+  ADD_WATCH_LIST_START,
+  ADD_WATCH_LIST_ERROR,
   REQUEST_RATED_MOVIES_SUCCESS,
   REQUEST_RATED_MOVIES_ERROR,
 } from './types';
@@ -22,6 +25,9 @@ const initialState: IAccountState = {
   isFetchingWatchlist: false,
   failedFetchingWatchlist: false,
   watchList: undefined,
+  isAddingWatchlist: false,
+  failedAddingWatchList: false,
+  addedWatchListMessage: undefined,
 };
 
 export const accountReducer = (
@@ -29,6 +35,27 @@ export const accountReducer = (
   action: AccountActionTypes
 ): IAccountState => {
   switch (action.type) {
+    case ADD_WATCH_LIST_START:
+      return {
+        ...state,
+        isAddingWatchlist: true,
+        failedAddingWatchList: false,
+        addedWatchListMessage: undefined,
+      };
+    case ADD_WATCH_LIST_SUCCESS:
+      return {
+        ...state,
+        isAddingWatchlist: false,
+        failedAddingWatchList: false,
+        addedWatchListMessage: state.addedWatchListMessage,
+      };
+    case ADD_WATCH_LIST_ERROR:
+      return {
+        ...state,
+        isAddingWatchlist: false,
+        failedAddingWatchList: true,
+        addedWatchListMessage: undefined,
+      };
     case REQUEST_ACCOUNT_DETAILS_START:
       return {
         ...state,
