@@ -86,15 +86,17 @@ const PopularSlider: FunctionComponent<PopularSliderProps> = (
         cols={getGridListCols(props.width)}
         className={classes.container}
       >
-        {popular &&
-          popular.map((item: IMovie) => (
-            <GridListTile
-              key={item.id}
-              onClick={() => openMovieDetails(item.id)}
-            >
-              {renderImage(item.poster_path, item.title)}
-            </GridListTile>
-          ))}
+        <>
+          {popular &&
+            popular.map((item: IMovie) => (
+              <GridListTile
+                key={item.id}
+                onClick={() => openMovieDetails(item.id)}
+              >
+                {renderImage(item.poster_path, item.title)}
+              </GridListTile>
+            ))}
+          </>
       </GridList>
     </div>
   );

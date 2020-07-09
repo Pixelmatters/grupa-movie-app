@@ -28,6 +28,16 @@ const useStyles = makeStyles(styles => ({
   sectionTitle: {
     textAlign: 'center',
   },
+  header: {
+    backgroundImage: `url(${headerBg})`,
+    width: '100%',
+    height: '8rem',
+    position: 'fixed',
+    top: 0,
+    zIndex: 1,
+    display: 'flex',
+    alignItems: 'center',
+  },
   root: {
     flexGrow: 1,
     fontFamily: styles.typography.fontFamily,
@@ -36,7 +46,7 @@ const useStyles = makeStyles(styles => ({
     backgroundImage: `url(${headerBg})`,
   },
   mainContainer: {
-    marginTop: '2rem',
+    marginTop: '8rem',
   },
 }));
 
@@ -64,8 +74,9 @@ const Movie: FunctionComponent = () => {
   return (
     <div className={classes.root}>
       <Grid item xs={12} className={classes.backgroundTop}>
-        <Header />
-
+        <Grid className={classes.header}>
+          <Header />
+        </Grid>
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
           <main>
             <Grid item xs={12} sm={12}>
