@@ -7,10 +7,12 @@ import {
   CircularProgress,
   makeStyles,
   Theme,
+  Button,
 } from '@material-ui/core';
 import { IMovie } from '../../api/models';
 import Masonry from 'react-masonry-css';
 import { PlaylistAdd, UnfoldMore } from '@material-ui/icons';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -64,14 +66,14 @@ const useStyles = makeStyles((theme: Theme) => ({
       },
       '& ~ img': {
         filter: 'grayscale(80%)',
-      },     
+      },
     },
   },
   movieSinopse: {
     height: '15rem',
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('sm')]: {
       height: '10rem',
-    }
+    },
   },
   itemTitle: {
     fontSize: '1rem',
@@ -81,10 +83,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     transform: 'translateZ(0)',
     width: 400,
     height: 600,
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('sm')]: {
       width: 350,
       height: 500,
-    }
+    },
   },
   loader: {
     display: 'flex',
@@ -95,13 +97,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginTop: '8rem',
     padding: '2rem',
     justifyContent: 'space-between',
-    fontWeight: 800,
-    color: '#F9BE51',
     '& > div': {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
     },
+  },
+  buttonOptions: {
+    color: '#F9BE51',
+    fontSize: '1rem',
+    fontWeight: 800,
   },
   movieRate: {
     opacity: 0,
@@ -134,6 +139,7 @@ const breakpointColumnsObj = {
 
 const MovieList: FunctionComponent = () => {
   const classes = useStyles();
+  const history = useHistory();
   const initialState: Array<IMovie> = [];
 
   const [movieList, setMovieList] = useState<Array<IMovie>>(initialState);
@@ -150,15 +156,15 @@ const MovieList: FunctionComponent = () => {
   }, [moreRecentList]);
 
   const renderImage = (path?: string, altText?: string) => {
-    const localPath = path 
-      ? `https://image.tmdb.org/t/p/w500${path}` 
+    const localPath = path
+      ? `https://image.tmdb.org/t/p/w500${path}`
       : 'https://via.placeholder.com/400x600/FFFFFF?text=No%20Image';
-      
-    return (            
-      <img 
-        className={classes.movieImage}
-        src={localPath} 
-        alt={altText} />);
+
+    return <img className={classes.movieImage} src={localPath} alt={altText} />;
+  };
+
+  const openMovieDetails = (id: string) => {
+    history.push(`/movie/${id}`);
   };
 
   return (
@@ -166,29 +172,41 @@ const MovieList: FunctionComponent = () => {
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className={classes.masonryGrid}
-        columnClassName={classes.masonryGridColumn}>
-        {movieList && movieList.map((item: any) => (
-          <label key={item.id}>
-            <Box  className={classes.itemWrapper}>
-              <input type="radio" name="radio" value="small" className={classes.checkHelper} />
-              {renderImage(item.poster_path, item.title)}
-              <Box className={classes.info}>
-                <Box className={classes.movieRate}>{item.vote_average}</Box>
-                <Box component="h5" className={classes.itemTitle}>{item.title}</Box>
+        columnClassName={classes.masonryGridColumn}
+      >
+        {movieList &&
+          movieList.map((item: any) => (
+            <label key={item.id}>
+              <Box className={classes.itemWrapper}>
+                <input
+                  type="radio"
+                  name="radio"
+                  value="small"
+                  className={classes.checkHelper}
+                />
+                {renderImage(item.poster_path, item.title)}
+                <Box className={classes.info}>
+                  <Box className={classes.movieRate}>{item.vote_average}</Box>
+                  <Box component="h5" className={classes.itemTitle}>
+                    {item.title}
+                  </Box>
                   <Box component="p" className={classes.movieSinopse}>
                     {item.overview}
                   </Box>
                   <Box className={classes.cardOptions}>
-                    <Box>  
+                    <Button
+                      className={classes.buttonOptions}
+                      onClick={() => openMovieDetails(item.id)}
+                    >
                       <UnfoldMore /> See more
-                    </Box>
-                    <Box>                    
+                    </Button>
+                    <Button className={classes.buttonOptions}>
                       <PlaylistAdd /> Watch list
-                    </Box>
+                    </Button>
                   </Box>
+                </Box>
               </Box>
-            </Box>
-          </label>
+            </label>
           ))}
       </Masonry>
       <Grid item xs={12} className={classes.loader}>
