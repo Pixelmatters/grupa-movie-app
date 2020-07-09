@@ -37,7 +37,7 @@ export const requestMovieWatchlistSuccess = (
   watchlist: Array<IMovie>
 ): any => ({
   type: REQUEST_MOVIE_WATCHLIST_SUCCESS,
-  watclList: watchlist,
+  watchlist: watchlist,
 });
 
 export const requestMovieWatchlistError = (): any => ({

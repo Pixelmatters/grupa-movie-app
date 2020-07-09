@@ -87,7 +87,7 @@ export interface IAccountState {
   ratedMovies?: Array<IMovie>;
   isFetchingWatchlist: boolean;
   failedFetchingWatchlist: boolean;
-  watchList?: Array<IMovie>;
+  watchlist?: Array<IMovie>;
   isAddingWatchlist: boolean;
   failedAddingWatchList: boolean;
   addedWatchListMessage?: IWatchListMessage;

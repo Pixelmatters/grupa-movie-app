@@ -113,8 +113,8 @@ const MovieDisplay: FunctionComponent = () => {
   }, [dispatch, store.sessionId]);
 
   function checkWatchList() {
-    if (store.sessionId && store.account.watchList) {
-      const isOnWatchList = store.account.watchList.some(
+    if (store.sessionId && store.account.watchlist) {
+      const isOnWatchList = store.account.watchlist.some(
         (watchMovie: IMovie) => watchMovie.id === movieId
       );
       if (isOnWatchList) {
@@ -124,7 +124,7 @@ const MovieDisplay: FunctionComponent = () => {
     }
   }
 
-  useEffect(checkWatchList, [store.account.watchList]);
+  useEffect(checkWatchList, [store.account.watchlist]);
 
   if (
     store.account.isFetchingAccount ||
