@@ -33,6 +33,7 @@ const useStyles = makeStyles(styles => ({
   pageTitle: {
     textAlign: 'center',
     paddingBotton: '5rem',
+    fontFamily: 'roboto',
   },
   moviesWrapper: {
     display: 'flex',
@@ -56,10 +57,10 @@ const useStyles = makeStyles(styles => ({
     '&:checked': {
       '& ~ div': {
         height: '99%',
-        transition: 'height 1s ease, opacity 3s ease',
         padding: '0.5rem',
         transform: 'translateZ(0)',
         opacity: 1,
+        display: 'block',
       },
       '& ~ div > $movieRate': {
         opacity: 1,
@@ -77,7 +78,7 @@ const useStyles = makeStyles(styles => ({
     backgroundColor: 'rgba(72, 72, 72, 0.84)',
     color: styles.palette.primary.contrastText,
     boxSizing: 'border-box',
-    opacity: 0,
+    display: 'none',
   },
   movieRate: {
     opacity: 0,
@@ -140,6 +141,7 @@ const useStyles = makeStyles(styles => ({
   emptyState: {
     height: '20rem',
     textAlign: 'center',
+    fontFamily: 'robot',
   },
 }));
 const Watchlist: FunctionComponent = () => {
@@ -202,7 +204,7 @@ const Watchlist: FunctionComponent = () => {
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
       ? getImageURL(path)
-      : getNotFoundImage('400x600/FFFFFF');
+      : getNotFoundImage('400x600/FFFFFF', altText || '');
 
     return <img className={classes.movieImage} src={localPath} alt={altText} />;
   };
