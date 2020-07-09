@@ -80,9 +80,9 @@ function Home() {
               <Suspense
                 fallback={<Box className={classes.centerLoading}>Loading</Box>}
               >
-                <Box component="h1" className={classes.title}>
+                <Grid item component="h1" className={classes.title}>
                   Recent Movies
-                </Box>
+                </Grid>
                 <MovieList />
               </Suspense>
             </Grid>
