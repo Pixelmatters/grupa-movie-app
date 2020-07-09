@@ -7,11 +7,11 @@ import {
   fetchAccountDetails,
   addWatchList,
   fetchRatedMovies,
-  fetchWatchList
+  fetchWatchList,
 } from '../../store/account/thunks';
 import { IAccountState } from '../../store/account/types';
 import { match, useRouteMatch } from 'react-router-dom';
-
+import { Rating } from '@material-ui/lab';
 interface IMovieDsiplayStore {
   account: IAccountState;
   sessionId?: string;
@@ -22,7 +22,7 @@ const useStyles = makeStyles(styles => ({
   card: {
     width: '100%',
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
   },
   cardWrapper: {
     display: 'flex',
@@ -30,8 +30,8 @@ const useStyles = makeStyles(styles => ({
     background: '#2a3d7a',
     justifyContent: 'center',
     [styles.breakpoints.down('sm')]: {
-      flexDirection: 'column'
-    }
+      flexDirection: 'column',
+    },
   },
   textWrapper: {
     justifyContent: 'center',
@@ -40,28 +40,28 @@ const useStyles = makeStyles(styles => ({
     alignItems: 'flex-start',
     marginLeft: '2rem',
     [styles.breakpoints.down('sm')]: {
-      marginLeft: '0'
-    }
+      marginLeft: '0',
+    },
   },
   imgWrapper: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   movieImg: {
-    maxWidth: '20rem'
+    maxWidth: '20rem',
   },
   genreLabel: {
     marginRight: '1rem',
-    marginTop: '1rem'
+    marginTop: '1rem',
   },
   movieTitle: {
-    fontSize: '40px'
+    fontSize: '40px',
   },
   movieTagLine: {
-    paddingBottom: '2rem'
+    paddingBottom: '2rem',
   },
   sectionTitle: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   ratingWrapper: {
     border: '1px solid #ffffff',
@@ -69,8 +69,16 @@ const useStyles = makeStyles(styles => ({
     fontSize: '28px',
     marginBottom: '2rem',
     borderRadius: '8px',
-    marginTop: '1rem'
-  }
+    marginTop: '1rem',
+  },
+  userRatingWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  userRating: {
+    fontSize: '1rem',
+    marginLeft: '0.2rem',
+  },
 }));
 
 const MovieDisplay: FunctionComponent = () => {
@@ -85,7 +93,7 @@ const MovieDisplay: FunctionComponent = () => {
     (state: RootState) => ({
       account: state.account,
       sessionId: state.auth.sessionId,
-      movie: state.movie.movie
+      movie: state.movie.movie,
     })
   );
 
@@ -93,6 +101,7 @@ const MovieDisplay: FunctionComponent = () => {
   const [watchlistButtonText, setWatchlistButtonText] = useState(
     'Add to watchlist'
   );
+  const [rateValue, setRateValue] = useState<number | null>(0);
 
   useEffect(() => {
     if (store.sessionId) {
@@ -203,6 +212,16 @@ const MovieDisplay: FunctionComponent = () => {
           </p>
           <p>
             <b> Duration:</b> {store.movie?.runtime} minutes
+          </p>
+          <p className={classes.userRatingWrapper}>
+            <b> Rate:</b>
+            <Rating
+              className={classes.userRating}
+              value={rateValue}
+              onChange={(event, newValue) => {
+                setRateValue(newValue);
+              }}
+            />
           </p>
         </div>
       </CardContent>

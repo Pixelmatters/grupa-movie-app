@@ -7,14 +7,13 @@ import { fetchPopular } from '../../store/movie/thunks';
 import { Waypoint } from 'react-waypoint';
 import './Home.css';
 
-
-const MovieList = lazy(()=> import('../MovieList/MovieList'));
+const MovieList = lazy(() => import('../MovieList/MovieList'));
 
 const useStyles = makeStyles(styles => ({
   root: {
     flexGrow: 1,
     fontFamily: styles.typography.fontFamily,
-    width: '100%'
+    width: '100%',
   },
   header: {
     backgroundImage: `url(${headerBg})`,
@@ -25,7 +24,7 @@ const useStyles = makeStyles(styles => ({
     zIndex: 1,
   },
   mainContainer: {
-    marginTop: '11rem'
+    marginTop: '11rem',
   },
 }));
 
@@ -34,7 +33,7 @@ function Home() {
   const dispatch = useDispatch();
   const [pageNumber, setPageNumber] = useState(0);
 
-  const fetchMovies = ()=> {
+  const fetchMovies = () => {
     const number = pageNumber + 1;
     setPageNumber(number);
     dispatch(fetchPopular(number));
@@ -43,7 +42,7 @@ function Home() {
   return (
     <div className={classes.root}>
       <Grid xs={12} item >
-        <Grid className={classes.header} onClick={()=> dispatch(fetchPopular(2))}>
+        <Grid className={classes.header}>
           <Header />
         </Grid>
         <Grid item xs={12} sm={12} className={classes.mainContainer}>
@@ -63,6 +62,5 @@ function Home() {
     </div>
   );
 }
-
 
 export default Home;

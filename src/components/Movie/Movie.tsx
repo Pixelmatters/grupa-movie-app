@@ -23,21 +23,21 @@ const useStyles = makeStyles(styles => ({
   mainWrapper: {
     width: '100%',
     backgroundColor: '#ffffff',
-    paddingTop: '40px'
+    paddingTop: '40px',
   },
   sectionTitle: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   root: {
     flexGrow: 1,
-    fontFamily: styles.typography.fontFamily
+    fontFamily: styles.typography.fontFamily,
   },
   backgroundTop: {
-    backgroundImage: `url(${headerBg})`
+    backgroundImage: `url(${headerBg})`,
   },
   mainContainer: {
-    marginTop: '2rem'
-  }
+    marginTop: '2rem',
+  },
 }));
 
 const Movie: FunctionComponent = () => {

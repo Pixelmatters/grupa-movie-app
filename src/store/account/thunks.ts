@@ -6,18 +6,18 @@ import {
   requestMovieWatchlistError,
   requestMovieWatchlistStart,
   requestMovieWatchlistSuccess,
-  requestRateMoviesError,
-  requestRateMoviesStart,
-  requestRateMoviesSuccess,
   addWatchListStart,
   addWatchListSuccess,
-  addWatchListError
+  addWatchListError,
+  requestRatedMoviesError,
+  requestRatedMoviesStart,
+  requestRatedMoviesSuccess,
 } from './actions';
 import {
   getAccountDetails,
   getRatedMovies,
   addToWatchlist,
-  getWatchList
+  getWatchList,
 } from '../../api/api';
 import { IAccount, IWatchListMessage } from './types';
 import { IMovie, IAddToWatchlist } from '../../api/models';
@@ -49,13 +49,13 @@ export const fetchWatchList = (
 export const fetchRatedMovies = (
   sessionId: string
 ): AppThunk => async dispatch => {
-  dispatch(requestRateMoviesStart());
+  dispatch(requestRatedMoviesStart());
   getRatedMovies(sessionId)
     .then(response => {
       const ratedMovies = response.data as Array<IMovie>;
-      dispatch(requestRateMoviesSuccess(ratedMovies));
+      dispatch(requestRatedMoviesSuccess(ratedMovies));
     })
-    .catch(() => dispatch(requestRateMoviesError()));
+    .catch(() => dispatch(requestRatedMoviesError()));
 };
 
 export const addWatchList = (

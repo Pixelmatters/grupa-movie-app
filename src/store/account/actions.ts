@@ -7,65 +7,65 @@ import {
   REQUEST_MOVIE_WATCHLIST_SUCCESS,
   REQUEST_RATED_MOVIES_ERROR,
   REQUEST_RATED_MOVIES_START,
-  REQUEST_RATED_MOVIES_SUCCESSS,
+  REQUEST_RATED_MOVIES_SUCCESS,
   IAccount,
   ADD_WATCH_LIST_SUCCESS,
   ADD_WATCH_LIST_START,
   ADD_WATCH_LIST_ERROR,
-  IWatchListMessage
+  IWatchListMessage,
 } from './types';
 import { IMovie } from '../../api/models';
 
 export const requestAccountDetailsStart = () => ({
-  type: REQUEST_ACCOUNT_DETAILS_START
+  type: REQUEST_ACCOUNT_DETAILS_START,
 });
 
 export const requestAccountDetailsSuccess = (account: IAccount) => ({
   type: REQUEST_ACCOUNT_DETAILS_SUCCESS,
-  account: account
+  account: account,
 });
 
-export const requestAccountDetailsError = () => ({
-  type: REQUEST_ACCOUNT_DETAILS_ERROR
+export const requestAccountDetailsError = (): any => ({
+  type: REQUEST_ACCOUNT_DETAILS_ERROR,
 });
 
-export const requestMovieWatchlistStart = () => ({
-  type: REQUEST_MOVIE_WATCHLIST_START
+export const requestMovieWatchlistStart = (): any => ({
+  type: REQUEST_MOVIE_WATCHLIST_START,
 });
 
 export const requestMovieWatchlistSuccess = (
   watchlist: Array<IMovie>
 ): any => ({
   type: REQUEST_MOVIE_WATCHLIST_SUCCESS,
-  watchlist: watchlist
+  watclList: watchlist,
 });
 
-export const requestMovieWatchlistError = () => ({
-  type: REQUEST_MOVIE_WATCHLIST_ERROR
+export const requestMovieWatchlistError = (): any => ({
+  type: REQUEST_MOVIE_WATCHLIST_ERROR,
 });
 
-export const requestRateMoviesStart = () => ({
-  type: REQUEST_RATED_MOVIES_START
+export const requestRatedMoviesStart = (): any => ({
+  type: REQUEST_RATED_MOVIES_START,
 });
 
-export const requestRateMoviesSuccess = (ratedMovies: Array<IMovie>) => ({
-  type: REQUEST_RATED_MOVIES_SUCCESSS,
-  ratedMovies: ratedMovies
+export const requestRatedMoviesSuccess = (ratedMovies: Array<IMovie>): any => ({
+  type: REQUEST_RATED_MOVIES_SUCCESS,
+  ratedMovies: ratedMovies,
 });
 
-export const requestRateMoviesError = () => ({
-  type: REQUEST_RATED_MOVIES_ERROR
+export const requestRatedMoviesError = (): any => ({
+  type: REQUEST_RATED_MOVIES_ERROR,
 });
 
 export const addWatchListStart = () => ({
-  type: ADD_WATCH_LIST_START
+  type: ADD_WATCH_LIST_START,
 });
 
 export const addWatchListSuccess = (statusMessage: IWatchListMessage) => ({
   type: ADD_WATCH_LIST_SUCCESS,
-  message: statusMessage
+  message: statusMessage,
 });
 
 export const addWatchListError = () => ({
-  type: ADD_WATCH_LIST_ERROR
+  type: ADD_WATCH_LIST_ERROR,
 });

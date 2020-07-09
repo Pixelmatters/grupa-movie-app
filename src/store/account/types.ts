@@ -11,7 +11,7 @@ export const REQUEST_MOVIE_WATCHLIST_SUCCESS =
 export const REQUEST_MOVIE_WATCHLIST_ERROR = 'REQUEST_MOVIE_WATCHLIST_ERROR';
 
 export const REQUEST_RATED_MOVIES_START = 'REQUEST_RATED_MOVIES_START';
-export const REQUEST_RATED_MOVIES_SUCCESSS = 'REQUEST_RATED_MOVIES_SUCCESSS';
+export const REQUEST_RATED_MOVIES_SUCCESS = 'REQUEST_RATED_MOVIES_SUCCESS';
 export const REQUEST_RATED_MOVIES_ERROR = 'REQUEST_RATED_MOVIES_ERROR';
 
 export const ADD_WATCH_LIST_START = 'ADD_WATCH_LIST_START';
@@ -59,7 +59,7 @@ interface IRequestRatedMoviesStartAction {
 }
 interface IRequestRatedMoviesSuccessAction {
   ratedMovies: IMovie[] | undefined;
-  type: typeof REQUEST_RATED_MOVIES_SUCCESSS;
+  type: typeof REQUEST_RATED_MOVIES_SUCCESS;
 }
 interface IRequestRatedMoviesErrorAction {
   type: typeof REQUEST_RATED_MOVIES_ERROR;
@@ -86,7 +86,7 @@ export interface IAccountState {
   failedFetchingRatedMovies: boolean;
   ratedMovies?: Array<IMovie>;
   isFetchingWatchlist: boolean;
-  failedFetcingWatchlist: boolean;
+  failedFetchingWatchlist: boolean;
   watchList?: Array<IMovie>;
   isAddingWatchlist: boolean;
   failedAddingWatchList: boolean;

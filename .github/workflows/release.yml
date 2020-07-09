@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - develop
 
 jobs:
   release:
@@ -10,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REACT_APP_API_KEY: ${{ secrets.API_KEY }}
-      REACT_APP_AUTH_REDIRECT_URL: ${{ secrets.AUTH_REDIRECT_URL }}
+      REACT_APP_AUTH_REDIRECT_ROUTE: ${{ secrets.AUTH_REDIRECT_ROUTE }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2

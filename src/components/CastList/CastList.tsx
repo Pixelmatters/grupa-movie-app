@@ -10,23 +10,23 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   },
   castMemberImg: {
     maxWidth: '200px',
-    margin: '0 30px'
+    margin: '0 30px',
   },
   memberWrapper: {
     display: 'flex',
     flexDirection: 'column',
-    paddingBottom: '30px'
+    paddingBottom: '30px',
   },
   memberTextWrapper: {
     display: 'flex',
     flexDirection: 'column',
     marginTop: '10px',
-    marginLeft: '30px'
-  }
+    marginLeft: '30px',
+  },
 }));
 
 const CastList: FunctionComponent = () => {
