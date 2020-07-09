@@ -11,6 +11,7 @@ import {
 import { IMovie } from '../../api/models';
 import Masonry from 'react-masonry-css';
 import { PlaylistAdd, UnfoldMore } from '@material-ui/icons';
+import { getImageURL, getNotFoundImage } from '../../api/api';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -151,8 +152,8 @@ const MovieList: FunctionComponent = () => {
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path 
-      ? `https://image.tmdb.org/t/p/w500${path}` 
-      : 'https://via.placeholder.com/400x600/FFFFFF?text=No%20Image';
+      ? getImageURL(path) 
+      : getNotFoundImage('400x600/FFFFFF');
       
     return (            
       <img 
@@ -167,7 +168,7 @@ const MovieList: FunctionComponent = () => {
         breakpointCols={breakpointColumnsObj}
         className={classes.masonryGrid}
         columnClassName={classes.masonryGridColumn}>
-        {movieList && movieList.map((item: any) => (
+        {movieList && movieList.map((item: IMovie) => (
           <label key={item.id}>
             <Box  className={classes.itemWrapper}>
               <input type="radio" name="radio" value="small" className={classes.checkHelper} />
