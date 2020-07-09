@@ -8,9 +8,7 @@ import {
 } from '../../store/auth/thunks';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
-
-const AUTH_REDIRECT_ROUTE: string | undefined =
-  process.env.REACT_APP_AUTH_REDIRECT_ROUTE;
+import { verifyAuth } from '../../helpers/login';
 
 const useStyles = makeStyles(styles => ({
   headerContainer: {
@@ -31,10 +29,11 @@ const useStyles = makeStyles(styles => ({
     display: 'flex',
     fontFamily: 'Roboto, arial',
     color: styles.palette.primary.contrastText,
+    cursor: 'pointer',
   },
   menuOptions: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '30rem',
     [styles.breakpoints.down('sm')]: {
@@ -84,18 +83,22 @@ const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  
+  const dispatch = useDispatch();
+
+  const authState = useSelector((state: RootState) => state.auth);
 
   const defaultMenuItems = [
     {
       title: 'Login',
-      action: () => startAuthTokenRequest(),
+      action: () => dispatch(requestAuthToken()),
     },
   ];
 
   const loggedMenuItems = [
     {
       title: 'Movies',
-      action: () => {},
+      action: () => { window.location.assign('/');},
     },
     {
       title: 'My WatchList',
@@ -103,37 +106,20 @@ const Header = () => {
     },
     {
       title: 'Logout',
-      action: () => startSessionDelete(),
+      action: () => dispatch(requestDeleteSession(authState.sessionId || '')),
     },
   ];
 
-  const authState = useSelector((state: RootState) => state.auth);
-
-  const dispatch = useDispatch();
-
-  const startAuthTokenRequest = () => {
-    dispatch(requestAuthToken());
-  };
-
-  const startSessionDelete = () => {
-    const sessionId = authState.sessionId ?? '';
-    dispatch(requestDeleteSession(sessionId));
-  };
-
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
-  };
+  }; 
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   if (authState.requestToken) {
-    const token = authState.requestToken?.request_token ?? '';
-    const baseUrl = `${window.location.protocol}//${window.location.host}`;
-    const redirectUrl = `${baseUrl}/${AUTH_REDIRECT_ROUTE}`;
-    const url = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${redirectUrl}`;
-    window.location.assign(url);
+    verifyAuth(authState);
   }
 
   const menuItems = authState.sessionId ? loggedMenuItems : defaultMenuItems;
@@ -141,7 +127,7 @@ const Header = () => {
   return (
     <Grid item xs={12} className={classes.headerContainer}>
       <header className={classes.menu}>
-        <Box className={classes.menuIconTitle}>
+        <Box className={classes.menuIconTitle} onClick={()=> window.location.assign('/')}>
           <LocalMoviesOutlined className={classes.iconMovie} />
           <Box component="h1" className={classes.wideName}>
             The Movies Database

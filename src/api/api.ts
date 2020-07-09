@@ -83,3 +83,6 @@ export const getImageURL = (suffix: string) =>
   `https://image.tmdb.org/t/p/w500${suffix}`;
 export const getNotFoundImage = (settings: string) =>
   `https://via.placeholder.com/${settings}?text=No%20Image`;
+export const getAuthUrl = (token: string, redirectTo: string) => 
+  `https://www.themoviedb.org/authenticate/${token}?redirect_to=${redirectTo}`;
+
