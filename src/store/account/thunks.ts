@@ -15,6 +15,9 @@ import {
   requestRateMovieError,
   requestRateMovieStart,
   requestRateMovieSuccess,
+  requestDeleteMovieRatingStart,
+  requestDeleteMovieRatingSuccess,
+  requestDeleteMovieRatingError,
 } from './actions';
 import {
   getAccountDetails,
@@ -22,6 +25,7 @@ import {
   addToWatchlist,
   getWatchList,
   rateMovie,
+  deleteMovieRating,
 } from '../../api/api';
 import { IAccount, IWatchListMessage } from './types';
 import { IMovie, IAddToWatchlist } from '../../api/models';
@@ -84,8 +88,16 @@ export const requestRateMovie = (
 ): AppThunk => async dispatch => {
   dispatch(requestRateMovieStart());
   rateMovie(movieId, value, sessionId)
-    .then(() => {
-      dispatch(requestRateMovieSuccess());
-    })
+    .then(() => dispatch(requestRateMovieSuccess()))
     .catch(() => dispatch(requestRateMovieError()));
+};
+
+export const requestDeleteMovieRating = (
+  movieId: number,
+  sessionId: string
+): AppThunk => async dispatch => {
+  dispatch(requestDeleteMovieRatingStart);
+  deleteMovieRating(movieId, sessionId)
+    .then(() => dispatch(requestDeleteMovieRatingSuccess()))
+    .catch(() => dispatch(requestDeleteMovieRatingError()));
 };

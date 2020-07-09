@@ -1,18 +1,27 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { CardContent, Card, Chip, Button, makeStyles } from '@material-ui/core';
+import {
+  CardContent,
+  Card,
+  Chip,
+  Button,
+  makeStyles,
+  Tooltip,
+} from '@material-ui/core';
 import { IMovie, IGenre, IMatchParameters } from '../../api/models';
 import {
   fetchAccountDetails,
   addWatchList,
   fetchRatedMovies,
   fetchWatchList,
+  requestDeleteMovieRating,
 } from '../../store/account/thunks';
 import { IAccountState } from '../../store/account/types';
 import { match, useRouteMatch } from 'react-router-dom';
 import { Rating } from '@material-ui/lab';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import { IRequestAuthState } from '../../store/auth/types';
 import { requestRateMovie } from '../../store/account/thunks';
 import { getImageURL } from '../../api/api';
@@ -83,6 +92,12 @@ const useStyles = makeStyles(styles => ({
   userRating: {
     fontSize: '1rem',
     marginLeft: '0.2rem',
+  },
+  userRatingRemoveButtonCircle: {
+    color: '#F9BE51',
+    fontSize: '1rem',
+    marginLeft: '0.2rem',
+    cursor: 'pointer',
   },
 }));
 
@@ -196,6 +211,13 @@ const MovieDisplay: FunctionComponent = () => {
     dispatch(requestRateMovie(movieId, realValue, sessionId));
   };
 
+  const deleteUserMovieRating = () => {
+    const movieId = store.movie?.id ?? 0;
+    const sessionId = store.auth.sessionId ?? '';
+    setMovieUserRating(0);
+    dispatch(requestDeleteMovieRating(movieId, sessionId));
+  };
+
   return (
     <Card className={classes.card}>
       <CardContent className={classes.cardWrapper}>
@@ -259,6 +281,14 @@ const MovieDisplay: FunctionComponent = () => {
                   rateMovie(newValue);
                 }}
               />
+              {movieUserRating != 0 && (
+                <Tooltip title="Remove Rating">
+                  <RemoveCircleIcon
+                    className={classes.userRatingRemoveButtonCircle}
+                    onClick={() => deleteUserMovieRating()}
+                  />
+                </Tooltip>
+              )}
             </p>
           )}
         </div>

@@ -15,6 +15,9 @@ import {
   ADD_WATCH_LIST_SUCCESS,
   ADD_WATCH_LIST_START,
   ADD_WATCH_LIST_ERROR,
+  REQUEST_DELETE_MOVIE_RATING_START,
+  REQUEST_DELETE_MOVIE_RATING_SUCCESS,
+  REQUEST_DELETE_MOVIE_RATING_ERROR,
   IWatchListMessage,
 } from './types';
 import { IMovie } from '../../api/models';
@@ -83,4 +86,16 @@ export const requestRateMovieSuccess = (): any => ({
 
 export const requestRateMovieError = (): any => ({
   type: REQUEST_RATE_MOVIE_ERROR,
+});
+
+export const requestDeleteMovieRatingStart = (): any => ({
+  type: REQUEST_DELETE_MOVIE_RATING_START,
+});
+
+export const requestDeleteMovieRatingSuccess = (): any => ({
+  type: REQUEST_DELETE_MOVIE_RATING_SUCCESS,
+});
+
+export const requestDeleteMovieRatingError = (): any => ({
+  type: REQUEST_DELETE_MOVIE_RATING_ERROR,
 });

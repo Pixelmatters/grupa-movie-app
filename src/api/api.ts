@@ -48,6 +48,8 @@ export const rateMovie = (id: number, value: number, sessionId: string) =>
     { session_id: sessionId },
     { value: value }
   );
+export const deleteMovieRating = (id: number, sessionId: string) =>
+  exec(`movie/${id}/rating`, Method.DELETE, { session_id: sessionId });
 
 // Authentication
 export const createRequestToken = () =>

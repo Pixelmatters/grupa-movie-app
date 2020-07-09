@@ -17,9 +17,17 @@ export const REQUEST_RATED_MOVIES_ERROR = 'REQUEST_RATED_MOVIES_ERROR';
 export const ADD_WATCH_LIST_START = 'ADD_WATCH_LIST_START';
 export const ADD_WATCH_LIST_SUCCESS = 'ADD_WATCH_LIST_SUCCESS';
 export const ADD_WATCH_LIST_ERROR = 'ADD_WATCH_LIST_ERROR';
+
 export const REQUEST_RATE_MOVIE_START = 'REQUEST_RATE_MOVIE_START';
 export const REQUEST_RATE_MOVIE_SUCCESS = 'REQUEST_RATE_MOVIE_SUCCESS';
 export const REQUEST_RATE_MOVIE_ERROR = 'REQUEST_RATE_MOVIE_ERROR';
+
+export const REQUEST_DELETE_MOVIE_RATING_START =
+  'REQUEST_DELETE_MOVIE_RATING_START';
+export const REQUEST_DELETE_MOVIE_RATING_SUCCESS =
+  'REQUEST_DELETE_MOVIE_RATING_SUCCESS';
+export const REQUEST_DELETE_MOVIE_RATING_ERROR =
+  'REQUEST_DELETE_MOVIE_RATING_ERROR';
 
 export type AccountActionTypes =
   | IRequestAccountDetailsStartAction
@@ -36,7 +44,10 @@ export type AccountActionTypes =
   | IAddWatchListErrorAction
   | IRequestRateMovieStartAction
   | IRequestRateMovieSuccessAction
-  | IRequestRateMovieErrorAction;
+  | IRequestRateMovieErrorAction
+  | IRequestDeleteMovieRatingStartAction
+  | IRequestDeleteMovieRatingSuccessAction
+  | IRequestDeleteMovieRatingErrorAction;
 
 interface IRequestAccountDetailsStartAction {
   type: typeof REQUEST_ACCOUNT_DETAILS_START;
@@ -96,6 +107,18 @@ interface IRequestRateMovieErrorAction {
   type: typeof REQUEST_RATE_MOVIE_ERROR;
 }
 
+interface IRequestDeleteMovieRatingStartAction {
+  type: typeof REQUEST_DELETE_MOVIE_RATING_START;
+}
+
+interface IRequestDeleteMovieRatingSuccessAction {
+  type: typeof REQUEST_DELETE_MOVIE_RATING_SUCCESS;
+}
+
+interface IRequestDeleteMovieRatingErrorAction {
+  type: typeof REQUEST_DELETE_MOVIE_RATING_ERROR;
+}
+
 export interface IAccountState {
   isFetchingAccount: boolean;
   failedFatchingAccount: boolean;
@@ -111,6 +134,8 @@ export interface IAccountState {
   addedWatchListMessage?: IWatchListMessage;
   isRequestingRateMovie: boolean;
   failedRequestingRateMovie: boolean;
+  isRequestingDeleteMovieRating: boolean;
+  failedRequestingDeleteMovieRating: boolean;
 }
 
 export interface IWatchListMessage {

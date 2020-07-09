@@ -16,6 +16,9 @@ import {
   REQUEST_RATE_MOVIE_START,
   REQUEST_RATE_MOVIE_SUCCESS,
   REQUEST_RATE_MOVIE_ERROR,
+  REQUEST_DELETE_MOVIE_RATING_ERROR,
+  REQUEST_DELETE_MOVIE_RATING_SUCCESS,
+  REQUEST_DELETE_MOVIE_RATING_START,
 } from './types';
 
 const initialState: IAccountState = {
@@ -33,6 +36,8 @@ const initialState: IAccountState = {
   addedWatchListMessage: undefined,
   isRequestingRateMovie: false,
   failedRequestingRateMovie: false,
+  isRequestingDeleteMovieRating: false,
+  failedRequestingDeleteMovieRating: false,
 };
 
 export const accountReducer = (
@@ -140,6 +145,24 @@ export const accountReducer = (
         ...state,
         isRequestingRateMovie: false,
         failedRequestingRateMovie: true,
+      };
+    case REQUEST_DELETE_MOVIE_RATING_START:
+      return {
+        ...state,
+        isRequestingDeleteMovieRating: true,
+        failedRequestingDeleteMovieRating: false,
+      };
+    case REQUEST_DELETE_MOVIE_RATING_SUCCESS:
+      return {
+        ...state,
+        isRequestingDeleteMovieRating: false,
+        failedRequestingDeleteMovieRating: false,
+      };
+    case REQUEST_DELETE_MOVIE_RATING_ERROR:
+      return {
+        ...state,
+        isRequestingDeleteMovieRating: false,
+        failedRequestingDeleteMovieRating: true,
       };
     default:
       return state;
