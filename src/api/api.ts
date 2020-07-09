@@ -47,6 +47,15 @@ const getFormattedDate = (date: Date) => {
 export const getLatestMovie = () => exec('movie/latest', Method.GET);
 export const getMovie = (id: number) => exec(`movie/${id}`, Method.GET);
 export const getCast = (id: number) => exec(`movie/${id}/credits`, Method.GET);
+export const rateMovie = (id: number, value: number, sessionId: string) =>
+  exec(
+    `movie/${id}/rating`,
+    Method.POST,
+    { session_id: sessionId },
+    { value: value }
+  );
+export const deleteMovieRating = (id: number, sessionId: string) =>
+  exec(`movie/${id}/rating`, Method.DELETE, { session_id: sessionId });
 export const getAllMovies = (pageNumber: number) =>{
   const url = `discover/movie?language=en-US&sort_by=release_date.desc&release_date.lte=${getFormattedDate(new Date())}&page=${pageNumber}`;
   return exec(url, Method.GET);

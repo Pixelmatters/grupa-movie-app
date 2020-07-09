@@ -11,6 +11,7 @@ export interface IMovie {
   tagline: string; // Small catch phrase
   release_date: Date;
   runtime: number;
+  rating?: number; // user rating
 }
 
 export interface IGenre {
