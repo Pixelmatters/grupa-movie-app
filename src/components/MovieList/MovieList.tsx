@@ -138,8 +138,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const breakpointColumnsObj = {
   default: 5,
   2095: 4,
-  1727: 3,
-  1305: 2,
+  1727: 2,
   858: 1,
 };
 
@@ -195,7 +194,7 @@ const MovieList: FunctionComponent = () => {
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
       ? getImageURL(path)
-      : getNotFoundImage('400x600/FFFFFF', altText || '');
+      : getNotFoundImage('400x600/F4F4F4', altText || '');
 
     return <img className={classes.movieImage} src={localPath} alt={altText} />;
   };
