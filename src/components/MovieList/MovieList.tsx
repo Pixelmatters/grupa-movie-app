@@ -59,18 +59,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   checkHelper: {
     display: 'none',
     '&:checked': {
-      '& ~ div': {
+      '& + img': {
+        filter: 'grayscale(80%)',
+      },
+      '& ~ $info': {
         height: '100%',
         transition: 'height 1s ease',
         padding: '0.5rem',
         transform: 'translateZ(0)',
       },
-      '& ~ div ~ $movieRate': {
+      '& ~ $info > div > $movieRate': {
         opacity: 1,
       },
-      '& ~ img': {
-        filter: 'grayscale(80%)',
-      },
+
     },
   },
   movieSinopse: {
@@ -150,11 +151,15 @@ const MovieList: FunctionComponent = () => {
   const [movieList, setMovieList] = useState<Array<IMovie>>(initialState);
 
   const moreRecentList: [IMovie] = useSelector(
-    (state: RootState) => state.movie.popular
+    (state: RootState) => state.movie.allMovies
   ) as [IMovie];
 
   useEffect(() => {
     if (moreRecentList?.length > 0) {
+      moreRecentList.sort((x: IMovie, y: IMovie) => 
+        new Date(y.release_date).getTime() - 
+        new Date(x.release_date).getTime());
+
       setMovieList(prev => prev.concat(moreRecentList));
       document.documentElement.scrollTop += 1000;
     }
@@ -197,7 +202,7 @@ const MovieList: FunctionComponent = () => {
                       {item.title}
                     </Box>
                     <Box component="p" className={classes.movieSinopse}>
-                      {item.overview}
+                      {item.overview || 'No additional info was found for this movie.'}
                     </Box>
                   </Box>
                   <Box>

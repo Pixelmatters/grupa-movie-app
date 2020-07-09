@@ -3,7 +3,7 @@ import { Grid, Box, makeStyles } from '@material-ui/core';
 import headerBg from '../../assets/images/header-bg.jpg';
 import Header from '../Header/Header';
 import { useDispatch } from 'react-redux';
-import { fetchPopular } from '../../store/movie/thunks';
+import { fetchAllMovies } from '../../store/movie/thunks';
 import { Waypoint } from 'react-waypoint';
 import './Home.css';
 
@@ -41,7 +41,7 @@ function Home() {
   const fetchMovies = () => {
     const number = pageNumber + 1;
     setPageNumber(number);
-    dispatch(fetchPopular(number));
+    dispatch(fetchAllMovies(number));
   };
 
   return (

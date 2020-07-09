@@ -4,9 +4,9 @@ export const REQUEST_MOVIE_START = 'REQUEST_MOVIE_START';
 export const REQUEST_MOVIE_SUCCESS = 'REQUEST_MOVIE_SUCCESS';
 export const REQUEST_MOVIE_ERROR = 'REQUEST_MOVIE_ERROR';
 
-export const REQUEST_POPULAR_START = 'REQUEST_POPULAR_START';
-export const REQUEST_POPULAR_SUCCESS = 'REQUEST_POPULAR_SUCCESS';
-export const REQUEST_POPULAR_ERROR = 'REQUEST_POPULAR_ERROR';
+export const REQUEST_ALL_MOVIES_START = 'REQUEST_ALL_MOVIES_START';
+export const REQUEST_ALL_MOVIES_SUCCESS = 'REQUEST_ALL_MOVIES_SUCCESS';
+export const REQUEST_ALL_MOVIES_ERROR = 'REQUEST_ALL_MOVIES_ERROR';
 
 export const REQUEST_LATEST_START = 'REQUEST_LATEST_START';
 export const REQUEST_LATEST_SUCCESS = 'REQUEST_LATEST_SUCCESS';
@@ -16,9 +16,9 @@ export type MovieActionTypes =
   | IRequestMovieStartAction
   | IRequestMovieSuccessAction
   | IRequestMovieErrorAction
-  | IRequestPopularStartAction
-  | IRequestPopularSuccessAction
-  | IRequestPopularErrorAction
+  | IrequestAllMoviesStartAction
+  | IrequestAllMoviesSuccessAction
+  | IrequestAllMoviesErrorAction
   | IRequestLatestStartAction
   | IRequestLatestSuccessAction
   | IRequestLatestErrorAction;
@@ -36,17 +36,17 @@ interface IRequestMovieErrorAction {
   type: typeof REQUEST_MOVIE_ERROR;
 }
 
-interface IRequestPopularStartAction {
-  type: typeof REQUEST_POPULAR_START;
+interface IrequestAllMoviesStartAction {
+  type: typeof REQUEST_ALL_MOVIES_START;
 }
 
-interface IRequestPopularSuccessAction {
-  type: typeof REQUEST_POPULAR_SUCCESS;
-  popular: IMovie[];
+interface IrequestAllMoviesSuccessAction {
+  type: typeof REQUEST_ALL_MOVIES_SUCCESS;
+  allMovies: IMovie[];
 }
 
-interface IRequestPopularErrorAction {
-  type: typeof REQUEST_POPULAR_ERROR;
+interface IrequestAllMoviesErrorAction {
+  type: typeof REQUEST_ALL_MOVIES_ERROR;
 }
 
 interface IRequestLatestStartAction {
@@ -66,9 +66,9 @@ export interface IMovieState {
   isFetchingMovie: boolean;
   failedFetchingMovie: boolean;
   movie?: IMovie;
-  isFetchingPopular: boolean;
-  failedFetchingPopular: boolean;
-  popular?: IMovie[];
+  isFetchingAllMovies: boolean;
+  failedFetchingAllMovies: boolean;
+  allMovies?: IMovie[];
   isFetchingLatest: boolean;
   failedFetchingLatest: boolean;
   latest?: IMovie;

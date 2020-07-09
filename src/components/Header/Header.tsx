@@ -9,6 +9,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/store';
 import { verifyAuth } from '../../helpers/login';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(styles => ({
   headerContainer: {
@@ -83,12 +84,18 @@ const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  
   const dispatch = useDispatch();
+  const history = useHistory();
+
 
   const authState = useSelector((state: RootState) => state.auth);
+  const moviesLink = {
+    title: 'Movies',
+    action: () => history.push('/'),
+  };
 
   const defaultMenuItems = [
+    moviesLink,
     {
       title: 'Login',
       action: () => dispatch(requestAuthToken()),
@@ -96,10 +103,7 @@ const Header = () => {
   ];
 
   const loggedMenuItems = [
-    {
-      title: 'Movies',
-      action: () => { window.location.assign('/');},
-    },
+    moviesLink,
     {
       title: 'My WatchList',
       action: () => {},
@@ -112,7 +116,7 @@ const Header = () => {
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
-  }; 
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -127,7 +131,10 @@ const Header = () => {
   return (
     <Grid item xs={12} className={classes.headerContainer}>
       <header className={classes.menu}>
-        <Box className={classes.menuIconTitle} onClick={()=> window.location.assign('/')}>
+        <Box
+          className={classes.menuIconTitle}
+          onClick={() => history.push('/')}
+        >
           <LocalMoviesOutlined className={classes.iconMovie} />
           <Box component="h1" className={classes.wideName}>
             The Movies Database

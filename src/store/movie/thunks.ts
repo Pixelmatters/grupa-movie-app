@@ -4,14 +4,14 @@ import {
   requestMovieStart,
   requestMovieSuccess,
   requestMovieError,
-  requestPopularStart,
-  requestPopularSuccess,
-  requestPopularError,
+  requestAllMoviesStart,
+  requestAllMoviesSuccess,
+  requestAllMoviesError,
   requestLatestStart,
   requestLatestSuccess,
   requestLatestError,
 } from './actions';
-import { getMovie, getPopular, getLatestMovie } from '../../api/api';
+import { getMovie, getAllMovies, getLatestMovie } from '../../api/api';
 
 export const fetchMovie = (id: number): AppThunk => async dispatch => {
   dispatch(requestMovieStart());
@@ -23,16 +23,16 @@ export const fetchMovie = (id: number): AppThunk => async dispatch => {
     .catch(() => dispatch(requestMovieError()));
 };
 
-export const fetchPopular = (
+export const fetchAllMovies = (
   pageNumber: number
 ): AppThunk => async dispatch => {
-  dispatch(requestPopularStart());
-  getPopular(pageNumber)
+  dispatch(requestAllMoviesStart());
+  getAllMovies(pageNumber)
     .then(response => {
-      const popular = response.data.results as IMovie[];
-      dispatch(requestPopularSuccess(popular));
+      const allMovies = response.data.results as IMovie[];
+      dispatch(requestAllMoviesSuccess(allMovies));
     })
-    .catch(() => dispatch(requestPopularError()));
+    .catch(() => dispatch(requestAllMoviesError()));
 };
 
 export const fetchLatest = (): AppThunk => async dispatch => {
