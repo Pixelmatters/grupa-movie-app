@@ -42,9 +42,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   info: {
     position: 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     width: '100%',
     height: 0,
-    bottom: '4px',
+    bottom: 0,
     backgroundColor: 'rgba(72, 72, 72, 0.84)',
     color: theme.palette.primary.contrastText,
     boxSizing: 'border-box',
@@ -57,22 +60,21 @@ const useStyles = makeStyles((theme: Theme) => ({
   checkHelper: {
     display: 'none',
     '&:checked': {
-      '& ~ div': {
-        height: '99%',
+      '& + img': {
+        filter: 'grayscale(80%)',
+      },
+      '& ~ $info': {
+        height: '100%',
         transition: 'height 1s ease',
         padding: '0.5rem',
         transform: 'translateZ(0)',
       },
-      '& ~ div > $movieRate': {
+      '& ~ $info > div > $movieRate': {
         opacity: 1,
-      },
-      '& ~ img': {
-        filter: 'grayscale(80%)',
       },
     },
   },
   movieSinopse: {
-    height: '15rem',
     [theme.breakpoints.down('sm')]: {
       height: '10rem',
     },
@@ -86,8 +88,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 400,
     height: 600,
     [theme.breakpoints.down('sm')]: {
-      width: 350,
-      height: 500,
+      width: 300,
+      height: 450,
     },
   },
   loader: {
@@ -96,7 +98,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   cardOptions: {
     display: 'flex',
-    marginTop: '8rem',
     padding: '2rem',
     justifyContent: 'space-between',
     '& > div': {
@@ -143,7 +144,7 @@ const breakpointColumnsObj = {
 };
 
 interface IMovieListStore {
-  popular?: Array<IMovie>;
+  allMovies?: Array<IMovie>;
   watchlist: {
     data?: Array<IMovie>;
     isToggling: boolean;
@@ -161,7 +162,7 @@ const MovieList: FunctionComponent = () => {
   const [movieList, setMovieList] = useState<Array<IMovie>>(initialState);
 
   const store = useSelector<RootState, IMovieListStore>(state => ({
-    popular: state.movie.popular,
+    allMovies: state.movie.allMovies,
     watchlist: {
       data: state.account.watchlist,
       isToggling: state.account.isAddingWatchlist,
@@ -177,18 +178,24 @@ const MovieList: FunctionComponent = () => {
   };
 
   useEffect(() => {
-    if (store.popular && store.popular.length > 0) {
-      setMovieList(prev => prev.concat(store.popular ?? []));
+    if (store.allMovies && store.allMovies.length > 0) {
+      store.allMovies.sort(
+        (x: IMovie, y: IMovie) =>
+          new Date(y.release_date).getTime() -
+          new Date(x.release_date).getTime()
+      );
+
+      setMovieList(prev => prev.concat(store.allMovies as Array<IMovie>));
       document.documentElement.scrollTop += 1000;
     }
-  }, [store.popular]);
+  }, [store.allMovies]);
 
   useEffect(updateWatchlist, [store.watchlist.isToggling]);
 
   const renderImage = (path?: string, altText?: string) => {
     const localPath = path
       ? getImageURL(path)
-      : getNotFoundImage('400x600/FFFFFF');
+      : getNotFoundImage('400x600/FFFFFF', altText || '');
 
     return <img className={classes.movieImage} src={localPath} alt={altText} />;
   };
@@ -249,21 +256,26 @@ const MovieList: FunctionComponent = () => {
                 />
                 {renderImage(item.poster_path, item.title)}
                 <Box className={classes.info}>
-                  <Box className={classes.movieRate}>{item.vote_average}</Box>
-                  <Box component="h5" className={classes.itemTitle}>
-                    {item.title}
+                  <Box>
+                    <Box className={classes.movieRate}>{item.vote_average}</Box>
+                    <Box component="h5" className={classes.itemTitle}>
+                      {item.title}
+                    </Box>
+                    <Box component="p" className={classes.movieSinopse}>
+                      {item.overview ||
+                        'No additional info was found for this movie.'}
+                    </Box>
                   </Box>
-                  <Box component="p" className={classes.movieSinopse}>
-                    {item.overview}
-                  </Box>
-                  <Box className={classes.cardOptions}>
-                    <Button
-                      className={classes.buttonOptions}
-                      onClick={() => openMovieDetails(item.id)}
-                    >
-                      <ArrowRight /> See more
-                    </Button>
-                    {getWatchlistButton(item)}
+                  <Box>
+                    <Box className={classes.cardOptions}>
+                      <Button
+                        className={classes.buttonOptions}
+                        onClick={() => openMovieDetails(item.id)}
+                      >
+                        <ArrowRight /> See more
+                      </Button>
+                      {getWatchlistButton(item)}
+                    </Box>
                   </Box>
                 </Box>
               </Box>

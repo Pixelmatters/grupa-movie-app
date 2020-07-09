@@ -35,12 +35,22 @@ const exec = (
   }
 };
 
+const getFormattedDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+  return [year, month, day].join('-');
+};
+
+
 // Movies
 export const getLatestMovie = () => exec('movie/latest', Method.GET);
 export const getMovie = (id: number) => exec(`movie/${id}`, Method.GET);
 export const getCast = (id: number) => exec(`movie/${id}/credits`, Method.GET);
-export const getPopular = (pageNumber: number) =>
-  exec(`movie/popular?page=${pageNumber}`, Method.GET);
+export const getAllMovies = (pageNumber: number) =>{
+  const url = `discover/movie?language=en-US&sort_by=release_date.desc&release_date.lte=${getFormattedDate(new Date())}&page=${pageNumber}`;
+  return exec(url, Method.GET);
+};
 
 // Authentication
 export const createRequestToken = () =>
@@ -72,5 +82,10 @@ export const addToWatchlist = (sessionId: string, data: IAddToWatchlist) =>
 
 export const getImageURL = (suffix: string) =>
   `https://image.tmdb.org/t/p/w500${suffix}`;
-export const getNotFoundImage = (settings: string) =>
-  `https://via.placeholder.com/${settings}?text=No%20Image`;
+
+export const getNotFoundImage = (settings: string, text: string) =>
+  `https://via.placeholder.com/${settings}?text=${text}`;
+
+export const getAuthUrl = (token: string, redirectTo: string) => 
+  `https://www.themoviedb.org/authenticate/${token}?redirect_to=${redirectTo}`;
+
