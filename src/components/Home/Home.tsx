@@ -1,11 +1,13 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { Grid, Box, makeStyles } from '@material-ui/core';
 import headerBg from '../../assets/images/header-bg.jpg';
 import Header from '../Header/Header';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchPopular } from '../../store/movie/thunks';
 import { Waypoint } from 'react-waypoint';
 import './Home.css';
+import { fetchWatchList } from '../../store/account/thunks';
+import { RootState } from '../../store/store';
 
 const MovieList = lazy(() => import('../MovieList/MovieList'));
 
@@ -33,6 +35,14 @@ function Home() {
   const dispatch = useDispatch();
   const [pageNumber, setPageNumber] = useState(0);
 
+  const sessionId = useSelector((state: RootState) => state.auth.sessionId);
+
+  useEffect(() => {
+    if (sessionId) {
+      dispatch(fetchWatchList(sessionId));
+    }
+  });
+
   const fetchMovies = () => {
     const number = pageNumber + 1;
     setPageNumber(number);
@@ -41,7 +51,7 @@ function Home() {
 
   return (
     <div className={classes.root}>
-      <Grid xs={12} item >
+      <Grid xs={12} item>
         <Grid className={classes.header}>
           <Header />
         </Grid>
