@@ -81,10 +81,19 @@ const useStyles = makeStyles((theme: Theme) => ({
         padding: '2rem',
         transform: 'translateZ(0)',
       },
-      '& ~ $info > div > $movieRate': {
+      '& ~ $info > $infoText': {
+        opacity: 1,
+      },
+      '& ~ $info > $infoButtons': {
         opacity: 1,
       },
     },
+  },
+  infoText: {
+    opacity: 0,
+  },
+  infoButtons: {
+    opacity: 0,
   },
   movieSinopse: {
     marginTop: '1rem',
@@ -127,7 +136,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 800,
   },
   movieRate: {
-    opacity: 0,
     display: 'flex',
     alignItems: 'center',
   },
@@ -255,7 +263,7 @@ const MovieList: FunctionComponent = () => {
                   />
                   {renderImage(item.poster_path, item.title)}
                   <Box className={classes.info}>
-                    <Box>
+                    <Box className={classes.infoText}>
                       <Box className={classes.itemTitle}>{item.title}</Box>
                       <Box className={classes.movieRate}>
                         <StyledRating
@@ -274,7 +282,7 @@ const MovieList: FunctionComponent = () => {
                           'No additional info was found for this movie.'}
                       </Box>
                     </Box>
-                    <Box>
+                    <Box className={classes.infoButtons}>
                       <Box className={classes.cardOptions}>
                         <Button
                           className={classes.buttonOptions}
